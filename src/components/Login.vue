@@ -2,14 +2,14 @@
    <div class="parent" style="overflow:hidden;">
         <div class="login-element" id="login">
         <h1>XXX管理平台</h1>
-      <div class="from-info">
-        <form action="../" method="post">
+      <div class="form-info">
+        <form ref="form" :model="form">
           <label class="text-label">用户名:</label>
-          <el-input class="text-input" v-model="userName" placeholder="请输入内容"></el-input>
+          <el-input class="text-input" v-model="form.userName" placeholder="请输入内容"></el-input>
           <label class="text-label">密码:</label>
-          <el-input  class="text-input" placeholder="请输入密码" v-model="passWord" show-password></el-input>
+          <el-input  class="text-input" placeholder="请输入密码" v-model="form.passWord" show-password></el-input>
        </form>
-       <el-button type="success" plain class="login-button">登录</el-button>
+       <el-button type="success" plain class="login-button" @click="doLogin(form)">登录</el-button>
       </div> 
    </div>    
    </div> 
@@ -20,11 +20,35 @@ export default {
     name:'Login',
     data(){
         return{
-            userName:'',
-            passWord:''
+            form:{
+             userName:'',
+             passWord:''
+            }  
         }
+    },
+    methods:{
+        doLogin(form){
+        if(form.userName != "" && form.passWord != ""){
+         this.axios.get('/api').then(
+					response => {
+                        console.log('登录成功!');
+                        sessionStorage.setItem('token','asehwgoqk@wbwa')
+					},
+					error => {
+					})
+        }else{
+         this.$alert('这是一段内容', '标题名称', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+        });
+      }
     }
-}
+}}
 </script>
 
 <style scoped>
@@ -40,7 +64,7 @@ export default {
      width: 1000px;
      height: 100px;
 }
-.from-info{
+.form-info{
     margin-left: 100px;
 }
 .text-label{
