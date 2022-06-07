@@ -31,13 +31,27 @@ export default {
         if(form.userName != "" && form.passWord != ""){
          this.axios.get('/api').then(
 					response => {
-                        console.log('登录成功!');
-                        sessionStorage.setItem('token','asehwgoqk@wbwa')
-					},
-					error => {
+                    console.log('登录成功!');
+                    //存储token
+                    sessionStorage.setItem('token','asehwgoqk@wbwa')
+                    //跳转到主页
+                    this.$router.push({
+					name:'Home'
+				})
+                },
+				error => {
+                        this.$alert('用户名或密码错误', '提示', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                            this.$message({
+                                type: 'info',
+                                message: `action: ${ action }`
+                            });
+                            }
+                        });
 					})
         }else{
-         this.$alert('这是一段内容', '标题名称', {
+         this.$alert('请完善表单信息', '提示', {
           confirmButtonText: '确定',
           callback: action => {
             this.$message({
@@ -48,7 +62,12 @@ export default {
         });
       }
     }
-}}
+},
+mounted() {
+    console.log(this);
+},
+
+}
 </script>
 
 <style scoped>
