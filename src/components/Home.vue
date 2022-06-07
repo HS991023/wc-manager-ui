@@ -2,6 +2,7 @@
 <div class="container-home " style="overflow:hidden;">
   <el-container style="height: 100%; border: 1px solid #eee">
     <el-aside width="200px"  style="height: 100% background-color: rgb(238, 241, 246)">
+    <!-- <div class="banner"><img src="../assets/banner.png" alt=""></div>   -->
     <!-- 默认打开菜单 -->
     <el-menu :default-openeds="[]">
       <el-submenu index="1">
@@ -51,7 +52,9 @@
   <el-container>
     <el-header style="text-align: right; font-size: 12px">
       <span class="title-message">欢迎访问XXX管理系统</span>
-      <el-dropdown>
+     
+      <div class="userInfo-down">
+        <el-dropdown>
         <i class="el-icon-setting" style="margin-right: 15px"></i>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>查看</el-dropdown-item>
@@ -59,7 +62,8 @@
           <el-dropdown-item>删除</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <span>王小虎</span>
+       <span class="user-info">admin</span>
+      </div>
     </el-header>
     <!-- 插入路由展示 -->
     <el-main>
@@ -87,6 +91,11 @@
 </script>
 
 <style>
+.banner{
+  width: 120px;
+  height: 30px;
+  margin-left: -100px;
+}
 .container-home{
     width: 100%;
     height: 100vh;
@@ -109,6 +118,13 @@
 .el-menu-item a{
   text-decoration: none;
   color: black;
+}
+.userInfo-down{
+  float: right;
+  margin-left: 20px;
+}
+.user-info{
+  font-size: 15px;
 }
 </style>
 

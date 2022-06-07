@@ -27,4 +27,5 @@ body{
   height: 100%;
   background-color: #fcfcfc;
 }
+@import url('../src/assets/css/global.css');
 </style>

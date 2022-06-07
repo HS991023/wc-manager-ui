@@ -1,0 +1,39 @@
+/* 全局搜索栏样式 */
+
+.serach-input {
+    margin-top: -40px;
+    float: left;
+    width: 100%;
+    height: 50px;
+}
+
+.serach-propties {
+    float: left;
+    margin-top: 6px;
+    font-size: 15px;
+}
+
+
+/* 搜索框 */
+
+.el-input__inner {
+    height: 36px;
+}
+
+
+/* 搜索按钮 */
+
+.serach-button {
+    float: left;
+    margin-left: 10px;
+    height: 36px;
+    width: 100px;
+}
+
+.el-input {
+    float: left;
+    margin-left: 20px;
+    margin-right: 10px;
+    width: 160px;
+    height: 30px;
+}

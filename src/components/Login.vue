@@ -33,7 +33,7 @@ export default {
 					response => {
                     console.log('登录成功!');
                     //存储token
-                    sessionStorage.setItem('token','asehwgoqk@wbwa')
+                    sessionStorage.setItem('token',form)
                     //跳转到主页
                     this.$router.push({
 					name:'Home'
