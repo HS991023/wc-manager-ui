@@ -36,7 +36,7 @@ export default {
                     sessionStorage.setItem('token',form)
                     //跳转到主页
                     this.$router.push({
-					name:'Home'
+					name:'Show'
 				})
                 },
 				error => {
@@ -94,7 +94,7 @@ mounted() {
 .text-input{
     float: left;
     width: 300px;
-    height: 60px;
+    height: 20px;
 }
 .login-button{
     float: left;

@@ -2,6 +2,7 @@
 import VueRouter from 'vue-router'
 //组件
 import Home from '../components/Home'
+import Show from '../components/Show'
 import Login from '../components/Login'
 import UserInfo from '../pages/user/UserInfo'
 import OnlineUser from '../pages/user/OnlineUser'
@@ -23,6 +24,10 @@ export default new VueRouter({
             path: '/home',
             component: Home,
             children: [{
+                    name: 'Show',
+                    path: '/show',
+                    component: Show
+                }, {
                     name: 'UserInfo',
                     path: '/userInfo',
                     component: UserInfo

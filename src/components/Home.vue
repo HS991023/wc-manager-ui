@@ -51,8 +51,6 @@
   </el-aside>
   <el-container>
     <el-header style="text-align: right; font-size: 12px">
-      <span class="title-message">欢迎访问XXX管理系统</span>
-     
       <div class="userInfo-down">
         <el-dropdown>
         <i class="el-icon-setting" style="margin-right: 15px"></i>
@@ -104,9 +102,10 @@
   height: 100%;
 }
 .el-header {
-    background-color: #f5f9ff;
+    position:absolute; 
     color: #333;
     line-height: 60px;
+    right: 0px;
 }
 .title-message{
   float: left;
