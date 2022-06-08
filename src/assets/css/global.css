@@ -1,7 +1,7 @@
 /* 全局搜索栏样式 */
 
 .serach-input {
-    margin-top: -40px;
+    margin-top: 16px;
     float: left;
     width: 100%;
     height: 50px;
@@ -36,4 +36,14 @@
     margin-right: 10px;
     width: 160px;
     height: 30px;
+}
+
+
+/* 顶部样式 */
+
+.top-style {
+    margin-top: -30px;
+    width: 100%;
+    height: 60px;
+    background-color: skyblue;
 }

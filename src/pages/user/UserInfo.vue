@@ -1,5 +1,8 @@
 <template class="userInfo">
     <div>
+      <div class="top-style">
+      <h2>此处预留样式栏盒子</h2>
+    </div> 
     <div class="serach-input">
     <label class="serach-propties">用户名:</label>    
     <el-input
