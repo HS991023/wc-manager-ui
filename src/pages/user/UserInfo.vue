@@ -1,6 +1,6 @@
-<template class="userInfo">
+<template>
     <div>
-      <div class="top-style">
+    <div class="top-style">
       <h2>此处预留样式栏盒子</h2>
     </div> 
     <div class="serach-input">
@@ -194,11 +194,6 @@ export default {
     }
 }
 </script>
+
 <style scoped>
-.table-data{
-    margin-top: 40px;
-}
-.pageHelper{
-    margin-left: 360px;
-}
 </style>

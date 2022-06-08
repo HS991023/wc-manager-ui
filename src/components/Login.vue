@@ -9,7 +9,9 @@
           <label class="text-label">密码:</label>
           <el-input  class="text-input" placeholder="请输入密码" v-model="form.passWord" show-password></el-input>
        </form>
-       <el-button type="success" plain class="login-button" @click="doLogin(form)">登录</el-button>
+       <el-button type="success" plain class="login-button"
+        @click="doLogin(form)"
+        @keyup.enter.native="doLogin(form)">登录</el-button>
       </div> 
    </div>    
    </div> 
@@ -64,7 +66,7 @@ export default {
     }
 },
 mounted() {
-    console.log(this);
+
 },
 
 }

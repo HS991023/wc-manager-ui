@@ -1,3 +1,21 @@
+/* 路由主页面样式 */
+
+.el-main {
+    margin-left: 10px;
+}
+
+
+/* 顶部样式 */
+
+.top-style {
+    margin-top: -30px;
+    margin-left: -1px;
+    width: 100%;
+    height: 60px;
+    background-color: skyblue;
+}
+
+
 /* 全局搜索栏样式 */
 
 .serach-input {
@@ -7,10 +25,24 @@
     height: 50px;
 }
 
+
+/* 搜索栏lable样式 */
+
 .serach-propties {
     float: left;
     margin-top: 6px;
     font-size: 15px;
+}
+
+
+/* 搜索输入框 */
+
+.el-input {
+    float: left;
+    margin-left: 20px;
+    margin-right: 10px;
+    width: 160px;
+    height: 30px;
 }
 
 
@@ -30,20 +62,13 @@
     width: 100px;
 }
 
-.el-input {
-    float: left;
-    margin-left: 20px;
-    margin-right: 10px;
-    width: 160px;
-    height: 30px;
+
+/* 表格样式及分页样式 */
+
+.table-data {
+    margin-top: 40px;
 }
 
-
-/* 顶部样式 */
-
-.top-style {
-    margin-top: -30px;
-    width: 100%;
-    height: 60px;
-    background-color: skyblue;
+.pageHelper {
+    margin-left: 360px;
 }
