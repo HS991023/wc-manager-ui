@@ -72,3 +72,10 @@
 .pageHelper {
     margin-left: 360px;
 }
+
+
+/* 左侧菜单栏样式 */
+
+.el-menu {
+    background-color: antiquewhite;
+}

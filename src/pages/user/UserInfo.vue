@@ -1,5 +1,6 @@
 <template>
     <div>
+    <!-- 搜索栏   -->
     <div class="top-style">
       <h2>此处预留样式栏盒子</h2>
     </div> 
@@ -30,8 +31,14 @@
     </el-input>
     <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
     </div>
+    <!-- 表格组件 -->
     <div class="table-data"> 
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
+    <!-- 多选框 -->
+    <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>  
     <!-- 用户名    -->
     <el-table-column
       label="用户名"
@@ -118,6 +125,7 @@
       </template>
     </el-table-column>
     </el-table>
+    <!-- 分页组件 -->
     <div class="pageHelper">
     <el-pagination
       layout="prev, pager, next"
@@ -185,15 +193,30 @@ export default {
       }
     },
     methods: {
+      tableRowClassName({row, rowIndex}) {
+        if (rowIndex === 1) {
+          return 'warning-row';
+        } else if (rowIndex === 3) {
+          return 'success-row';
+        }
+        return '';
+      },
       handleEdit(index, row) {
         console.log(index, row);
       },
       handleDelete(index, row) {
         console.log(index, row);
-      }
+      },
     }
 }
 </script>
 
 <style scoped>
+.el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>

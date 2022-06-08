@@ -32,6 +32,11 @@
     </div>
     <div class="table-data"> 
     <el-table :data="tableData" style="width: 100%">
+    <!-- 多选框 -->
+    <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>  
     <!-- 用户名    -->
     <el-table-column
       label="用户名"

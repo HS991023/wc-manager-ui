@@ -2,7 +2,7 @@
 <div class="container-home " style="overflow:hidden;">
   <el-container style="height: 100%; border: 1px solid #eee">
     <el-aside width="200px"  style="height: 100% background-color: rgb(238, 241, 246)">
-    <!-- <div class="banner"><img src="../assets/banner.png" alt=""></div>   -->
+    <!-- <div class="banner"><img src="" alt=""></div>   -->
     <!-- 默认打开菜单 -->
     <el-menu :default-openeds="[]">
       <el-submenu index="1">
