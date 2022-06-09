@@ -15,10 +15,10 @@
 }
 
 
-/* 全局搜索栏样式 */
+/* 全局搜索栏盒子样式 */
 
 .serach-input {
-    margin-top: 16px;
+    margin-top: 12px;
     float: left;
     width: 100%;
     height: 50px;
@@ -30,35 +30,58 @@
 .serach-propties {
     float: left;
     margin-top: 6px;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 
-/* 搜索输入框 */
+/* 搜索输入框样式 */
 
 .el-input {
     float: left;
     margin-left: 20px;
     margin-right: 10px;
     width: 160px;
-    height: 30px;
+    height: 33px;
 }
 
 
-/* 搜索框 */
+/* 搜索输入框高度  */
 
 .el-input__inner {
-    height: 36px;
+    height: 33px;
 }
 
 
-/* 搜索按钮 */
+/* 搜索按钮样式 */
 
 .serach-button {
     float: left;
     margin-left: 10px;
-    height: 36px;
-    width: 100px;
+    padding: 0 0 !important;
+    text-align: center;
+    height: 33px;
+    width: 80px;
+    line-height: 33px;
+}
+
+
+/* 操作数据按钮盒子 */
+
+.operator-button-region {
+    width: 100%;
+    height: 70px;
+}
+
+
+/* 操作数据按钮 */
+
+.operator-button {
+    width: 76px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    padding: 0 0 !important;
+    font-size: 11px;
 }
 
 
