@@ -9,6 +9,8 @@ import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router'
 // //引入路由器
 import router from './router'
+//引入自定义组件
+import OperatorDataButton from './components/common/OperatorDataButton'
 // //安装axios插件
 Vue.prototype.$axios = axios;
 // 安装插件
@@ -23,6 +25,8 @@ Vue.component(Button.name, Button);
 Vue.component(Input.name, Input);
 Vue.component(Row.name, Row);
 Vue.component(Container.name, Container);
+//引入自定义组件
+Vue.component('OperatorDataButton', OperatorDataButton);
 Vue.config.productionTip = false
 
 new Vue({
