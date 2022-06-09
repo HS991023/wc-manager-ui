@@ -31,39 +31,40 @@ export default {
     methods:{
         doLogin(form){
         if(form.userName != "" && form.passWord != ""){
-         this.axios.get('/api').then(
-					response => {
-                    console.log('登录成功!');
-                    //存储token
-                    sessionStorage.setItem('token',form)
-                    //跳转到主页
-                    this.$router.push({
-					name:'Show'
-				})
-                },
-				error => {
-                        this.$alert('用户名或密码错误', '提示', {
-                            confirmButtonText: '确定',
-                            callback: action => {
-                            this.$message({
-                                type: 'info',
-                                message: `action: ${ action }`
-                            });
-                            }
-                        });
-					})
-        }else{
-         this.$alert('请完善表单信息', '提示', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `action: ${ action }`
-            });
-          }
-        });
-      }
-    }
+        this.$router.push({name:'Show'}); 
+        //  this.axios.get('/api').then(
+		// 			response => {
+        //             console.log('登录成功!');
+        //             //存储token
+        //             sessionStorage.setItem('token',form)
+        //             //跳转到主页
+        //             this.$router.push({
+		// 			name:'Show'
+		// 		})
+        //         },
+		// 		error => {
+        //                 this.$alert('用户名或密码错误', '提示', {
+        //                     confirmButtonText: '确定',
+        //                     callback: action => {
+        //                     this.$message({
+        //                         type: 'info',
+        //                         message: `action: ${ action }`
+        //                     });
+        //                     }
+        //                 });
+		// 			})
+        // }else{
+        //  this.$alert('请完善表单信息', '提示', {
+        //   confirmButtonText: '确定',
+        //   callback: action => {
+        //     this.$message({
+        //       type: 'info',
+        //       message: `action: ${ action }`
+        //     });
+        //   }
+        // });
+    //   }
+    }}
 },
 mounted() {
 
