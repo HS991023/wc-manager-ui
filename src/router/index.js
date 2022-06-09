@@ -25,7 +25,7 @@ export default new VueRouter({
             component: Home,
             children: [{
                     name: 'Show',
-                    path: '/show',
+                    path: 'show',
                     component: Show
                 }, {
                     name: 'UserInfo',

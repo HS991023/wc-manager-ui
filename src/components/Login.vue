@@ -7,11 +7,11 @@
           <label class="text-label">用户名:</label>
           <el-input class="text-input" v-model="form.userName" placeholder="请输入内容"></el-input>
           <label class="text-label">密码:</label>
-          <el-input  class="text-input" placeholder="请输入密码" v-model="form.passWord" show-password></el-input>
+          <el-input @keyup.enter.native="doLogin(form)"  class="text-input" placeholder="请输入密码" v-model="form.passWord" show-password></el-input>
        </form>
        <el-button type="success" plain class="login-button"
         @click="doLogin(form)"
-        @keyup.enter.native="doLogin(form)">登录</el-button>
+        >登录</el-button>
       </div> 
    </div>    
    </div> 
