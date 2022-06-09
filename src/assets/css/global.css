@@ -86,6 +86,22 @@
     background-color: #1f2d3d!important;
 }
 
+.el-submenu .el-menu-item {
+    color: white;
+}
+
 .el-submenu__title {
     color: white;
+}
+
+.el-submenu__title:hover {
+    background-color: #143358!important;
+}
+
+.el-menu-item a {
+    color: white !important;
+}
+
+.el-menu-item:hover {
+    background-color: #143358!important;
 }
