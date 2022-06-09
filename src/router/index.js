@@ -20,7 +20,7 @@ import OperatorLog from '../pages/common/OperatorLog'
 import ApiNumber from '../pages/common/ApiNumber'
 const router = new VueRouter({
     // history: createWebHashHistory(),
-    model: 'history',
+    mode: 'history',
     //配置路由规则
     routes: [{
             name: 'Home',
