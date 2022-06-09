@@ -1,5 +1,6 @@
 // 该文件专门用于创建整个应用的路由器
 import VueRouter from 'vue-router'
+// import { createRouter, createWebHashHistory } from 'vue-router'
 //组件
 import Home from '../components/Home'
 import Show from '../components/Show'
@@ -17,8 +18,9 @@ import DictInfo from '../pages/dict/DictInfo'
 import LoginLog from '../pages/common/LoginLog'
 import OperatorLog from '../pages/common/OperatorLog'
 import ApiNumber from '../pages/common/ApiNumber'
-export default new VueRouter({
-    mode: 'history',
+const router = new VueRouter({
+    // history: createWebHashHistory(),
+    model: 'history',
     //配置路由规则
     routes: [{
             name: 'Home',
@@ -27,6 +29,7 @@ export default new VueRouter({
             children: [{
                     name: 'Show',
                     path: '/show',
+                    redirect: '',
                     component: Show
                 }, {
                     name: 'UserInfo',
@@ -97,4 +100,5 @@ export default new VueRouter({
             component: Login
         }
     ]
-})
+});
+export default router;
