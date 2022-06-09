@@ -13,6 +13,7 @@ import RegionInfo from '../pages/region/RegionInfo'
 import WcInfo from '../pages/wc/WcInfo'
 import PositionInfo from '../pages/position/PositionInfo'
 import DeviceInfo from '../pages/device/DeviceInfo'
+import DictInfo from '../pages/dict/DictInfo'
 import LoginLog from '../pages/common/LoginLog'
 import OperatorLog from '../pages/common/OperatorLog'
 import ApiNumber from '../pages/common/ApiNumber'
@@ -71,6 +72,10 @@ export default new VueRouter({
                     component: DeviceInfo
                 },
                 {
+                    name: 'DictInfo',
+                    path: '/dictInfo',
+                    component: DictInfo
+                }, {
                     name: 'LoginLog',
                     path: '/loginLog',
                     component: LoginLog

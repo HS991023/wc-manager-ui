@@ -41,11 +41,15 @@
         <template slot="title"><i class="el-icon-meun el-icon-s-promotion"></i>设备管理</template>
         <el-menu-item index="8-1"><router-link to="/deviceInfo">设备信息</router-link></el-menu-item>
       </el-submenu>
-       <el-submenu index="9">
+      <el-submenu index="9">
         <template slot="title"><i class="el-icon-meun el-icon-s-ticket"></i>公共模块</template>
-        <el-menu-item index="8-1"><router-link to="/loginLog">登录日志</router-link></el-menu-item>
-        <el-menu-item index="8-2"><router-link to="/operatorLog">操作日志</router-link></el-menu-item>
-        <el-menu-item index="8-3"><router-link to="/apiNumber">接口调用次数</router-link></el-menu-item>
+        <el-menu-item index="9-1"><router-link to="/loginLog">登录日志</router-link></el-menu-item>
+        <el-menu-item index="9-2"><router-link to="/operatorLog">操作日志</router-link></el-menu-item>
+        <el-menu-item index="9-3"><router-link to="/apiNumber">接口调用次数</router-link></el-menu-item>
+      </el-submenu>
+      <el-submenu index="10">
+        <template slot="title"><i class="el-icon-meun el-icon-s-ticket"></i>字典管理</template>
+        <el-menu-item index="10-1"><router-link to="/dictInfo">字典信息</router-link></el-menu-item>
       </el-submenu>
     </el-menu>
   </el-aside>
