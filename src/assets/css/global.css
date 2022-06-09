@@ -76,6 +76,16 @@
 
 /* 左侧菜单栏样式 */
 
+.el-aside {
+    margin-top: -1px;
+    margin-bottom: -1px;
+    margin-left: -1px;
+}
+
 .el-menu {
-    background-color: antiquewhite;
+    background-color: #1f2d3d!important;
+}
+
+.el-submenu__title {
+    color: white;
 }
