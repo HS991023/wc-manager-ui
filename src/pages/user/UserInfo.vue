@@ -31,8 +31,20 @@
     </el-input>
     <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
     </div>
+    <div class="table-data">     
+    <!-- 表单   -->
+    <el-dialog
+    title="用户信息编辑"
+    :visible.sync="centerDialogVisible"
+    width="30%"
+    center>
+    <span>需要注意的是内容是默认不居中的</span>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="centerDialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+    </span>
+    </el-dialog>
     <!-- 表格组件 -->
-    <div class="table-data"> 
     <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
     <!-- 多选框 -->
     <el-table-column
@@ -107,13 +119,13 @@
             <el-tag size="medium">{{ scope.row.name }}</el-tag>
           </div>
         </el-popover>
-      </template>
+      </template> 
     </el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          @click="handleEdit(scope.$index, scope.row);centerDialogVisible = true">编辑</el-button>
         <el-button
           size="mini"
           type="danger"
@@ -189,7 +201,8 @@ export default {
           date: '2016-05-03',
           name: '王小虎',
           address: '上海市普陀区金沙江路 1516 弄'
-        }]
+        }],
+        centerDialogVisible: false
       }
     },
     methods: {
