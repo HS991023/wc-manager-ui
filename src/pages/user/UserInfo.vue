@@ -127,7 +127,7 @@
     </el-table>
     <!-- 分页组件 -->
     <div class="pageHelper">
-    <el-pagination
+      <el-pagination
       layout="prev, pager, next"
       :total="1000">
     </el-pagination>
