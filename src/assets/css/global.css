@@ -69,6 +69,13 @@
     margin-top: 40px;
 }
 
+
+/* 表头 */
+
+.el-table th.el-table__cell>.cell {
+    padding-left: 15px
+}
+
 .pageHelper {
     margin-left: 360px;
 }
