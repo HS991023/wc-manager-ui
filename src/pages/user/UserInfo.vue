@@ -7,25 +7,25 @@
     <div class="serach-input">
     <label class="serach-propties">用户名:</label>    
     <el-input
-        placeholder="请输入内容"
+        placeholder="请输入用户名"
         suffix-icon="el-icon-text"
         >
     </el-input>
     <label class="serach-propties">账号:</label>    
     <el-input
-        placeholder="请输入内容"
+        placeholder="请输入账号"
         suffix-icon="el-icon-text"
         >
     </el-input>
     <label class="serach-propties">性别:</label>    
     <el-input
-        placeholder="请输入内容"
+        placeholder="请输入性别"
         suffix-icon="el-icon-text"
         >
     </el-input>
     <label class="serach-propties">状态:</label>    
     <el-input
-        placeholder="请输入内容"
+        placeholder="请输入状态"
         suffix-icon="el-icon-text"
         >
     </el-input>
