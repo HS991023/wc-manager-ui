@@ -29,8 +29,10 @@
         suffix-icon="el-icon-text"
         >
     </el-input>
-    <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
+    <!-- 搜索按钮组件 -->
+    <SerachButton/>
     </div>
+    <!-- 操作数据组件 -->
     <OperatorDataButton/>
     <div class="table-data">     
     <!-- 表单   -->
