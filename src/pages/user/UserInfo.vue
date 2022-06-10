@@ -34,101 +34,65 @@
     </div>
     <!-- 操作数据组件 -->
     <OperatorDataButton/>
-    <div class="table-data">     
     <!-- 表单   -->
-    <el-dialog
-    title="用户信息编辑"
-    :visible.sync="centerDialogVisible"
-    width="30%"
-    center>
-    <span>需要注意的是内容是默认不居中的</span>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="centerDialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
-    </span>
+    <el-dialog title="用户信息" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="用户名" :label-width="formLabelWidth">
+          <el-input v-model="form.nickName" autocomplete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="账号" :label-width="formLabelWidth">
+          <el-input v-model="form.userName" autocomplete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="性别" :label-width="formLabelWidth">
+          <el-input v-model="form.gender" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色" :label-width="formLabelWidth">
+          <el-input v-model="form.roleName" autocomplete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="状态" :label-width="formLabelWidth">
+          <el-input v-model="form.status" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <div class="from-button-region">
+        <el-button @click="dialogFormVisible = false" class="button">取 消</el-button>
+        <el-button type="primary" @click="submitForm" class="button">确 定</el-button>
+        </div>
+      </div>
     </el-dialog>
-    <!-- 表格组件 -->
-    <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
-    <!-- 多选框 -->
-    <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>  
-    <!-- 用户名    -->
-    <el-table-column
-      label="用户名"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <!-- 账号 -->
-    <el-table-column
-      label="账号"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <!-- 性别 -->
-    <el-table-column
-      label="性别"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <!-- 状态 -->
-     <el-table-column
-      label="角色"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <!-- 状态 -->
-     <el-table-column
-      label="状态"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template> 
-    </el-table-column>
+    <!-- 表格 -->
+    <div class="table-data">     
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      max-height="400">
+      <!-- 多选框 -->
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column> 
+      <el-table-column
+        fixed
+        prop="nickName"
+        label="用户名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        fixed
+        prop="userName"
+        label="账号"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        fixed
+        prop="gender"
+        label="性别">
+      </el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row);centerDialogVisible = true">编辑</el-button>
+          @click="handleEdit(scope.$index, scope.row);dialogFormVisible = true">编辑</el-button>
         <el-button
           size="mini"
           type="danger"
@@ -154,85 +118,48 @@
 <script>
 export default {
     name:'UserInfo',
-    data() {
-      return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }],
-        centerDialogVisible: false
-      }
-    },
     methods: {
-      tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
-        }
-        return '';
-      },
       handleEdit(index, row) {
-        console.log(index, row);
+        this.form = {
+          nickName:'张三',
+          userName:'admin',
+          gender:'男'
+        };
       },
       handleDelete(index, row) {
         console.log(index, row);
       },
+      //提交表单事件
+      submitForm(){
+        this.dialogFormVisible = false;
+        console.log(this.form);
+      }
+    },
+    data() {
+      return {
+        tableData: [{
+          nickName:'张三',
+          userName:'admin',
+          gender:'男'
+        },
+        {
+          nickName:'李四',
+          userName:'admin'
+        }],
+        dialogTableVisible: false,
+        dialogFormVisible: false,
+        form: {
+          nickName:'',
+          userName:'',
+          gender:'',
+          roleName:'',
+          status:''
+        },
+        formLabelWidth: '120px'
+      }
     }
 }
 </script>
 
-<style scoped>
-.el-table .warning-row {
-    background: oldlace;
-  }
-
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
+<style >
 </style>
