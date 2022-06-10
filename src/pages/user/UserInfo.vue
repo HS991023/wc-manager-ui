@@ -34,20 +34,33 @@
     </div>
     <!-- 操作数据组件 -->
     <OperatorDataButton/>
-    <!-- 表单   -->
+    <!-- 表单新增或编辑   -->
     <el-dialog title="用户信息" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="用户名" :label-width="formLabelWidth">
           <el-input v-model="form.nickName" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="账号" :label-width="formLabelWidth">
+        <el-form-item label="账号" :label-width="formLabelWidth">
           <el-input v-model="form.userName" autocomplete="off"></el-input>
         </el-form-item>
-         <el-form-item label="性别" :label-width="formLabelWidth">
+        <!-- 用户头像 -->
+        <div class="user-avater">
+           <el-avatar shape="square" :size="100" ></el-avatar>      
+        </div>
+        <el-form-item label="性别" :label-width="formLabelWidth">
           <el-input v-model="form.gender" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth">
           <el-input v-model="form.roleName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="状态" :label-width="formLabelWidth">
+          <el-input v-model="form.status" autocomplete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="状态" :label-width="formLabelWidth">
+          <el-input v-model="form.status" autocomplete="off"></el-input>
+        </el-form-item> 
+        <el-form-item label="状态" :label-width="formLabelWidth">
+          <el-input v-model="form.status" autocomplete="off"></el-input>
         </el-form-item>
          <el-form-item label="状态" :label-width="formLabelWidth">
           <el-input v-model="form.status" autocomplete="off"></el-input>
@@ -161,5 +174,14 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
+.user-avater{
+  display: inline-block;
+  position: relative;
+  top: 40px;
+  left: 56px;
+  width: 100px;
+  height: 100px;
+  background-color:pink;
+}
 </style>

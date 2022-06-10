@@ -60,7 +60,7 @@
     <el-col :span="12">
     <el-dropdown>
       <span class="el-dropdown-link">
-        <div class="demo-basic--circle">
+        <div class="basic--circle">
         <div class="block">
         <el-avatar shape="square">
           <img src="../assets/avater.png" alt="">
