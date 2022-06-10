@@ -6,9 +6,9 @@ import locale from 'element-ui/lib/locale/lang/en'
 import { Button, Input, Row, MessageBox, Container } from 'element-ui';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router';
 // //引入路由器
-import router from './router'
+import router from './router/index.js'
 //引入自定义组件
 import OperatorDataButton from './components/common/OperatorDataButton'
 import SerachButton from './components/common/SerachButton'
@@ -33,5 +33,5 @@ Vue.config.productionTip = false
 
 new Vue({
     render: h => h(App),
-    router: router
+    router
 }).$mount('#app')
