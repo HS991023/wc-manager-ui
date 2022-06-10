@@ -77,7 +77,7 @@ mounted() {
 .parent{
     width: 100%;
     height: 100vh;
-    background-image: url(../assets/index-backround1.jpg);
+    background-image: url(../assets/index-backround.jpg);
     background-repeat: no-repeat;
 }
 .login-element{

@@ -5,6 +5,14 @@
 }
 
 
+/* 登录用户头像样式 */
+
+.el-avatar {
+    margin-top: 5px;
+    margin-right: 1px;
+}
+
+
 /* 顶部样式 */
 
 .top-style {

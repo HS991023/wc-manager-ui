@@ -55,15 +55,31 @@
   </el-aside>
   <el-container>
     <el-header style="text-align: right; font-size: 12px">
-      <div class="userInfo-down">
-        <el-dropdown>
-        <i class="el-icon-setting" style="margin-right: 15px"></i>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>查看</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-       <span class="user-info">admin</span>
+    <!-- 用户登录信息头像及下拉框 -->
+    <div class="userInfo-down">
+    <el-col :span="12">
+    <el-dropdown>
+      <span class="el-dropdown-link">
+        <div class="demo-basic--circle">
+        <div class="block">
+        <el-avatar shape="square">
+          <img src="../assets/avater.png" alt="">
+        </el-avatar>
+        </div>
       </div>
+      </span>
+      <el-dropdown-menu slot="dropdown" style="
+      margin-top: -13px;
+      margin-right: -20px;
+      text-align: center;
+      ">
+        <el-dropdown-item>个人中心</el-dropdown-item>
+        <el-dropdown-item>修改密码</el-dropdown-item>
+        <el-dropdown-item>退出登录</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
+    </el-col>
+    </div>
     </el-header>
     <!-- 插入路由展示 -->
     <el-main>
@@ -78,19 +94,13 @@
   export default {
     name:'Home',
     data() {
-      const item = {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      };
       return {
-        tableData: Array(20).fill(item)
       }
     }
   };
 </script>
 
-<style>
+<style scoped>
 .banner{
   width: 120px;
   height: 30px;
