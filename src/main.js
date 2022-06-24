@@ -19,7 +19,9 @@ Vue.use(VueAxios, axios);
 // //应用插件
 Vue.use(VueRouter);
 //注册样式全局组件
-Vue.use(ElementUI, { locale })
+Vue.use(ElementUI, { locale });
+//Vuex
+import store from './store'
 Vue.prototype.$alert = MessageBox.alert;
 Vue.component(MessageBox.name, MessageBox);
 Vue.component(Button.name, Button);
@@ -31,7 +33,9 @@ Vue.component('OperatorDataButton', OperatorDataButton);
 Vue.component('SerachButton', SerachButton);
 Vue.config.productionTip = false
 
+//挂载路由,vuex
 new Vue({
     render: h => h(App),
+    store,
     router
 }).$mount('#app')

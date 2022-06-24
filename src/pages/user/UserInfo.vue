@@ -168,9 +168,33 @@ export default {
           roleName:'',
           status:''
         },
-        formLabelWidth: '120px'
+        formLabelWidth: '120px',
+        pageNum: 0,
+        pageSize: 10
       }
-    }
+    },
+    mounted() {
+       //获取token
+       var token = this.$store.state.token;
+       //进入页面默认请求用户列表
+       this.axios({
+            method:'post',
+            url:'/api/wc/user/list',
+            data:{ 
+                "pageNum":this.pageNum,
+                "pageSize":this.pageSize
+            },
+            async: false,    
+            params:{
+               
+            },
+            headers:{'Authorization':token},
+            }).then(function(res){
+
+            }).catch(function(error){
+                console.log(error) 
+            })
+    },
 }
 </script>
 

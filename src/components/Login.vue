@@ -48,8 +48,8 @@ export default {
                 //跳转到欢迎页
                 router.push({name:'Show'});
                 let token = res.data.data;
-                let tokenres = token.split("Bearer ")[1];
-                sessionStorage.setItem("token",tokenres)
+                // let tokenres = token.split("Bearer ")[1];
+                sessionStorage.setItem("token",token)
             }).catch(function(error){
                 console.log(error) 
             })
@@ -66,7 +66,7 @@ export default {
       }
     }},
     mounted() {
-        // console.log(this.axios);
+    
     }
 }
 </script>
