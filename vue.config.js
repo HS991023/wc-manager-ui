@@ -9,7 +9,7 @@ module.exports = defineConfig({
     devServer: {
         proxy: {
             '/api': {
-                target: 'https://api.github.com/search/users?q=test',
+                target: 'http://localhost:8099',
                 pathRewrite: { '^/api': '' },
                 // ws: true,
                 // changeOrigin: true

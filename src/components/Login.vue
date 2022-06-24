@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import router from '@/router'
 export default {
     name:'Login',
     data(){
@@ -31,45 +32,42 @@ export default {
     methods:{
         doLogin(form){
         if(form.userName != "" && form.passWord != ""){
-        this.$router.push({name:'Show'}); 
-        //  this.axios.get('/api').then(
-		// 			response => {
-        //             console.log('登录成功!');
-        //             //存储token
-        //             sessionStorage.setItem('token',form)
-        //             //跳转到主页
-        //             this.$router.push({
-		// 			name:'Show'
-		// 		})
-        //         },
-		// 		error => {
-        //                 this.$alert('用户名或密码错误', '提示', {
-        //                     confirmButtonText: '确定',
-        //                     callback: action => {
-        //                     this.$message({
-        //                         type: 'info',
-        //                         message: `action: ${ action }`
-        //                     });
-        //                     }
-        //                 });
-		// 			})
-        // }else{
-        //  this.$alert('请完善表单信息', '提示', {
-        //   confirmButtonText: '确定',
-        //   callback: action => {
-        //     this.$message({
-        //       type: 'info',
-        //       message: `action: ${ action }`
-        //     });
-        //   }
-        // });
-    //   }
-    }}
-},
-mounted() {
-
-},
-
+            var router = this.$router;
+            this.axios({
+            method:'post',
+            url:'/api/wc/system/doLogin',
+            data:{ 
+                username:this.form.userName,
+                password:this.form.passWord
+                },
+            params:{
+               
+            },
+            headers:{'token':'xxx'},
+            }).then(function(res){
+                //跳转到欢迎页
+                router.push({name:'Show'});
+                let token = res.data.data;
+                let tokenres = token.split("Bearer ")[1];
+                sessionStorage.setItem("token",tokenres)
+            }).catch(function(error){
+                console.log(error) 
+            })
+        }else{
+         this.$alert('请完善表单信息', '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+        });
+      }
+    }},
+    mounted() {
+        // console.log(this.axios);
+    }
 }
 </script>
 
