@@ -59,8 +59,8 @@ service.interceptors.response.use(res => {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                store.dispatch('LogOut').then(() => {
-                    location.href = '/';
+                store.dispatch('doLogOut').then(() => {
+                    location.href = '/login';
                 })
             }).catch(() => {});
         } else if (code === 500) {

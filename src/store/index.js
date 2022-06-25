@@ -7,13 +7,19 @@ Vue.use(Vuex)
 //2.创建对象
 const store = new Vuex.Store({
     state: {
-        token: sessionStorage.getItem('token')
+        // 保存登录状态
+        loginState: false
     },
-    mutations: {
-
-    },
+    mutations: {},
     actions: {
-
+        // 登录
+        doLogin(state) {
+            state.loginState = true;
+        },
+        // 退出
+        doLogOut(state) {
+            state.loginState = false;
+        }
     },
     getters: {
 

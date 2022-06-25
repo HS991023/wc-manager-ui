@@ -31,6 +31,23 @@ Vue.component(Container.name, Container);
 
 Vue.config.productionTip = false
 
+// 设置路由生命周期函数, 用来判断该路由是否需要登录状态才可访问
+router.beforeEach((to, from, next) => {
+    if (to.meta.requireAuth) { // 验证是否需要登陆
+        if (sessionStorage.getItem('token')) { // 查询vuex中的登录状态
+            next();
+        } else {
+            next({
+                path: '/login',
+                query: {}
+            });
+        }
+    } else {
+        next();
+    }
+});
+
+
 //挂载路由,vuex
 new Vue({
     render: h => h(App),

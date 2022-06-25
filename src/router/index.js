@@ -22,78 +22,126 @@ const routes = [{
         name: 'Home',
         path: '/home',
         component: Home,
+        meta: {
+            requireAuth: true
+        },
         children: [{
                 name: 'Show',
                 path: '/show',
-                redirect: '',
-                component: Show
-            }, {
+                component: Show,
+                meta: {
+                    requireAuth: true
+                },
+            },
+            {
                 name: 'UserInfo',
                 path: '/userInfo',
-                component: UserInfo
+                component: UserInfo,
+                meta: {
+                    requireAuth: true
+                },
 
             }, {
                 name: 'OnlineUser',
                 path: '/onlineUser',
-                component: OnlineUser
+                component: OnlineUser,
+                meta: {
+                    requireAuth: true
+                },
             }, {
                 name: 'RoleInfo',
                 path: '/roleInfo',
-                component: RoleInfo
+                component: RoleInfo,
+                meta: {
+                    requireAuth: true
+                },
             }, {
                 name: 'DeptInfo',
                 path: '/deptInfo',
-                component: DeptInfo
+                component: DeptInfo,
+                meta: {
+                    requireAuth: true
+                },
             },
             {
                 name: 'MeunInfo',
                 path: '/meunInfo',
-                component: MeunInfo
+                component: MeunInfo,
+                meta: {
+                    requireAuth: true
+                },
             },
             {
                 name: 'RegionInfo',
                 path: '/regionInfo',
-                component: RegionInfo
+                component: RegionInfo,
+                meta: {
+                    requireAuth: true
+                },
             },
             {
                 name: 'WcInfo',
                 path: '/wcInfo',
-                component: WcInfo
+                component: WcInfo,
+                meta: {
+                    requireAuth: true
+                },
             },
             {
                 name: 'PositionInfo',
                 path: '/positionInfo',
-                component: PositionInfo
+                component: PositionInfo,
+                meta: {
+                    requireAuth: true
+                },
             },
             {
                 name: 'DeviceInfo',
                 path: '/deviceInfo',
-                component: DeviceInfo
+                component: DeviceInfo,
+                meta: {
+                    requireAuth: true
+                },
             },
             {
                 name: 'DictInfo',
                 path: '/dictInfo',
-                component: DictInfo
+                component: DictInfo,
+                meta: {
+                    requireAuth: true
+                },
             }, {
                 name: 'LoginLog',
                 path: '/loginLog',
-                component: LoginLog
+                component: LoginLog,
+                meta: {
+                    requireAuth: true
+                },
             }, {
                 name: 'OperatorLog',
                 path: '/operatorLog',
-                component: OperatorLog
+                component: OperatorLog,
+                meta: {
+                    requireAuth: true
+                },
             },
             {
                 name: 'ApiNumber',
                 path: '/apiNumber',
-                component: ApiNumber
+                component: ApiNumber,
+                meta: {
+                    requireAuth: true
+                },
             }
         ]
     },
     {
         name: 'Login',
-        path: '/',
-        component: Login
+        path: '/login',
+        component: Login,
+        meta: {
+            requireAuth: false
+        },
     }
 ];
 
