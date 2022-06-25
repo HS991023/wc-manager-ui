@@ -31,8 +31,10 @@ export default {
     },
     methods:{
         doLogin(form){
+        var router = this.$router;
+        var alert  =  this.$alert;
+        var message =  this.$message;
         if(form.userName != "" && form.passWord != ""){
-            var router = this.$router;
             this.axios({
             method:'post',
             url:'/api/wc/system/doLogin',
@@ -43,25 +45,23 @@ export default {
             params:{
                
             },
-            headers:{'token':'xxx'},
             }).then(function(res){
+                if(res.data.code == 200){
                 //跳转到欢迎页
                 router.push({name:'Show'});
                 let token = res.data.data;
-                // let tokenres = token.split("Bearer ")[1];
                 sessionStorage.setItem("token",token)
+                }else{
+                   alert('用户名或密码错误,请重新输入!', '提示', {
+                    confirmButtonText: '确定'
+                  });
+                }
             }).catch(function(error){
                 console.log(error) 
             })
         }else{
-         this.$alert('请完善表单信息', '提示', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `action: ${ action }`
-            });
-          }
+          alert('请完善表单信息', '提示', {
+          confirmButtonText: '确定'
         });
       }
     }},
@@ -90,18 +90,33 @@ export default {
 .text-label{
     float: left;
     height: 60px;
-    line-height: 40px;
+    line-height: 37px;
+    margin-top: -2px;
 }
 .text-input{
     float: left;
     width: 300px;
-    height: 20px;
+    height: 33px;
 }
 .login-button{
-    float: left;
-    margin-left: 20px;
+  float: left;
+  height: 35px;
+  line-height: 13px;
+  margin-left:23px;
+  margin-top: -1px;
 }
 .login-button:hover{
     color:'#67C23A'
+}
+::v-deep  input{
+    height: 33px;
+    line-height: 33px;
+}
+
+.el-input {
+    float: left;
+    margin-left: 9px;
+    margin-right: 10px;
+    width: 300px !important;
 }
 </style>

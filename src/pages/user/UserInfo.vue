@@ -75,53 +75,26 @@
     </el-dialog>
     <!-- 表格 -->
     <div class="table-data">     
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      max-height="400">
-      <!-- 多选框 -->
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column> 
-      <el-table-column
-        fixed
-        prop="nickName"
-        label="用户名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        fixed
-        prop="userName"
-        label="账号"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        fixed
-        prop="gender"
-        label="性别">
-      </el-table-column>
+    <el-table :data="userList" style="width: 100%" max-height="400">
+    <!-- 多选框 -->
+    <el-table-column type="selection" width="55"></el-table-column> 
+    <el-table-column fixed label="用户编号" align="center" key="userId" prop="id" v-if="false"/>
+    <el-table-column fixed prop="nickName"  key="nickName" label="用户名" width="180"/>
+    <el-table-column fixed prop="userName"  key="userName" label="账号" width="180"/>
+    <el-table-column fixed prop="sex" key="userSex" label="性别" width="180"/>
     <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row);dialogFormVisible = true">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">状态</el-button>  
-      </template>
+    <template slot-scope="scope">
+       <el-button size="mini" @click="handleEdit(scope.$index, scope.row);dialogFormVisible = true">编辑</el-button>
+       <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+       <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">状态</el-button>  
+    </template>
     </el-table-column>
     </el-table>
     <!-- 分页组件 -->
     <div class="pageHelper">
       <el-pagination
       layout="prev, pager, next"
-      :total="1000">
+      :total="100">
     </el-pagination>
     </div>
     </div>
@@ -129,9 +102,39 @@
 </template>
 
 <script>
+import { listUser} from "@/api/system/user";
 export default {
     name:'UserInfo',
+    data() {
+      return {
+        userList: null,
+        total:null,
+        data:{
+           pageNum: 0,
+           pageSize: 10
+        },
+        form: {
+          nickName:'',
+          userName:'',
+          gender:'',
+          roleName:'',
+          status:''
+        },
+        formLabelWidth: '120px',
+        dialogTableVisible: false,
+        dialogFormVisible: false,
+    }},
     methods: {
+      //获取用户列表
+      getUserList(){
+        let data= this.data;
+        listUser(data).then(response => {
+          this.userList = response.data[0];
+          this.total = response.count;
+          this.loading = false;
+        }
+      );
+      },
       handleEdit(index, row) {
         this.form = {
           nickName:'张三',
@@ -148,53 +151,9 @@ export default {
         console.log(this.form);
       }
     },
-    data() {
-      return {
-        tableData: [{
-          nickName:'张三',
-          userName:'admin',
-          gender:'男'
-        },
-        {
-          nickName:'李四',
-          userName:'admin'
-        }],
-        dialogTableVisible: false,
-        dialogFormVisible: false,
-        form: {
-          nickName:'',
-          userName:'',
-          gender:'',
-          roleName:'',
-          status:''
-        },
-        formLabelWidth: '120px',
-        pageNum: 0,
-        pageSize: 10
-      }
-    },
-    mounted() {
-       //获取token
-       var token = this.$store.state.token;
-       //进入页面默认请求用户列表
-       this.axios({
-            method:'post',
-            url:'/api/wc/user/list',
-            data:{ 
-                "pageNum":this.pageNum,
-                "pageSize":this.pageSize
-            },
-            async: false,    
-            params:{
-               
-            },
-            headers:{'Authorization':token},
-            }).then(function(res){
-
-            }).catch(function(error){
-                console.log(error) 
-            })
-    },
+    created(){
+      this.getUserList();
+    }
 }
 </script>
 
