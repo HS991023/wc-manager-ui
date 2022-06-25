@@ -1,7 +1,5 @@
 import request from '@/utils/request'
 
-
-
 // 查询用户列表
 export function listUser(data) {
     return request({
@@ -9,4 +7,15 @@ export function listUser(data) {
         method: 'post',
         data: data
     })
+}
+
+//查询用户详情
+export function userInfo(id) {
+    return request({
+        url: '/api/wc/user/detail',
+        method: 'get',
+        params: {
+            id: id
+        }
+    });
 }

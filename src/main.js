@@ -10,8 +10,7 @@ import VueRouter from 'vue-router';
 // //引入路由器
 import router from './router/index.js'
 //引入自定义组件
-import OperatorDataButton from './components/common/OperatorDataButton'
-import SerachButton from './components/common/SerachButton'
+
 // //安装axios插件
 Vue.prototype.$axios = axios;
 // 安装插件
@@ -29,8 +28,7 @@ Vue.component(Input.name, Input);
 Vue.component(Row.name, Row);
 Vue.component(Container.name, Container);
 //引入自定义组件
-Vue.component('OperatorDataButton', OperatorDataButton);
-Vue.component('SerachButton', SerachButton);
+
 Vue.config.productionTip = false
 
 //挂载路由,vuex
