@@ -14,6 +14,7 @@
     <label class="serach-propties">状态:</label>    
     <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
     <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getUserList()">搜索</el-button>
+    <el-button type="primary" class="operator-button" icon="el-icon-error" @click="getUserListReset()">重置</el-button>
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
@@ -104,9 +105,9 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="currentPage4"
+      :current-page="this.data.pageNum"
       :page-sizes="[10, 20, 50, 100]"
-      :page-size="pageSize"
+      :page-size="this.data.pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -151,9 +152,27 @@ export default {
       getUserList(){
         let data= this.data;
         listUser(data).then(response => {
-          this.userList = response.data[0];
-          this.total = response.count;
-          this.loading = false;
+          if(response.count== 0){
+            this.userList = undefined;
+          }else{
+             this.userList = response.data[0];
+             this.total = response.count;
+          }
+            this.loading = false;
+        });
+      },
+      //用户列表重置
+      getUserListReset(){
+        this.data.nickName = undefined;
+        this.data.userName = undefined;
+        let resetData= {
+           pageNum: 1,
+           pageSize: 10,
+        }
+        listUser(resetData).then(response => {
+            this.userList = response.data[0];
+            this.total = response.count;
+            this.loading = false;
         });
       },
       //查询用户详情
