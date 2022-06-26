@@ -13,8 +13,11 @@
     <el-input placeholder="请输入性别" suffix-icon="el-icon-text"/>
     <label class="serach-propties">状态:</label>    
     <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
-    <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getUserList()">搜索</el-button>
-    <el-button type="primary" class="operator-button" icon="el-icon-error" @click="getUserListReset()">重置</el-button>
+    <!-- 搜索按钮区域 -->
+    <div class="serach-button-region"> 
+        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getUserList()">搜索</el-button>
+        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getUserListReset()">重置</el-button>
+    </div>
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">

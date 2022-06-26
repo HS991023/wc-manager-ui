@@ -64,7 +64,7 @@
 
 /* 搜索按钮样式 */
 
-.serach-input .serach-button {
+.serach-button-region .serach-button {
     float: left;
     margin-left: 10px;
     padding: 0 0 !important;
