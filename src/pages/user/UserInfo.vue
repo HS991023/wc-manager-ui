@@ -93,7 +93,7 @@
     <el-table-column fixed prop="mail" key="mail" label="邮件" width="100" :show-overflow-tooltip="showOverflowTooltip"/>
     <el-table-column fixed prop="accountType" key="accountType" label="账户类型" width="100"/>
     <el-table-column fixed prop="status" key="status" label="状态" width="70"/>
-    <el-table-column fixed prop="createTime" key="createTime" label="注册日期" width="140"/>
+    <el-table-column fixed prop="createTime" key="createTime" label="注册日期" width="170"/>
     <el-table-column label="操作">
     <template slot-scope="scope">
        <el-button size="mini" @click="handleEidtUser(scope.row);dialogFormVisible = true">编辑</el-button>
