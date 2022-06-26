@@ -72,7 +72,7 @@
     </div>
     <!-- 表格 -->
     <div class="table-data">     
-    <el-table :data="userList" style="width: 100%" max-height="400" v-loading="loading" @selection-change="handleUserIds">
+    <el-table  ref="multipleTable" :data="userList" style="width: 100%" max-height="400" v-loading="loading" @selection-change="handleUserIds">
     <!-- 多选框 -->
     <el-table-column type="selection" width="55"></el-table-column> 
     <el-table-column fixed label="用户ID" align="center" prop="id" key="userId" v-if="false"/>
@@ -93,7 +93,7 @@
     <el-table-column label="操作">
     <template slot-scope="scope">
        <el-button size="mini" @click="handleEidtUser(scope.row);dialogFormVisible = true">编辑</el-button>
-       <el-button size="mini" type="danger" @click="handleDeleteUser(scope.row)">删除</el-button>
+       <el-button size="mini" type="danger" @click="handleDeleteUser();handleUserIds(scope.row)">删除</el-button>
        <!-- <el-button size="mini" type="danger" @click="">状态</el-button>   -->
     </template>
     </el-table-column>
@@ -210,19 +210,24 @@ export default {
           }
         }});
       },
-      //获取用户ID
+      //获取用户ID 多选
       handleUserIds(val){
-         this.multipleSelection = val;
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
           return item.id;});
-         }else{ //单个ID
-          this.ids = val.id;
+         }else{ 
+          //单个删除
+          if(val != undefined){
+            this.ids = val.id;
+          }
+          var rows = [];
+          rows.push(val);
+          this.toggleSelection(rows);
          };
       },
       //删除用户逻辑删除
-      handleDeleteUser(row) {
+      handleDeleteUser() {
         this.$confirm('此操作将删除用户, 是否继续?', '系统提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -230,23 +235,33 @@ export default {
         }).then(() => {
           //发送删除请求
           var userIds = this.ids;
-          if(row != undefined){
-             userIds.push(row.id);
-          }
           removeUser(userIds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
                 type: 'success',
                 message: '删除成功!'
              });
+             this.getUserList();
             }
           })
         }).catch(() => {
+          //清除已选择的状态
+          this.toggleSelection();
           this.$message({
             type: 'info',
             message: '已取消删除'
           }); 
         });
+      },
+      //清除多选
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
       },
       //重置表单
       reset() {
@@ -273,6 +288,8 @@ export default {
     },
     created(){
       this.getUserList();
+    },
+    mounted(){
     }
 }
 </script>
