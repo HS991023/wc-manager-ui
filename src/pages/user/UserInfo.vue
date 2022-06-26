@@ -6,14 +6,14 @@
     </div> 
     <div class="serach-input">
     <label class="serach-propties">用户名:</label>    
-    <el-input placeholder="请输入用户名" suffix-icon="el-icon-text"/>
+    <el-input placeholder="请输入用户名" suffix-icon="el-icon-text" v-model="data.nickName"/>
     <label class="serach-propties">账号:</label>    
-    <el-input placeholder="请输入账号" suffix-icon="el-icon-text"/>
+    <el-input placeholder="请输入账号" suffix-icon="el-icon-text" v-model="data.userName"/>
     <label class="serach-propties">性别:</label>    
     <el-input placeholder="请输入性别" suffix-icon="el-icon-text"/>
     <label class="serach-propties">状态:</label>    
     <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
-    <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
+    <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getUserList()">搜索</el-button>
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
@@ -72,7 +72,7 @@
     </div>
     <!-- 表格 -->
     <div class="table-data">     
-    <el-table  ref="multipleTable" :data="userList" style="width: 100%" max-height="400" v-loading="loading" @selection-change="handleUserIds">
+    <el-table  ref="multipleTable" :data="userList" style="width: 100%" max-height="100%" v-loading="loading" @selection-change="handleUserIds">
     <!-- 多选框 -->
     <el-table-column type="selection" width="55"></el-table-column> 
     <el-table-column fixed label="用户ID" align="center" prop="id" key="userId" v-if="false"/>
@@ -98,6 +98,7 @@
     </template>
     </el-table-column>
     </el-table>
+    </div>
     <!-- 分页组件 -->
     <div class="pageHelper">
     <el-pagination
@@ -105,11 +106,10 @@
       @current-change="handleCurrentChange"
       :current-page="currentPage4"
       :page-sizes="[10, 20, 50, 100]"
-      :page-size="100"
+      :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="400">
+      :total="total">
     </el-pagination>
-    </div>
     </div>
     </div>   
 </template>
@@ -128,15 +128,13 @@ export default {
         total:null,
         //分页参数
         data:{
-           pageNum: 0,
-           pageSize: 10
+           pageNum: 1,
+           pageSize: 10,
+           nickName:undefined,
+           userName:undefined,
         },
         //用户ID列表
         ids:[],
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4,
         formLabelWidth: '120px',
         //是否加载中
         loading: true,
@@ -279,11 +277,17 @@ export default {
           sign:undefined
         }
       },
+      //更改每页大小
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+        this.data.pageSize = val;
+        this.getUserList();  
+        // console.log(`每页 ${val} 条`);
       },
+      //更改当前页
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.data.pageNum = val;
+        this.getUserList(); 
+        // console.log(`当前页: ${val}`);
       }
     },
     created(){

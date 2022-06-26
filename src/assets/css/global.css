@@ -167,7 +167,9 @@
 /* 分页组件样式 */
 
 .pageHelper {
-    margin-left: 360px;
+    margin-top: 13px;
+    margin-left: -80px;
+    text-align: center;
 }
 
 .el-pagination__sizes .el-input .el-input__inner {

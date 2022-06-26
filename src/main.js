@@ -2,7 +2,8 @@ import Vue from 'vue';
 import App from './App.vue';
 //引入element-ui
 import ElementUI from 'element-ui'
-import locale from 'element-ui/lib/locale/lang/en'
+// import locale from 'element-ui/lib/locale/lang/en' //注释英文
+import locale from 'element-ui/lib/locale/lang/zh-CN'
 import { Button, Input, Row, MessageBox, Container } from 'element-ui';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
