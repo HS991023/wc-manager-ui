@@ -6,40 +6,24 @@
     </div> 
     <div class="serach-input">
     <label class="serach-propties">用户名:</label>    
-    <el-input
-        placeholder="请输入用户名"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
+    <el-input placeholder="请输入用户名" suffix-icon="el-icon-text"/>
     <label class="serach-propties">账号:</label>    
-    <el-input
-        placeholder="请输入账号"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
+    <el-input placeholder="请输入账号" suffix-icon="el-icon-text"/>
     <label class="serach-propties">性别:</label>    
-    <el-input
-        placeholder="请输入性别"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
+    <el-input placeholder="请输入性别" suffix-icon="el-icon-text"/>
     <label class="serach-propties">状态:</label>    
-    <el-input
-        placeholder="请输入状态"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
-     <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
+    <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
+    <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
-      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddUser();dialogFormVisible = true ">新增</el-button>
-      <el-button type="danger" class="operator-button" icon="el-icon-error">批量删除</el-button>
+      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddUser();dialogFormVisible=true">新增</el-button>
+      <el-button type="danger" class="operator-button" icon="el-icon-error" @click="handleDeleteUser()">批量删除</el-button>
     </div>
     <div class="form-data">
     <!-- 表单新增或编辑对话框   -->
     <el-dialog title="用户信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
+      <el-form :model="form" ref="form">
         <el-form-item label="用户名" :label-width="formLabelWidth">
           <el-input v-model="form.nickName" autocomplete="off"></el-input>
         </el-form-item>
@@ -79,23 +63,23 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <div class="from-button-region">
+        <div class="from-button-region" v-if="showFormButton">
         <el-button class="button" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" class="button" @click="submitForm">确 定</el-button>
-        </div>
+        <el-button type="primary" class="button" @click="submitForm()">确 定</el-button>
+      </div>
       </div>
     </el-dialog>
     </div>
     <!-- 表格 -->
     <div class="table-data">     
-    <el-table :data="userList" style="width: 100%" max-height="400" v-loading="loading" >
+    <el-table :data="userList" style="width: 100%" max-height="400" v-loading="loading" @selection-change="handleUserIds">
     <!-- 多选框 -->
     <el-table-column type="selection" width="55"></el-table-column> 
-    <el-table-column fixed label="用户编号" align="center" prop="id" key="userId" v-if="false"/>
-    <el-table-column fixed label="用户名" prop="nickName" key="nickName"  width="100">
+    <el-table-column fixed label="用户ID" align="center" prop="id" key="userId" v-if="false"/>
+    <el-table-column fixed label="用户名"  prop="nickName" key="nickName"  width="100">
       <!-- 添加列事件 -->
       <template slot-scope="scope">
-           <a @click="handleUserInfo(scope.row.id);dialogFormVisible = true">{{scope.row.nickName}}</a>
+           <a @click="handleUserInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.nickName}}</a>
       </template>
     </el-table-column>  
     <el-table-column fixed prop="userName"  key="userName" label="账号" width="100"/>
@@ -108,9 +92,9 @@
     <el-table-column fixed prop="createTime" key="createTime" label="注册日期" width="140"/>
     <el-table-column label="操作">
     <template slot-scope="scope">
-       <el-button size="mini" @click="handleEidtUser(scope.$index, scope.row);dialogFormVisible = true">编辑</el-button>
-       <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-       <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">状态</el-button>  
+       <el-button size="mini" @click="handleEidtUser(scope.row);dialogFormVisible = true">编辑</el-button>
+       <el-button size="mini" type="danger" @click="handleDeleteUser(scope.row)">删除</el-button>
+       <!-- <el-button size="mini" type="danger" @click="">状态</el-button>   -->
     </template>
     </el-table-column>
     </el-table>
@@ -131,29 +115,38 @@
 </template>
 
 <script>
-import {listUser,userInfo} from "@/api/system/user";
+import {listUser,userInfo,addUser,updateUser,removeUser} from "@/api/system/user";
 export default {
     name:'UserInfo',
     data() {
       return {
         //表格数据
         userList: null,
-        total:null,
         //表单参数
         form:{},
+        //总数
+        total:null,
+        //分页参数
         data:{
            pageNum: 0,
            pageSize: 10
         },
+        //用户ID列表
+        ids:[],
         currentPage1: 5,
         currentPage2: 5,
         currentPage3: 5,
         currentPage4: 4,
         formLabelWidth: '120px',
+        //是否加载中
         loading: true,
         dialogTableVisible: false,
+        //是否关闭表单对话框
         dialogFormVisible: false,
+        //溢出时隐藏
         showOverflowTooltip:true,
+        //是否表单展示取消确定按钮
+        showFormButton: true,
     }},
     methods: {
       //获取用户列表
@@ -168,17 +161,92 @@ export default {
       //查询用户详情
       handleUserInfo(id){
         this.reset();
+        this.showFormButton = false
         userInfo(id).then(response=>{
           this.form = response.data;
         })
       },
-      //新增用户
+      //新增用户按钮
       handleAddUser(){
+        //重置表单
         this.reset();
+        this.showFormButton = true;
       },
-      //编辑用户
-      handleEidtUser(index, row) {
-        this.handleUserInfo(row.id);
+      //编辑用户按钮
+      handleEidtUser(row) {
+        //重置表单
+        this.reset();
+        this.form = this.handleUserInfo(row.id);
+        this.showFormButton = true;
+      },
+      //提交表单
+      submitForm(){
+        this.$refs["form"].validate(valid => {
+        if (valid) {
+          //更新用户
+          if (this.form.id != undefined) {
+            updateUser(this.form).then(response =>{
+            if(response.code==200){
+             this.$msgbox('更新用户信息成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+            this.dialogFormVisible = false;     
+            this.getgetUserList();    
+            }
+            });
+          //新增用户  
+          }else{
+          addUser(this.form).then(response =>{
+          if(response.code==200){
+             this.$msgbox('保存用户信息成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+            this.dialogFormVisible = false;
+            this.getgetUserList();     
+            }
+          });        
+          }
+        }});
+      },
+      //获取用户ID
+      handleUserIds(val){
+         this.multipleSelection = val;
+         //批量ID
+         if(val instanceof Array){
+          this.ids = val.map(item=>{
+          return item.id;});
+         }else{ //单个ID
+          this.ids = val.id;
+         };
+      },
+      //删除用户逻辑删除
+      handleDeleteUser(row) {
+        this.$confirm('此操作将删除用户, 是否继续?', '系统提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //发送删除请求
+          var userIds = this.ids;
+          if(row != undefined){
+             userIds.push(row.id);
+          }
+          removeUser(userIds.toString()).then(response=>{
+            if(response.code==200){
+               this.$message({
+                type: 'success',
+                message: '删除成功!'
+             });
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          }); 
+        });
       },
       //重置表单
       reset() {
@@ -195,15 +263,6 @@ export default {
           address:undefined,
           sign:undefined
         }
-      },
-      //删除用户
-      handleDelete(index, row) {
-        console.log(index, row);
-      },
-      //提交表单事件
-      submitForm(){
-        this.dialogFormVisible = false;
-        console.log(this.form);
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
