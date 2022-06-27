@@ -76,7 +76,7 @@
     </div>
     <!-- 表格 -->
     <div class="table-data">     
-    <el-table  ref="multipleTable" :data="userList" style="width: 100%" max-height="100%" v-loading="loading" @selection-change="handleUserIds">
+    <el-table :data="userList" style="width: 100%" max-height="100%" ref="multipleTable"  v-loading="loading" @selection-change="handleUserIds">
     <!-- 多选框 -->
     <el-table-column type="selection" width="55"></el-table-column> 
     <el-table-column fixed label="用户ID" align="center" prop="id" key="userId" v-if="false"/>
