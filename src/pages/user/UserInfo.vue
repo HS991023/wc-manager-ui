@@ -104,7 +104,7 @@
     </el-table>
     </div>
     <!-- 分页组件 -->
-    <div class="pageHelper">
+    <div class="pageHelper" v-if="total !=0 && total>0">
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"

@@ -6,167 +6,259 @@
     </div> 
     <div class="serach-input">
     <label class="serach-propties">角色名:</label>    
-    <el-input
-        placeholder="请输入角色名"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
-    <label class="serach-propties">状态:</label>    
-    <el-input
-        placeholder="请输入状态"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
-    <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
+    <el-input placeholder="请输入角色名" suffix-icon="el-icon-text" v-model="data.roleName"/>
+    <label class="serach-propties">角色代码:</label>    
+    <el-input placeholder="请输入角色代码" suffix-icon="el-icon-text" v-model="data.roleCode"/>
+     <!-- 搜索按钮区域 -->
+    <div class="serach-button-region"> 
+        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getRoleList()">搜索</el-button>
+        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getRoleListReset()">重置</el-button>
+    </div>
+    </div>
+   <!-- 操作数据按钮区域 -->
+    <div class="operator-button-region">
+      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true">新增</el-button>
+      <el-button type="danger" class="operator-button" icon="el-icon-error" @click="handleDeleteRole()">批量删除</el-button>
+    </div>
+    <div class="form-data">
+    <!-- 表单新增或编辑对话框   -->
+    <el-dialog title="角色信息" :visible.sync="dialogFormVisible">
+      <el-form :model="form" ref="form">
+        <el-form-item label="角色名称" :label-width="formLabelWidth">
+          <el-input v-model="form.roleName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色代码" :label-width="formLabelWidth">
+          <el-input v-model="form.roleCode" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述" :label-width="formLabelWidth">
+          <el-input v-model="form.roleExplain" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <div class="from-button-region" v-if="showFormButton">
+        <el-button class="button" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" class="button" @click="submitForm()">确 定</el-button>
+      </div>
+      </div>
+    </el-dialog>
     </div>
     <!-- 表格组件 -->
     <div class="table-data"> 
-    <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
-    <!-- 多选框 -->
-    <el-table-column
-      type="selection"
-      width="55">
+    <el-table  ref="multipleTable" :data="roleList" style="width: 100%" v-loading="loading"  @selection-change="handleRoleIds">
+    <el-table-column type="selection" width="55"/>
+    <el-table-column label="角色名" width="180" prop="roleName">
+        <!-- 添加列事件 -->
+      <template slot-scope="scope">
+           <a @click="handleRoleInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.roleName}}</a>
+      </template>
     </el-table-column>  
-    <!-- 角色名    -->
-    <el-table-column
-      label="角色名"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>角色名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <!-- 角色代码 -->
-    <el-table-column
-      label="角色代码"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <!-- 状态 -->
-     <el-table-column
-      label="状态"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
+    <el-table-column label="角色代码" width="180" prop="roleCode"/>
+    <el-table-column label="状态" width="180" prop="status"/>
     <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">状态</el-button>  
-      </template>
+    <template slot-scope="scope">
+      <el-button size="mini" @click="handleEditRole(scope.row);dialogFormVisible = true">编辑</el-button>
+      <el-button size="mini" type="danger" @click="handleDeleteRole();handleRoleIds(scope.row)">删除</el-button>  
+    </template>
     </el-table-column>
     </el-table>
-    <!-- 分页组件 -->
-    <div class="pageHelper">
-    <el-pagination
-      layout="prev, pager, next"
-      :total="1000">
-    </el-pagination>
     </div>
+    <!-- 分页组件 -->
+    <div class="pageHelper" v-if="total !=0 && total>0">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="this.data.pageNum"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="this.data.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
     </div>
     </div> 
 </template>
 
 <script>
+import {listRole,roleInfo,addRole,updateRole,removeRole} from '@/api/system/role'
 export default {
     name:'RoleInfo',
     data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
-      }
-    },
+        //表格数据
+        roleList: null,
+        //表单数据
+        form:{},
+        //总数
+        total:null,
+        //分页参数
+        data:{
+           pageNum: 1,
+           pageSize: 10,
+           roleName:undefined,
+           roleCode:undefined
+        },
+        //角色ID列表
+        ids:[],
+        formLabelWidth: '120px',
+        //是否加载中
+        loading: true,
+        dialogTableVisible: false,
+        //是否关闭表单对话框
+        dialogFormVisible: false,
+        //溢出时隐藏
+        showOverflowTooltip:true,
+        //是否表单展示取消确定按钮
+        showFormButton: true,
+    }},
     methods: {
-      tableRowClassName({row, rowIndex}) {
-        if (rowIndex === 1) {
-          return 'warning-row';
-        } else if (rowIndex === 3) {
-          return 'success-row';
+      //获取角色列表
+      getRoleList(){
+        let data= this.data;
+        listRole(data).then(response => {
+          if(response.count== 0){
+            this.roleList = undefined;
+          }else{
+             this.roleList = response.data[0];
+             this.total = response.count;
+          }
+            this.loading = false;
+        });
+      },
+       //角色列表重置
+      getRoleListReset(){
+        this.data.roleName = undefined;
+        this.data.roleCode = undefined;
+        let resetData= {
+           pageNum: 1,
+           pageSize: 10,
         }
-        return '';
+        listRole(resetData).then(response => {
+            this.roleList = response.data[0];
+            this.total = response.count;
+            this.loading = false;
+        });
       },
-      handleEdit(index, row) {
-        console.log(index, row);
+      //查询角色详情
+      handleRoleInfo(id){
+        this.reset();
+        this.showFormButton = false;
+        roleInfo(id).then(response=>{
+         this.form = response.data;
+        })
       },
-      handleDelete(index, row) {
-        console.log(index, row);
+       //新增角色按钮
+      handleAddRole(){
+        this.reset();
+        this.showFormButton = true;
       },
+      //编辑角色按钮
+      handleEditRole(row) {
+        this.reset();
+        this.form = this.handleRoleInfo(row.id);
+        this.showFormButton = true;
+      },
+      //提交表单
+      submitForm(){
+        this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.id != undefined) {
+            updateRole(this.form).then(response =>{
+            if(response.code==200){
+             this.$msgbox('更新角色信息成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+            this.dialogFormVisible = false;     
+            this.getgetUserList();    
+            }
+            });
+          }else{
+          addRole(this.form).then(response =>{
+          if(response.code==200){
+             this.$msgbox('保存角色信息成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+            this.dialogFormVisible = false;
+            this.getgetUserList();     
+            }
+          });        
+          }
+        }});
+      },
+       //获取角色ID 多选
+      handleRoleIds(val){
+         //批量ID
+         if(val instanceof Array){
+          this.ids = val.map(item=>{
+          return item.id;});
+         }else{ 
+          //单个删除
+          if(val != undefined){
+            this.ids = val.id;
+          }
+          var rows = [];
+          rows.push(val);
+          this.toggleSelection(rows);
+         };
+      },
+      //删除角色逻辑删除
+      handleDeleteRole() {
+        this.$confirm('此操作将删除角色, 是否继续?', '系统提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          //发送删除请求
+         var roleIds = this.ids;
+         removeRole(roleIds.toString()).then(response=>{
+            if(response.code==200){
+               this.$message({
+                type: 'success',
+                message: '删除成功!'
+             });
+             this.getUserList();
+            }
+          })
+        }).catch(() => {
+          //清除已选择的状态
+          this.toggleSelection();
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          }); 
+        });
+      },
+      //清除多选
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+      },
+      //重置表单
+      reset(){
+        this.form={
+          roleName:undefined,
+          roleCode:undefined,
+          roleExplain:undefined,
+        }
+      },
+      //更改每页大小
+      handleSizeChange(val) {
+        this.data.pageSize = val;
+        this.getRoleList();  
+      },
+      //更改当前页
+      handleCurrentChange(val) {
+        this.data.pageNum = val;
+        this.getRoleList(); 
+      },
+    },
+    created(){
+      this.getRoleList();
     }
 }
 </script>
