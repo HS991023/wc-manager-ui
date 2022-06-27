@@ -212,7 +212,7 @@ export default {
                 type: 'warning'
             });
             this.dialogFormVisible = false;     
-            this.getgetUserList();    
+            this.getUserList();    
             }
             });
           //新增用户  
@@ -224,7 +224,7 @@ export default {
                 type: 'warning'
             });
             this.dialogFormVisible = false;
-            this.getgetUserList();     
+            this.getUserList();     
             }
           });        
           }

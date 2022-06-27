@@ -17,10 +17,10 @@
         <template slot="title"><i class="el-icon-meun  el-icon-s-custom"></i>角色管理</template>
         <el-menu-item index="2-1"><router-link to="/roleInfo">角色信息</router-link></el-menu-item>
       </el-submenu>
-      <el-submenu index="3">
+      <!-- <el-submenu index="3">
         <template slot="title"><i class="el-icon-meun el-icon-s-home"></i>部门管理</template>
           <el-menu-item index="3-1"><router-link to="/deptInfo">部门信息</router-link></el-menu-item>
-      </el-submenu>
+      </el-submenu> -->
       <el-submenu index="4">
         <template slot="title"><i class="el-icon-meun el-icon-s-order"></i>菜单管理</template>
           <el-menu-item index="4-1"><router-link to="/meunInfo">菜单信息</router-link></el-menu-item>
