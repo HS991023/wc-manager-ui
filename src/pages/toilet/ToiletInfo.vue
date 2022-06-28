@@ -1,39 +1,42 @@
 <template>
- <div>
-    <!-- 搜索栏   -->
+<div>
+ <!-- 搜索栏   -->
     <div class="top-style">
       <h2>此处预留样式栏盒子</h2>
     </div> 
     <div class="serach-input">
-    <label class="serach-propties">地区名称:</label>    
-    <el-input placeholder="请输入地区名称" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">地区类型:</label>    
-    <el-input placeholder="请输入地区类型" suffix-icon="el-icon-text"/>
+    <label class="serach-propties">公厕名称:</label>    
+    <el-input placeholder="请输入公厕名称" suffix-icon="el-icon-text" v-model="data.toiletName"/>
+    <label class="serach-propties">公厕编码:</label>    
+    <el-input placeholder="请输入公厕编码" suffix-icon="el-icon-text" v-model="data.toiletCode"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getRegionList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getRegionListReset()">重置</el-button>
+        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getToiletList()">搜索</el-button>
+        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getToiletListReset()">重置</el-button>
     </div>
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
-      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddRegion();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger" class="operator-button" icon="el-icon-error" @click="handleDeleteRegion()">批量删除</el-button>
+      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddToilet();dialogFormVisible=true">新增</el-button>
+      <el-button type="danger" class="operator-button" icon="el-icon-error" @click="handleDeleteToilet()">批量删除</el-button>
     </div>
     <div class="form-data">
     <!-- 表单新增或编辑对话框   -->
-    <el-dialog title="地区信息" :visible.sync="dialogFormVisible">
+    <el-dialog title="公厕信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
-        <el-form-item label="省份名称" :label-width="formLabelWidth">
-          <el-input v-model="form.provinceName" autocomplete="off"></el-input>
+        <el-form-item label="公厕名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="城市名称" :label-width="formLabelWidth">
-          <el-input v-model="form.cityName" autocomplete="off"></el-input>
+        <el-form-item label="公厕编码" :label-width="formLabelWidth">
+          <el-input v-model="form.code" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="区域名称" :label-width="formLabelWidth">
-          <el-input v-model="form.regionName" autocomplete="off"></el-input>
+        <el-form-item label="公厕类型" :label-width="formLabelWidth">
+          <el-input v-model="form.type" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="地理位置" :label-width="formLabelWidth">
+        <el-form-item label="公厕状态" :label-width="formLabelWidth">
+          <el-input v-model="form.status" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="公厕位置" :label-width="formLabelWidth">
           <el-input v-model="form.location" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -47,21 +50,22 @@
     </div>
     <!-- 表格组件 -->
     <div class="table-data"> 
-    <el-table :data="regionList" style="width: 100%" ref="multipleTable"  v-loading="loading" @selection-change="handleRegionIds">
+    <el-table :data="toiletList" style="width: 100%" ref="multipleTable"  v-loading="loading">
     <el-table-column type="selection" width="55"/>
-     <el-table-column fixed label="地区ID" align="center" prop="id" key="userId" v-if="false"/>
-    <el-table-column label="省份名称" width="180" prop="provinceName" key="provinceName">
-       <!-- 添加列事件 -->
+    <el-table-column label="公厕名称"  width="180" prop="name" key="name">
+        <!-- 添加列事件 -->
       <template slot-scope="scope">
-           <a @click="handleRegionInfo(scope.row.id);dialogFormVisible = true">{{scope.row.provinceName}}</a>
+           <a @click="handleToiletInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.name}}</a>
       </template>
-    </el-table-column>  
-    <el-table-column label="城市名称" width="180" prop="cityName" key="cityName"/>
-    <el-table-column label="区域名称" width="180" prop="regionName" key="regionName"/>
+    </el-table-column>
+    <el-table-column label="公厕类型" width="180" prop="type" key="type"/>
+    <el-table-column label="公厕位置" width="180" prop="location" key="location"/>
+    <el-table-column label="状态" width="180" prop="status" key="status"/>
+    <el-table-column label="创建时间" width="180" prop="createTime" key="createTime"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEditRegion(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDeleteRegion();handleRegionIds(scope.row)">删除</el-button>
+        <el-button size="mini" @click="handleEditToilet(scope.row);dialogFormVisible=true">编辑</el-button>
+        <el-button size="mini" type="danger" @click="handleToiletIds(scope.row);handleDeleteToilet();">删除</el-button> 
       </template>
     </el-table-column>
     </el-table>
@@ -78,17 +82,17 @@
       :total="total">
     </el-pagination>
     </div>
-    </div>   
+    </div>
 </template>
 
 <script>
-import {listRegion,regionInfo,addRegion,updateRegion,removeRegion} from '@/api/business/region'
+import {listToilet,toiletInfo,addToilet,updateToilet,removeToilet} from '@/api/business/toilet'
 export default {
-    name:'RegionInfo',
-    data() {
-       return {
+    name:'ToiletInfo',
+    data(){
+      return{
         //表格数据
-        regionList: null,
+        toiletList: null,
         //表单参数
         form:{},
         //总数
@@ -97,8 +101,10 @@ export default {
         data:{
            pageNum: 1,
            pageSize: 10,
+           toiletName:undefined,
+           toiletCode:undefined,
         },
-        //地区ID列表
+        //公厕ID列表
         ids:[],
         formLabelWidth: '120px',
         //是否加载中
@@ -110,18 +116,18 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
-    }
+      }
     },
-    methods: {
-      //获取地区列表
-      getRegionList(){
+    methods:{
+      //获取公厕列表
+      getToiletList(){
         let data= this.data;
-        listRegion(data).then(response => {
-          console.log(response);
+        listToilet(data).then(response => {
           if(response.count== 0){
-            this.regionList = undefined;
+            this.total = response.count;
+            this.toiletList = undefined;
           }else{
-             this.regionList = response.data[0];
+             this.toiletList = response.data[0];
              this.total = response.count;
           }
             this.loading = false;
@@ -129,38 +135,40 @@ export default {
             console.log(error);
         })
       },
-      //地区列表重置
-      getRegionListReset(){
+      //公厕列表重置
+      getToiletListReset(){
+        this.data.toiletName = undefined;
+        this.data.toiletCode = undefined;
         let resetData= {
            pageNum: 1,
            pageSize: 10,
         }
-        listRegion(resetData).then(response => {
-            this.regionList = response.data[0];
+        listToilet(resetData).then(response => {
+            this.toiletList = response.data[0];
             this.total = response.count;
             this.loading = false;
         });
       },
-      //查询地区详情
-      handleRegionInfo(id){
+      //查询公厕详情
+      handleToiletInfo(id){
         this.reset();
         this.showFormButton = false
-        regionInfo(id).then(response=>{
+        toiletInfo(id).then(response=>{
           this.form = response.data;
         })
       },
-      //新增地区按钮
-      handleAddRegion(){
+      //新增公厕按钮
+      handleAddToilet(){
         //重置表单
         this.reset();
         this.showFormButton = true;
       },
-      //编辑地区按钮
-      handleEditRegion(row) {
+      //编辑公厕按钮
+      handleEditToilet(row) {
         console.log(row);
         //重置表单
         this.reset();
-        this.form = this.handleRegionInfo(row.id);
+        this.form = this.handleToiletInfo(row.id);
         this.showFormButton = true;
       },
       //提交表单
@@ -169,33 +177,33 @@ export default {
         if (valid) {
           //更新用户
           if (this.form.id != undefined) {
-            updateRegion(this.form).then(response =>{
+            updateToilet(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新地区信息成功', '系统提示', {
+             this.$msgbox('更新公厕信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
             });
             this.dialogFormVisible = false;     
-            this.getRegionList();    
+            this.getToiletList();    
             }
             });
           //新增用户  
           }else{
-          addRegion(this.form).then(response =>{
+          addToilet(this.form).then(response =>{
           if(response.code==200){
-             this.$msgbox('保存地区信息成功', '系统提示', {
+             this.$msgbox('保存公厕信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
             });
             this.dialogFormVisible = false;
-            this.getRegionList();     
+            this.getToiletList();     
             }
           });        
           }
         }});
       },
-      //获取地区ID 
-      handleRegionIds(val){
+      //获取公厕ID 
+      handleToiletIds(val){
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
@@ -211,22 +219,22 @@ export default {
           this.toggleSelection(rows);
          };
       },
-      //删除地区(逻辑删除)
-      handleDeleteRegion() {
-        this.$confirm('此操作将删除地区, 是否继续?', '系统提示', {
+      //删除公厕(逻辑删除)
+      handleDeleteToilet() {
+        this.$confirm('此操作将删除公厕, 是否继续?', '系统提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           //发送删除请求
-          var regionIds = this.ids;
-          removeRegion(regionIds.toString()).then(response=>{
+          var tolietds = this.ids;
+          removeToilet(tolietds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
                 type: 'success',
                 message: '删除成功!'
              });
-             this.getRegionList();
+             this.getToiletList();
             }
           })
         }).catch(() => {
@@ -252,26 +260,26 @@ export default {
       reset() {
         this.form={
           id:undefined,
-          provinceName:undefined,
-          cityName:undefined,
-          regionName:undefined,
+          name:undefined,
+          code:undefined,
           location:undefined,
+          type:undefined,
           status:undefined
         }
       },
       //更改每页大小
       handleSizeChange(val) {
         this.data.pageSize = val;
-        this.getRegionList();  
+        this.getToiletList();  
       },
       //更改当前页
       handleCurrentChange(val) {
         this.data.pageNum = val;
-        this.getRegionList(); 
+        this.getToiletList(); 
       }
     },
     created(){
-      this.getRegionList();
+      this.getToiletList(); 
     },
     mounted(){
     }

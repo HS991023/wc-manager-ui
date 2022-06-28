@@ -10,7 +10,7 @@ import RoleInfo from '../pages/role/RoleInfo'
 import DeptInfo from '../pages/dept/DeptInfo'
 import MeunInfo from '../pages/meun/MeunInfo'
 import RegionInfo from '../pages/region/RegionInfo'
-import WcInfo from '../pages/wc/WcInfo'
+import ToiletInfo from '../pages/toilet/ToiletInfo'
 import PositionInfo from '../pages/position/PositionInfo'
 import DeviceInfo from '../pages/device/DeviceInfo'
 import DictInfo from '../pages/dict/DictInfo'
@@ -80,9 +80,9 @@ const routes = [{
                 },
             },
             {
-                name: 'WcInfo',
-                path: '/wcInfo',
-                component: WcInfo,
+                name: 'ToiletInfo',
+                path: '/toiletInfo',
+                component: ToiletInfo,
                 meta: {
                     requireAuth: true
                 },

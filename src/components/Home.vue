@@ -31,7 +31,7 @@
       </el-submenu>
       <el-submenu index="6">
         <template slot="title"><i class="el-icon-meun el-icon-delete-solid"></i>公厕管理</template>
-        <el-menu-item index="6-1"><router-link to="/wcInfo">公厕信息</router-link></el-menu-item>
+        <el-menu-item index="6-1"><router-link to="/toiletInfo">公厕信息</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="7">
         <template slot="title"><i class="el-icon-meun el-icon-info "></i>坑位管理</template>
