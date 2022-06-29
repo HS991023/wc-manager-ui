@@ -214,3 +214,29 @@
 .el-menu-item:hover {
     background-color: #143358!important;
 }
+
+
+/* 部门树区域 */
+
+.tree-region-style {
+    width: 143px;
+    height: 100%;
+    margin-left: -13px !important;
+    background-color: white;
+}
+
+.tree-region {
+    padding-top: 160px;
+    padding-left: 13px;
+    display: inline-block;
+    width: 130px;
+    height: 100%;
+}
+
+.tree-region .el-tree {
+    background-color: white;
+}
+
+.tree-region .el-tree .el-tree-node__label {
+    font-size: 14px !important;
+}
