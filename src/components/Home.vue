@@ -4,11 +4,10 @@
     <el-aside width="200px"  style="height: 100% background-color: rgb(238, 241, 246)">
     <!-- <div class="banner"><img src="" alt=""></div>   -->
     <!-- 默认打开菜单 -->
-    <el-menu :default-openeds="[]">
+    <el-menu :default-openeds="openIndex" @open="handleOpen" @close="handleClose" :unique-opened="opened">
       <el-submenu index="1">
         <template slot="title"><i class="el-icon-meun el-icon-user-solid"></i>用户管理</template>
         <el-menu-item-group>
-          <!-- <template slot="title">分组一</template> -->
           <el-menu-item index="1-1"><router-link to="/userInfo">用户信息</router-link></el-menu-item>
           <el-menu-item index="1-2"><router-link to="/onlineUser">在线用户</router-link></el-menu-item>
         </el-menu-item-group>
@@ -95,7 +94,18 @@
     name:'Home',
     data() {
       return {
+        //只保持一个菜单打开
+        opened: true,
+        openIndex:[]
       }
+    },
+    methods:{
+      handleOpen(key, keyPath) {
+        this.openIndex.push(key);
+      },
+      handleClose(key, keyPath) {
+        // console.log(key, keyPath);
+      },
     }
   };
 </script>
