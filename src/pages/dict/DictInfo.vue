@@ -26,7 +26,7 @@
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
       <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddDict();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger" class="operator-button" icon="el-icon-error" @click="handleDeleteRegion()">批量删除</el-button>
+      <el-button type="danger" class="operator-button" icon="el-icon-error" @click="handleDeleteDict()">批量删除</el-button>
     </div>
     <div class="form-data">
     <!-- 表单新增或编辑对话框   -->
@@ -55,7 +55,7 @@
     </div>
     <!-- 表格组件 -->
     <div class="table-data"> 
-    <el-table :data="dictDataList" style="width: 100%" ref="multipleTable"  v-loading="loading" @selection-change="handleRegionIds">
+    <el-table :data="dictDataList" style="width: 100%" ref="multipleTable"  v-loading="loading" @selection-change="handleDictIds">
     <el-table-column type="selection" width="55"/>
     <el-table-column align="center" label="字典名称" width="140" prop="dictName" key="dictName">
        <!-- 添加列事件 -->
@@ -69,7 +69,7 @@
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button size="mini" @click="handleEditDict(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDeleteRegion();handleRegionIds(scope.row)">删除</el-button>
+        <el-button size="mini" type="danger" @click="handleDeleteDict();handleDictIds(scope.row)">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
@@ -92,7 +92,7 @@
 
 <script>
 import {dictTree,getDictTypeTopData,getDictDataByType,getDictTypeInfo,getDictDataInfo,
-addDictTypeInfo,addDictDataInfo,updateDictTypeInfo,updateDictDataInfo} from '@/api/system/dict'
+addDictTypeInfo,addDictDataInfo,updateDictTypeInfo,updateDictDataInfo,removeDictType,removeDictData} from '@/api/system/dict'
 export default {
    name:'DictInfo',
    data(){
@@ -329,6 +329,7 @@ export default {
             });
           //新增字典类型信息  
           }else{
+          console.log(this.form);  
           addDictTypeInfo(this.form).then(response =>{
           if(response.code==200){
               this.$msgbox('保存成功', '系统提示', {
@@ -357,6 +358,7 @@ export default {
             });
           //新增字典数据信息
           }else{
+          console.log(this.form);  
           addDictDataInfo(this.form).then(response =>{
           if(response.code==200){
               this.$msgbox('保存成功', '系统提示', {
@@ -370,8 +372,8 @@ export default {
         }}});
       }
     },
-    //获取地区ID 
-    handleRegionIds(val){
+    //获取字典信息ID 
+    handleDictIds(val){
         //批量ID
         if(val instanceof Array){
         this.ids = val.map(item=>{
@@ -387,36 +389,66 @@ export default {
         this.toggleSelection(rows);
         };
     },
-    //删除地区(逻辑删除)
-    handleDeleteRegion() {
-      this.$confirm('此操作将删除地区, 是否继续?', '系统提示', {
+    //删除字典(逻辑删除)
+    handleDeleteDict() {
+      //判断新增的数据为字典类型信息还是为字典数据信息
+      if(this.dictDataListType == 0){
+        this.$confirm('此操作将删除字典, 是否继续?', '系统提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        //发送删除请求
-        var regionIds = this.ids;
-        removeRegion(regionIds.toString()).then(response=>{
-          if(response.code==200){
-              this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-            this.getRegionList();
-          }
-        })
-      }).catch(() => {
-        //清除已选择的状态
-        this.toggleSelection();
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        }); 
-      });
+        }).then(() => {
+          //发送删除请求
+          var dictIds = this.ids;
+          removeDictType(dictIds.toString()).then(response=>{
+            if(response.code==200){
+                this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.getDictTree();
+              this.getDictDataList();
+            }
+          })
+        }).catch(() => {
+          //清除已选择的状态
+          this.toggleSelection();
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          }); 
+        });
+        }else{
+          this.$confirm('此操作将删除字典, 是否继续?', '系统提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+          }).then(() => {
+            //发送删除请求
+            var dictIds = this.ids;
+            removeDictData(dictIds.toString()).then(response=>{
+              if(response.code==200){
+                  this.$message({
+                  type: 'success',
+                  message: '删除成功!'
+                });
+                this.getDictTree();
+                this.getDictDataList();
+              }
+            })
+          }).catch(() => {
+            //清除已选择的状态
+            this.toggleSelection();
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            }); 
+          });
+        }
     },
     //清除多选
     toggleSelection(rows) {
-      if (rows) {
+      if (null != rows) {
         rows.forEach(row => {
           this.$refs.multipleTable.toggleRowSelection(row);
         });

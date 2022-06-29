@@ -57,7 +57,7 @@ export function getDictDataInfo(id) {
 export function addDictTypeInfo(data) {
     return request({
         url: '/api/system/save/dict/type',
-        method: 'get',
+        method: 'post',
         data: data
     });
 }
@@ -72,11 +72,23 @@ export function updateDictTypeInfo(data) {
 }
 
 
+//删除字典类型信息(逻辑删除)
+export function removeDictType(ids) {
+    return request({
+        url: '/api/system/remove/dict/type',
+        method: 'delete',
+        params: {
+            ids: ids,
+        }
+    });
+}
+
+
 //新增字典数据信息 
 export function addDictDataInfo(data) {
     return request({
         url: '/api/system/save/dict/data',
-        method: 'get',
+        method: 'post',
         data: data
     });
 }
@@ -87,5 +99,16 @@ export function updateDictDataInfo(data) {
         url: '/api/system/update/dict/data',
         method: 'put',
         data: data
+    });
+}
+
+//删除字典数据信息(逻辑删除)
+export function removeDictData(ids) {
+    return request({
+        url: '/api/system/remove/dict/data',
+        method: 'delete',
+        params: {
+            ids: ids,
+        }
     });
 }
