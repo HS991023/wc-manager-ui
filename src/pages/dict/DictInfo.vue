@@ -13,35 +13,35 @@
     </div> 
     <div class="serach-input">
     <label class="serach-propties">字典名称:</label>    
-    <el-input placeholder="请输入字典名称" suffix-icon="el-icon-text"/>
+    <el-input placeholder="请输入字典名称" suffix-icon="el-icon-text" v-model="data.dictName"/>
     <label class="serach-propties">字典代码:</label>    
-    <el-input placeholder="请输入字典代码" suffix-icon="el-icon-text"/>
+    <el-input placeholder="请输入字典代码" suffix-icon="el-icon-text" v-model="data.dictCode"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getRegionList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getRegionListReset()">重置</el-button>
+        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getDictDataList()">搜索</el-button>
+        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getResetDictDataList()">重置</el-button>
     </div>
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
-      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddRegion();dialogFormVisible=true">新增</el-button>
+      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddDict();dialogFormVisible=true">新增</el-button>
       <el-button type="danger" class="operator-button" icon="el-icon-error" @click="handleDeleteRegion()">批量删除</el-button>
     </div>
     <div class="form-data">
     <!-- 表单新增或编辑对话框   -->
     <el-dialog title="字典信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
-        <el-form-item label="上级字典" :label-width="formLabelWidth">
-          <el-input v-model="form.location" autocomplete="off"></el-input>
-        </el-form-item>
         <el-form-item label="字典名称" :label-width="formLabelWidth">
-          <el-input v-model="form.provinceName" autocomplete="off"></el-input>
+          <el-input v-model="form.dictName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="字典代码" :label-width="formLabelWidth">
-          <el-input v-model="form.cityName" autocomplete="off"></el-input>
+          <el-input v-model="form.dictCode" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="字典值" :label-width="formLabelWidth">
-          <el-input v-model="form.regionName" autocomplete="off"></el-input>
+          <el-input v-model="form.dictValue" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="字典状态" :label-width="formLabelWidth">
+          <el-input v-model="form.status" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -59,7 +59,7 @@
     <el-table-column align="center" label="字典名称" width="140" prop="dictName" key="dictName">
        <!-- 添加列事件 -->
       <template slot-scope="scope">
-           <a @click="handleRegionInfo(scope.row.id);dialogFormVisible = true">{{scope.row.dictName}}</a>
+           <a @click="handleDictInfo(scope.row);dialogFormVisible = true">{{scope.row.dictName}}</a>
       </template>
     </el-table-column>  
     <el-table-column align="center" label="字典代码" width="190" prop="dictCode" key="dictCode"/>
@@ -67,7 +67,7 @@
     <el-table-column align="center" label="状态" width="90" prop="status" key="status"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEditRegion(scope.row);dialogFormVisible=true">编辑</el-button>
+        <el-button size="mini" @click="handleEditDict(scope.row);dialogFormVisible=true">编辑</el-button>
         <el-button size="mini" type="danger" @click="handleDeleteRegion();handleRegionIds(scope.row)">删除</el-button>
       </template>
     </el-table-column>
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import {dictTree,getDictTypeTopData,getDictDataByType} from '@/api/system/dict'
+import {dictTree,getDictTypeTopData,getDictDataByType,getDictTypeInfo,getDictDataInfo} from '@/api/system/dict'
 export default {
    name:'DictInfo',
    data(){
@@ -104,6 +104,8 @@ export default {
         },
       //字典数据列表
       dictDataList: null,
+      //字典数据列表类型(0为字典类型列表 1为字典数据列表)
+      dictDataListType:undefined,
       //表单参数
       form:{},
       //总数
@@ -114,6 +116,7 @@ export default {
         pageSize: 10,
         //字典ID
         id:undefined,
+        dictName:undefined,
         //字典代码
         dictCode:undefined,
       },
@@ -143,77 +146,133 @@ export default {
     },
     //获取节点点击事件数据
     getTreeEventNode(val){
+        //重置搜索条件
+        this.serachReset();
+        //重置字典信息列表
         this.resetDictDataList();
-        let data = this.data;  
+        let data ={
+          pageNum: 1,
+          pageSize: 10,
+          //字典ID
+          id:undefined,
+          dictName:undefined,
+          //字典代码
+          dictCode:undefined,
+      };
         //判断level是否等于0(顶级节点)
         if(val.level != undefined && val.level == 0){
+          this.dictDataListType = 0;
           data.id = val.id; 
           getDictTypeTopData(data).then(response =>{
-            this.dictDataList = response.data[0];
-            this.total = response.count;
+            if(response.code == 200 && null !=response.data[0]){
+               this.dictDataList = response.data[0];
+               this.total = response.count;
+            }
           });
         }else{
+          this.dictDataListType = 1;
           data.dictCode = val.code; 
           //根据字典类型获取字典数据
           getDictDataByType(data).then(response=>{
-            this.dictDataList = response.data[0];
-            this.total = response.count;
+            if(response.code == 200 && null !=response.data[0]){
+              this.dictDataList = response.data[0];
+              this.total = response.count;
+            }
+          });
+        } 
+        this.loading = false;
+    },
+    //获取字典数据列表
+    getDictDataList(){
+        this.resetDictDataList();
+        let data = this.data;  
+        let type = this.dictDataListType;
+        //判断为字典类型信息还是为字典数据信息
+        if(type != undefined && type == 0){
+          getDictTypeTopData(data).then(response =>{
+            if(response.code == 200){
+              this.dictDataList = response.data[0];
+              this.total = response.count;
+              this.dictDataListType = 0;
+            }
+          });
+        }else{
+          //根据字典类型获取字典数据
+          getDictDataByType(data).then(response=>{
+            if(response.code == 200 && null !=response.data[0]){
+              this.dictDataList = response.data[0];
+              this.total = response.count;
+              this.dictDataListType = 1;
+            }
+          });
+        } 
+        this.loading = false;
+    },
+    //获取重置后的字典数据列表
+    getResetDictDataList(){
+        this.resetDictDataList();
+        this.serachReset();
+        let data = {
+           pageNum: 1,
+           pageSize: 10,
+        }
+        let type = this.dictDataListType
+        //判断为字典类型信息还是为字典数据信息
+        if(type != undefined && type == 0){
+          getDictTypeTopData(data).then(response =>{
+            if(response.code == 200){
+              this.dictDataList = response.data[0];
+              this.total = response.count;
+              this.dictDataListType = 0;
+            }
+          });
+        }else{
+          //根据字典类型获取字典数据
+          getDictDataByType(data).then(response=>{
+            if(response.code == 200 && null !=response.data[0]){
+              this.dictDataList = response.data[0];
+              this.total = response.count;
+              this.dictDataListType = 1;
+            }
           });
         } 
         this.loading = false;
     },
     //重置列表
     resetDictDataList(){
-      this.dictDataList = null;
+      this.dictDataList = undefined;
     },
-    //获取地区列表
-    getRegionList(){
-      let data= this.data;
-      listRegion(data).then(response => {
-        console.log(response);
-        if(response.count== 0){
-          this.regionList = undefined;
-        }else{
-            this.regionList = response.data[0];
-            this.total = response.count;
-        }
-          this.loading = false;
-      }).catch(error=>{
-          console.log(error);
-      })
-    },
-    //地区列表重置
-    getRegionListReset(){
-      let resetData= {
-          pageNum: 1,
-          pageSize: 10,
-      }
-      listRegion(resetData).then(response => {
-          this.regionList = response.data[0];
-          this.total = response.count;
-          this.loading = false;
-      });
-    },
-    //查询地区详情
-    handleRegionInfo(id){
+    //查询字典详情
+    handleDictInfo(row){
       this.reset();
-      this.showFormButton = false
-      regionInfo(id).then(response=>{
-        this.form = response.data;
-      })
+      //分类为0,1,2,3的请求字典类型信息反之请求字典数据信息
+      if(row.type == 0 || row.type == 1 || row.type == 2 || row.type == 3
+        ||row.classify == 3){
+         getDictTypeInfo(row.id).then(response =>{
+           if(response.code == 200){
+            this.form = response.data;
+           }
+         });
+      }else{
+        getDictDataInfo(row.id).then(response=>{
+           if(response.code == 200){
+            this.form = response.data;
+           }
+        })
+      }
     },
-    //新增地区按钮
-    handleAddRegion(){
+    //新增字典按钮
+    handleAddDict(){
       //重置表单
       this.reset();
       this.showFormButton = true;
     },
-    //编辑地区按钮
-    handleEditRegion(row) {
+    //编辑字典按钮
+    handleEditDict(row) {
       console.log(row);
       //重置表单
       this.reset();
-      this.form = this.handleRegionInfo(row.id);
+      this.form = this.handleDictInfo(row);
       this.showFormButton = true;
     },
     //提交表单
@@ -305,14 +364,19 @@ export default {
     reset() {
       this.form={
         id:undefined,
-        provinceName:undefined,
-        cityName:undefined,
-        regionName:undefined,
-        location:undefined,
-        status:undefined
+        dictName:undefined,
+        dictCode:undefined,
+        dictValue:undefined,
+        status:undefined,
       }
     },
-    //更改每页大小
+    //搜索条件重置
+    serachReset(){
+        this.data.id = undefined;
+        this.data.dictName = undefined;
+        this.data.dictCode = undefined;
+    },
+    //更改每页大小dictName
     handleSizeChange(val) {
       this.data.pageSize = val;
       this.getRegionList();  

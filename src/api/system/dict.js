@@ -29,3 +29,25 @@ export function getDictDataByType(data) {
         data: data
     });
 }
+
+//查看字典类型信息详情
+export function getDictTypeInfo(id) {
+    return request({
+        url: '/api/system/dict/type/detail',
+        method: 'get',
+        params: {
+            id: id
+        }
+    });
+}
+
+//查看字典数据信息详情
+export function getDictDataInfo(id) {
+    return request({
+        url: '/api/system/dict/data/detail',
+        method: 'get',
+        params: {
+            id: id
+        }
+    });
+}
