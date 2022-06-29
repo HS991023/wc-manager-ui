@@ -51,3 +51,41 @@ export function getDictDataInfo(id) {
         }
     });
 }
+
+
+//新增字典类型信息
+export function addDictTypeInfo(data) {
+    return request({
+        url: '/api/system/save/dict/type',
+        method: 'get',
+        data: data
+    });
+}
+
+//更新字典类型信息
+export function updateDictTypeInfo(data) {
+    return request({
+        url: '/api/system/update/dict/type',
+        method: 'put',
+        data: data
+    });
+}
+
+
+//新增字典数据信息 
+export function addDictDataInfo(data) {
+    return request({
+        url: '/api/system/save/dict/data',
+        method: 'get',
+        data: data
+    });
+}
+
+//更新字典数据信息 
+export function updateDictDataInfo(data) {
+    return request({
+        url: '/api/system/update/dict/data',
+        method: 'put',
+        data: data
+    });
+}

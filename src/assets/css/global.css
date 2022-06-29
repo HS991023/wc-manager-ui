@@ -227,6 +227,7 @@
 }
 
 .tree-region-style {
+    float: left;
     margin-left: -5px;
     width: 180px;
     height: 100%;

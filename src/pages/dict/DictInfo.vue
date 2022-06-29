@@ -3,7 +3,8 @@
    <div class="tree-region-style">
    <el-input placeholder="请输入字典名称"></el-input> 
    <div class="tree-region">
-       <el-tree :data="dictTypeTree" :props="defaultProps" @node-click="getTreeEventNode"/>
+       <el-tree :data="dictTypeTree" :props="defaultProps" @node-click="getTreeEventNode" :highlight-current="highlight">
+       </el-tree> 
     </div>
    </div>
    <div class="content">
@@ -90,7 +91,8 @@
 </template>
 
 <script>
-import {dictTree,getDictTypeTopData,getDictDataByType,getDictTypeInfo,getDictDataInfo} from '@/api/system/dict'
+import {dictTree,getDictTypeTopData,getDictDataByType,getDictTypeInfo,getDictDataInfo,
+addDictTypeInfo,addDictDataInfo,updateDictTypeInfo,updateDictDataInfo} from '@/api/system/dict'
 export default {
    name:'DictInfo',
    data(){
@@ -104,7 +106,7 @@ export default {
         },
       //字典数据列表
       dictDataList: null,
-      //字典数据列表类型(0为字典类型列表 1为字典数据列表)
+      //正在操作的字典数据列表类型(0为字典类型列表 1为字典数据列表)
       dictDataListType:undefined,
       //表单参数
       form:{},
@@ -132,6 +134,8 @@ export default {
       showOverflowTooltip:true,
       //是否表单展示取消确定按钮
       showFormButton: true,  
+      //选中的树节点是否高亮
+      highlight: true
     }
   },
    methods:{
@@ -164,9 +168,14 @@ export default {
           this.dictDataListType = 0;
           data.id = val.id; 
           getDictTypeTopData(data).then(response =>{
-            if(response.code == 200 && null !=response.data[0]){
-               this.dictDataList = response.data[0];
-               this.total = response.count;
+            if(response.code == 200){
+               if(response.count == 0){
+                  this.dictDataList = null;
+                  this.total = response.count;
+               }else{
+                  this.dictDataList = response.data[0];
+                  this.total = response.count;
+               }
             }
           });
         }else{
@@ -174,9 +183,14 @@ export default {
           data.dictCode = val.code; 
           //根据字典类型获取字典数据
           getDictDataByType(data).then(response=>{
-            if(response.code == 200 && null !=response.data[0]){
-              this.dictDataList = response.data[0];
-              this.total = response.count;
+            if(response.code == 200){
+              if(response.count == 0){
+                  this.dictDataList = null;
+                  this.total = response.count;
+               }else{
+                  this.dictDataList = response.data[0];
+                  this.total = response.count;
+               }
             }
           });
         } 
@@ -191,17 +205,27 @@ export default {
         if(type != undefined && type == 0){
           getDictTypeTopData(data).then(response =>{
             if(response.code == 200){
-              this.dictDataList = response.data[0];
-              this.total = response.count;
+              if(response.count == 0){
+                  this.dictDataList = null;
+                  this.total = response.count;
+               }else{
+                  this.dictDataList = response.data[0];
+                  this.total = response.count;
+               }
               this.dictDataListType = 0;
             }
           });
         }else{
           //根据字典类型获取字典数据
           getDictDataByType(data).then(response=>{
-            if(response.code == 200 && null !=response.data[0]){
-              this.dictDataList = response.data[0];
-              this.total = response.count;
+            if(response.code == 200){
+              if(response.count == 0){
+                  this.dictDataList = null;
+                  this.total = response.count;
+               }else{
+                  this.dictDataList = response.data[0];
+                  this.total = response.count;
+               }
               this.dictDataListType = 1;
             }
           });
@@ -221,8 +245,13 @@ export default {
         if(type != undefined && type == 0){
           getDictTypeTopData(data).then(response =>{
             if(response.code == 200){
-              this.dictDataList = response.data[0];
-              this.total = response.count;
+              if(response.count == 0){
+                  this.dictDataList = null;
+                  this.total = response.count;
+               }else{
+                  this.dictDataList = response.data[0];
+                  this.total = response.count;
+               }
               this.dictDataListType = 0;
             }
           });
@@ -230,8 +259,13 @@ export default {
           //根据字典类型获取字典数据
           getDictDataByType(data).then(response=>{
             if(response.code == 200 && null !=response.data[0]){
-              this.dictDataList = response.data[0];
-              this.total = response.count;
+              if(response.count == 0){
+                  this.dictDataList = null;
+                  this.total = response.count;
+               }else{
+                  this.dictDataList = response.data[0];
+                  this.total = response.count;
+               }
               this.dictDataListType = 1;
             }
           });
@@ -277,34 +311,64 @@ export default {
     },
     //提交表单
     submitForm(){
-      this.$refs["form"].validate(valid => {
-      if (valid) {
-        //更新用户
-        if (this.form.id != undefined) {
-          updateRegion(this.form).then(response =>{
+      //判断新增的数据为字典类型信息还是为字典数据信息
+      if(this.dictDataListType == 0){
+        this.$refs["form"].validate(valid => {
+        if (valid) {
+          //更新字典类型信息
+          if(this.form.id != undefined) {
+            updateDictTypeInfo(this.form).then(response =>{
+            if(response.code==200){
+              this.$msgbox('更新成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+            this.dialogFormVisible = false;     
+            this.getResetDictDataList();    
+            }
+            });
+          //新增字典类型信息  
+          }else{
+          addDictTypeInfo(this.form).then(response =>{
           if(response.code==200){
-            this.$msgbox('更新地区信息成功', '系统提示', {
-              confirmButtonText: '确定',
-              type: 'warning'
-          });
-          this.dialogFormVisible = false;     
-          this.getRegionList();    
-          }
-          });
-        //新增用户  
-        }else{
-        addRegion(this.form).then(response =>{
-        if(response.code==200){
-            this.$msgbox('保存地区信息成功', '系统提示', {
-              confirmButtonText: '确定',
-              type: 'warning'
-          });
-          this.dialogFormVisible = false;
-          this.getRegionList();     
-          }
+              this.$msgbox('保存成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+            this.dialogFormVisible = false;
+            this.getResetDictDataList();     
+            }
+          });        
+          }}});
+      }else if(this.dictDataListType == 1){
+        this.$refs["form"].validate(valid => {
+        if (valid) {
+          //更新字典数据信息
+          if (this.form.id != undefined) {
+            updateDictDataInfo(this.form).then(response =>{
+            if(response.code==200){
+              this.$msgbox('更新成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+            this.dialogFormVisible = false;     
+            this.getResetDictDataList();    
+            }
+            });
+          //新增字典数据信息
+          }else{
+          addDictDataInfo(this.form).then(response =>{
+          if(response.code==200){
+              this.$msgbox('保存成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+            this.dialogFormVisible = false;
+            this.getResetDictDataList();     
+            }
         });        
-        }
-      }});
+        }}});
+      }
     },
     //获取地区ID 
     handleRegionIds(val){
@@ -396,8 +460,11 @@ export default {
 
 <style scoped>
 .content{
-  margin-top: -780px;
-  margin-left: 200px;
+   float: left;
+   width: 84%;
+   height: 100%;
+   margin-top: 10px;
+   margin-left: 15px;
 }
 
 </style>
