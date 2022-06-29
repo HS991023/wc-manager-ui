@@ -218,23 +218,29 @@
 
 /* 部门树区域 */
 
+.tree-region-style input {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width: 90%;
+    height: 30px !important;
+    background-color: white;
+}
+
 .tree-region-style {
-    width: 143px;
+    margin-left: -5px;
+    width: 180px;
     height: 100%;
-    margin-left: -13px !important;
     background-color: white;
 }
 
 .tree-region {
-    padding-top: 160px;
-    padding-left: 13px;
-    display: inline-block;
     width: 130px;
     height: 100%;
+    background-color: white;
 }
 
 .tree-region .el-tree {
-    background-color: white;
+    height: 100%;
 }
 
 .tree-region .el-tree .el-tree-node__label {
