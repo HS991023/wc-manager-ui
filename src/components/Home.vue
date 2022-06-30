@@ -158,12 +158,15 @@ export default {
       //关闭标签页 展示数据最后一个
       handleCloseTag(tag) {
         let tabs = this.dynamicTags;
-        //获取关闭标签前一个打开的标签
-        let tab = tabs[tabs.length-2];
-        this.$router.push({
-          path:tab.routerPath,
-        })
-        this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+        //第一个标签不允许关闭
+        if(tabs.length >1){
+          //获取关闭标签前一个打开的标签
+          let tab = tabs[tabs.length-2];
+          this.$router.push({
+            path:tab.routerPath,
+          })
+          this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+        };
       },
       //处理面包屑事件
       handleCrumbs(val){
