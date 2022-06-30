@@ -18,7 +18,7 @@
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
-      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus">新增</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus">新增</el-button>
     </div>
     <div class="table-data"> 
     <el-table :data="tableData" style="width: 100%">

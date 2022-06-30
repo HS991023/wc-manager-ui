@@ -14,8 +14,8 @@
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
-      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus" @click="handleAddPosition();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger" class="operator-button" icon="el-icon-error" @click="handleDeletePosition()">批量删除</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddPosition();dialogFormVisible=true">新增</el-button>
+      <el-button type="danger" plain class="operator-button" icon="el-icon-error" @click="handleDeletePosition()">批量删除</el-button>
     </div>
     <div class="form-data">
     <!-- 表单新增或编辑对话框   -->
