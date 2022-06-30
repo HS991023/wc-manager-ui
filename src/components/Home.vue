@@ -1,5 +1,13 @@
 ··<template>
 <div class="container-home " style="overflow:hidden;">
+   <!-- 面包屑区域 -->
+   <div class="crumbs-region">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item  v-for="item in crumbsList">
+        {{item}}
+      </el-breadcrumb-item>
+    </el-breadcrumb>
+   </div>
    <!-- 标签栏 -->
    <div class="tabs-region">
     <el-tag
@@ -21,8 +29,8 @@
     :unique-opened="opened" background-color="#1f2d3d">
       <el-submenu index="1">
           <template slot="title"><i class="el-icon-meun el-icon-user-solid"></i>用户管理</template>
-          <el-menu-item index="1-1" @click="handleMeunItem({routerPath:'/userInfo',routerName:'用户信息'})"><router-link to="/userInfo">用户信息</router-link></el-menu-item>
-          <el-menu-item index="1-2" @click="handleMeunItem({routerPath:'/onlineUser',routerName:'在线用户'})"><router-link to="/onlineUser">在线用户</router-link></el-menu-item>
+          <el-menu-item index="1-1" @click="handleMeunItem({routerPath:'/userInfo',routerName:'用户信息'},handleCrumbs('用户信息'))"><router-link to="/userInfo">用户信息</router-link></el-menu-item>
+          <el-menu-item index="1-2" @click="handleMeunItem({routerPath:'/onlineUser',routerName:'在线用户'},handleCrumbs('在线用户'))"><router-link to="/onlineUser">在线用户</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="2">
         <template slot="title"><i class="el-icon-meun  el-icon-s-custom"></i>角色管理</template>
@@ -102,7 +110,7 @@
 </template>
 
 <script>
-import { Notification, MessageBox, Message } from 'element-ui';
+import {MessageBox} from 'element-ui';
 export default {
     name:'Home',
     data() {
@@ -117,6 +125,8 @@ export default {
             routerName:'展示页面',
             routerPath: '/show'
         }],
+        //面包屑数据列表
+        crumbsList:['首页']
       }
     },
     methods:{
@@ -136,7 +146,9 @@ export default {
           };
        }
       },
-      handleOpenMeun(val){},
+      handleOpenMeun(val){
+        console.log(val);
+      },
       handleCloseMeun(val){},
       //打开标签页
       handleOpenTag(tag){
@@ -148,6 +160,10 @@ export default {
       handleCloseTag(tag) {
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
       },
+      //处理面包屑事件
+      handleCrumbs(val){
+        console.log(val);
+      }
     }
   };
 </script>

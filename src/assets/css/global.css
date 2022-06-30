@@ -39,12 +39,22 @@
 .tabs-region {
     position: absolute;
     width: 100%;
-    left: 214px;
-    top: 38px;
+    left: 221px;
+    top: 43px;
 }
 
 .tabs-region .el-tag {
     margin-left: 6px;
+}
+
+
+/* 面包屑样式 */
+
+.crumbs-region {
+    position: absolute;
+    width: 100%;
+    left: 221px;
+    top: 10px;
 }
 
 
