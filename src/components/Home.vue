@@ -3,7 +3,7 @@
    <!-- 面包屑区域 -->
    <div class="crumbs-region">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item  v-for="item in crumbsList">
+      <el-breadcrumb-item  :key="item" v-for="item in crumbsList">
         {{item}}
       </el-breadcrumb-item>
     </el-breadcrumb>
