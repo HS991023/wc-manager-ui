@@ -147,7 +147,6 @@ export default {
        }
       },
       handleOpenMeun(val){
-        console.log(val);
       },
       handleCloseMeun(val){},
       //打开标签页
@@ -156,13 +155,19 @@ export default {
           path: tag.routerPath
         });
       },
-      //关闭标签页
+      //关闭标签页 展示数据最后一个
       handleCloseTag(tag) {
+        let tabs = this.dynamicTags;
+        //获取关闭标签前一个打开的标签
+        let tab = tabs[tabs.length-2];
+        this.$router.push({
+          path:tab.routerPath,
+        })
         this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
       },
       //处理面包屑事件
       handleCrumbs(val){
-        console.log(val);
+        // console.log(val);
       }
     }
   };
