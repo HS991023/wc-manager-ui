@@ -45,8 +45,22 @@
     border-bottom: 1px solid skyblue;
 }
 
+.tabs-region .el-tag--dark {
+    background-color: transparent !important;
+    border-color: transparent;
+    color: black !important;
+}
+
+.tabs-region .el-tag--dark .el-tag__close {
+    color: black !important;
+}
+
 .tabs-region .el-tag {
     margin-left: 6px;
+}
+
+.tabs-region span:hover {
+    background-color: #a3bbd3 !important;
 }
 
 
