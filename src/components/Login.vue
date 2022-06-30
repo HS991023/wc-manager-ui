@@ -33,7 +33,6 @@ export default {
         doLogin(form){
         var router = this.$router;
         var alert  =  this.$alert;
-        var message =  this.$message;
         var store = this.$store;
         if(form.userName != "" && form.passWord != ""){
             this.axios({

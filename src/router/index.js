@@ -1,144 +1,88 @@
 // 该文件专门用于创建整个应用的路由器
+import Vue from 'vue';
 import VueRouter from 'vue-router'
-//组件
-import Home from '../components/Home'
-import Show from '../components/Show'
-import Login from '../components/Login'
-import UserInfo from '../pages/user/UserInfo'
-import OnlineUser from '../pages/user/OnlineUser'
-import RoleInfo from '../pages/role/RoleInfo'
-import DeptInfo from '../pages/dept/DeptInfo'
-import MeunInfo from '../pages/meun/MeunInfo'
-import RegionInfo from '../pages/region/RegionInfo'
-import ToiletInfo from '../pages/toilet/ToiletInfo'
-import PositionInfo from '../pages/position/PositionInfo'
-import DeviceInfo from '../pages/device/DeviceInfo'
-import DictInfo from '../pages/dict/DictInfo'
-import LoginLog from '../pages/common/LoginLog'
-import OperatorLog from '../pages/common/OperatorLog'
-import ApiNumber from '../pages/common/ApiNumber'
 
+//安装路由
+Vue.use(VueRouter);
+
+//全局路由
 const routes = [{
-        name: 'Home',
         path: '/home',
-        component: Home,
-        meta: {
-            requireAuth: true
-        },
+        component: (resolve) => require(['@/components/Home'], resolve),
+        meta: { requireAuth: true },
         children: [{
-                name: 'Show',
                 path: '/show',
-                component: Show,
+                component: (resolve) => require(['@/components/Show'], resolve),
                 meta: {
                     requireAuth: true
                 },
             },
             {
-                name: 'UserInfo',
                 path: '/userInfo',
-                component: UserInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/user/UserInfo'], resolve),
+                meta: { requireAuth: true },
 
             }, {
-                name: 'OnlineUser',
                 path: '/onlineUser',
-                component: OnlineUser,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/user/OnlineUser'], resolve),
+                meta: { requireAuth: true },
             }, {
-                name: 'RoleInfo',
                 path: '/roleInfo',
-                component: RoleInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/role/RoleInfo'], resolve),
+                meta: { requireAuth: true },
             }, {
-                name: 'DeptInfo',
                 path: '/deptInfo',
-                component: DeptInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/dept/DeptInfo'], resolve),
+                meta: { requireAuth: true },
             },
             {
-                name: 'MeunInfo',
                 path: '/meunInfo',
-                component: MeunInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/meun/MeunInfo'], resolve),
+                meta: { requireAuth: true },
             },
             {
-                name: 'RegionInfo',
                 path: '/regionInfo',
-                component: RegionInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/region/RegionInfo'], resolve),
+                meta: { requireAuth: true },
             },
             {
-                name: 'ToiletInfo',
                 path: '/toiletInfo',
-                component: ToiletInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/toilet/ToiletInfo'], resolve),
+                meta: { requireAuth: true },
             },
             {
-                name: 'PositionInfo',
                 path: '/positionInfo',
-                component: PositionInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/position/PositionInfo'], resolve),
+                meta: { requireAuth: true },
             },
             {
-                name: 'DeviceInfo',
                 path: '/deviceInfo',
-                component: DeviceInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/device/DeviceInfo'], resolve),
+                meta: { requireAuth: true },
             },
             {
-                name: 'DictInfo',
                 path: '/dictInfo',
-                component: DictInfo,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/dict/DictInfo'], resolve),
+                meta: { requireAuth: true },
             }, {
-                name: 'LoginLog',
                 path: '/loginLog',
-                component: LoginLog,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/common/LoginLog'], resolve),
+                meta: { requireAuth: true },
             }, {
-                name: 'OperatorLog',
                 path: '/operatorLog',
-                component: OperatorLog,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/common/OperatorLog'], resolve),
+                meta: { requireAuth: true },
             },
             {
-                name: 'ApiNumber',
                 path: '/apiNumber',
-                component: ApiNumber,
-                meta: {
-                    requireAuth: true
-                },
+                component: (resolve) => require(['@/pages/common/ApiNumber'], resolve),
+                meta: { requireAuth: true },
             }
         ]
     },
     {
-        name: 'Login',
         path: '/login',
-        component: Login,
+        component: (resolve) => require(['@/components/Login'], resolve),
         meta: {
             requireAuth: false
         },
@@ -151,4 +95,20 @@ const router = new VueRouter({
     //配置路由规则
     routes
 });
+
+// 设置路由守卫
+router.beforeEach((to, from, next) => {
+    if (to.meta.requireAuth) { // 验证是否需要登陆
+        if (sessionStorage.getItem('token')) { // 查询sessionStorge中的登录状态
+            next();
+        } else {
+            next({
+                path: '/login',
+            });
+        }
+    } else {
+        next();
+    }
+});
+
 export default router

@@ -8,10 +8,7 @@
     </div>
    </div>
    <div class="content">
-   <!-- 搜索栏   -->
-    <div class="top-style">
-      <h2>此处预留样式栏盒子</h2>
-    </div> 
+    <!-- 搜索栏 -->
     <div class="serach-input">
     <label class="serach-propties">字典名称:</label>    
     <el-input placeholder="请输入字典名称" suffix-icon="el-icon-text" v-model="data.dictName"/>
@@ -491,6 +488,16 @@ export default {
 </script>
 
 <style scoped>
+::v-deep .tree-region-style{
+  margin-top: 54px !important;
+}
+::v-deep .serach-input{
+  margin-top: 62px !important
+}
+::v-deep .table-data{
+  margin-top: 78px !important;
+}
+
 .content{
    float: left;
    width: 84%;

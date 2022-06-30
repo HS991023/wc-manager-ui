@@ -1,34 +1,24 @@
 <template>
   <div>
-    <div class="top-style">
-      <h2>此处预留样式栏盒子</h2>
-    </div> 
+    <!-- 搜索栏  -->
     <div class="serach-input">
     <label class="serach-propties">用户名:</label>    
-    <el-input
-        placeholder="请输入内容"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
+    <el-input placeholder="请输入用户名" suffix-icon="el-icon-text"/>
     <label class="serach-propties">账号:</label>    
-    <el-input
-        placeholder="请输入内容"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
+    <el-input placeholder="请输入账号" suffix-icon="el-icon-text"/>
     <label class="serach-propties">性别:</label>    
-    <el-input
-        placeholder="请输入内容"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
+    <el-input placeholder="请输入性别" suffix-icon="el-icon-text"/>
     <label class="serach-propties">状态:</label>    
-    <el-input
-        placeholder="请输入内容"
-        suffix-icon="el-icon-text"
-        >
-    </el-input>
-    <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
+    <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
+    <!-- 搜索按钮区域 -->
+    <div class="serach-button-region"> 
+        <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
+        <el-button type="primary" class="serach-button" icon="el-icon-error">重置</el-button>
+    </div>
+    </div>
+   <!-- 操作数据按钮区域 -->
+    <div class="operator-button-region">
+      <el-button type="primary" class="operator-button" icon="el-icon-circle-plus">新增</el-button>
     </div>
     <div class="table-data"> 
     <el-table :data="tableData" style="width: 100%">

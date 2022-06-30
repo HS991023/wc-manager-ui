@@ -1,9 +1,6 @@
 <template>
  <div>
-    <!-- 搜索栏   -->
-    <div class="top-style">
-      <h2>此处预留样式栏盒子</h2>
-    </div> 
+    <!-- 搜索栏  -->
     <div class="serach-input">
     <label class="serach-propties">角色名:</label>    
     <el-input placeholder="请输入角色名" suffix-icon="el-icon-text" v-model="data.roleName"/>
