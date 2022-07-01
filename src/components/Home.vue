@@ -34,7 +34,7 @@
       </el-submenu>
       <el-submenu index="2">
         <template slot="title"><i class="el-icon-meun  el-icon-s-custom"></i>角色管理</template>
-        <el-menu-item index="2-1" @click="handleMeunItem({routerPath:'/roleInfo',routerName:'角色信息'})"><router-link to="/roleInfo">角色信息</router-link></el-menu-item>
+        <el-menu-item index="2-1" @click="handleMeunItem({routerPath:'/roleInfo',routerName:'角色信息'},handleCrumbs('角色信息'))"><router-link to="/roleInfo">角色信息</router-link></el-menu-item>
       </el-submenu>
       <!-- <el-submenu index="3">
         <template slot="title"><i class="el-icon-meun el-icon-s-home"></i>部门管理</template>
@@ -42,33 +42,33 @@
       </el-submenu> -->
       <el-submenu index="4">
         <template slot="title"><i class="el-icon-meun el-icon-s-order"></i>菜单管理</template>
-          <el-menu-item index="4-1" @click="handleMeunItem({routerPath:'/meunInfo',routerName:'菜单信息'})"><router-link to="/meunInfo">菜单信息</router-link></el-menu-item>
+          <el-menu-item index="4-1" @click="handleMeunItem({routerPath:'/meunInfo',routerName:'菜单信息'},handleCrumbs('菜单信息'))"><router-link to="/meunInfo">菜单信息</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="5">
         <template slot="title"><i class="el-icon-meun el-icon-menu"></i>地区管理</template>
-        <el-menu-item index="5-1" @click="handleMeunItem({routerPath:'/regionInfo',routerName:'地区信息'})"><router-link to="/regionInfo">地区信息</router-link></el-menu-item>
+        <el-menu-item index="5-1" @click="handleMeunItem({routerPath:'/regionInfo',routerName:'地区信息'},handleCrumbs(''))"><router-link to="/regionInfo">地区信息</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="6">
         <template slot="title"><i class="el-icon-meun el-icon-delete-solid"></i>公厕管理</template>
-        <el-menu-item index="6-1" @click="handleMeunItem({routerPath:'/toiletInfo',routerName:'公厕信息'})"><router-link to="/toiletInfo">公厕信息</router-link></el-menu-item>
+        <el-menu-item index="6-1" @click="handleMeunItem({routerPath:'/toiletInfo',routerName:'公厕信息'},handleCrumbs('公厕信息'))"><router-link to="/toiletInfo">公厕信息</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="7">
         <template slot="title"><i class="el-icon-meun el-icon-info "></i>坑位管理</template>
-        <el-menu-item index="7-1" @click="handleMeunItem({routerPath:'/positionInfo',routerName:'坑位信息'})"><router-link to="/positionInfo">坑位信息</router-link></el-menu-item>
+        <el-menu-item index="7-1" @click="handleMeunItem({routerPath:'/positionInfo',routerName:'坑位信息'}),handleCrumbs('坑位信息')"><router-link to="/positionInfo">坑位信息</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="8">
         <template slot="title"><i class="el-icon-meun el-icon-s-promotion"></i>设备管理</template>
-        <el-menu-item index="8-1" @click="handleMeunItem({routerPath:'/deviceInfo',routerName:'设备信息'})"><router-link to="/deviceInfo">设备信息</router-link></el-menu-item>
+        <el-menu-item index="8-1" @click="handleMeunItem({routerPath:'/deviceInfo',routerName:'设备信息'},handleCrumbs('设备信息'))"><router-link to="/deviceInfo">设备信息</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="9">
         <template slot="title"><i class="el-icon-meun el-icon-s-ticket"></i>公共模块</template>
-        <el-menu-item index="9-1" @click="handleMeunItem({routerPath:'/loginLog',routerName:'登录日志'})"><router-link to="/loginLog">登录日志</router-link></el-menu-item>
-        <el-menu-item index="9-2" @click="handleMeunItem({routerPath:'/operatorLog',routerName:'操作日志'})"><router-link to="/operatorLog">操作日志</router-link></el-menu-item>
-        <el-menu-item index="9-3" @click="handleMeunItem({routerPath:'/apiNumber',routerName:'接口调用次数'})"><router-link to="/apiNumber">接口调用次数</router-link></el-menu-item>
+        <el-menu-item index="9-1" @click="handleMeunItem({routerPath:'/loginLog',routerName:'登录日志'},handleCrumbs('登录日志'))"><router-link to="/loginLog">登录日志</router-link></el-menu-item>
+        <el-menu-item index="9-2" @click="handleMeunItem({routerPath:'/operatorLog',routerName:'操作日志'},handleCrumbs('操作日志'))"><router-link to="/operatorLog">操作日志</router-link></el-menu-item>
+        <el-menu-item index="9-3" @click="handleMeunItem({routerPath:'/apiNumber',routerName:'接口调用次数'},handleCrumbs('接口调用次数'))"><router-link to="/apiNumber">接口调用次数</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="10">
         <template slot="title"><i class="el-icon-meun el-icon-s-ticket"></i>字典管理</template>
-        <el-menu-item index="10-1" @click="handleMeunItem({routerPath:'/dictInfo',routerName:'字典信息'})"><router-link to="/dictInfo">字典信息</router-link></el-menu-item>
+        <el-menu-item index="10-1" @click="handleMeunItem({routerPath:'/dictInfo',routerName:'字典信息'},handleCrumbs('字典信息'))"><router-link to="/dictInfo">字典信息</router-link></el-menu-item>
       </el-submenu>
     </el-menu>
   </el-aside>
@@ -146,10 +146,66 @@ export default {
           };
        }
       },
+      //打开时添加面包屑数据
       handleOpenMeun(val){
+        switch (val) {
+          case '1':
+            this.resetCrumbs();
+            this.crumbsList.push('用户管理');
+            break;
+          case '2':
+            this.resetCrumbs();
+            this.crumbsList.push('角色管理');
+            break;
+          case '3':
+             this.resetCrumbs();
+             this.crumbsList.push('部门管理');
+            break  
+          case '4':
+             this.resetCrumbs();
+             this.crumbsList.push('菜单管理');
+            break  
+          case '5':
+             this.resetCrumbs();
+             this.crumbsList.push('地区管理');
+            break  
+          case '6':
+             this.resetCrumbs();
+             this.crumbsList.push('公厕管理');
+            break    
+          case '7':
+             this.resetCrumbs();
+             this.crumbsList.push('坑位管理');
+            break  
+          case '8':
+             this.resetCrumbs();
+             this.crumbsList.push('设备管理');
+            break  
+          case '9':
+             this.resetCrumbs();
+             this.crumbsList.push('公共模块');
+            break  
+          case '10':
+             this.resetCrumbs();
+             this.crumbsList.push('字典管理');
+            break 
+          default:
+            break;
+        }
       },
-      handleCloseMeun(val){},
-      //打开标签页
+      handleCloseMeun(val){
+        console.log(val);
+      },
+       //处理面包屑事件
+      handleCrumbs(val){
+          this.crumbsList[2] = (val);
+      },
+      //重置面包屑
+      resetCrumbs(){
+          this.crumbsList.length = 0;
+          this.crumbsList[0] = '首页';
+      },
+       //打开标签页
       handleOpenTag(tag){
         this.$router.push({
           path: tag.routerPath
@@ -167,10 +223,6 @@ export default {
           })
           this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
         };
-      },
-      //处理面包屑事件
-      handleCrumbs(val){
-        // console.log(val);
       }
     }
   };
