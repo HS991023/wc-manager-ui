@@ -19,63 +19,63 @@ const routes = [{
             },
             {
                 path: '/userInfo',
-                component: (resolve) => require(['@/pages/user/UserInfo'], resolve),
+                component: (resolve) => require(['@/views/user/UserInfo'], resolve),
                 meta: { requireAuth: true },
 
             }, {
                 path: '/onlineUser',
-                component: (resolve) => require(['@/pages/user/OnlineUser'], resolve),
+                component: (resolve) => require(['@/views/user/OnlineUser'], resolve),
                 meta: { requireAuth: true },
             }, {
                 path: '/roleInfo',
-                component: (resolve) => require(['@/pages/role/RoleInfo'], resolve),
+                component: (resolve) => require(['@/views/role/RoleInfo'], resolve),
                 meta: { requireAuth: true },
             }, {
                 path: '/deptInfo',
-                component: (resolve) => require(['@/pages/dept/DeptInfo'], resolve),
+                component: (resolve) => require(['@/views/dept/DeptInfo'], resolve),
                 meta: { requireAuth: true },
             },
             {
                 path: '/meunInfo',
-                component: (resolve) => require(['@/pages/meun/MeunInfo'], resolve),
+                component: (resolve) => require(['@/views/meun/MeunInfo'], resolve),
                 meta: { requireAuth: true },
             },
             {
                 path: '/regionInfo',
-                component: (resolve) => require(['@/pages/region/RegionInfo'], resolve),
+                component: (resolve) => require(['@/views/region/RegionInfo'], resolve),
                 meta: { requireAuth: true },
             },
             {
                 path: '/toiletInfo',
-                component: (resolve) => require(['@/pages/toilet/ToiletInfo'], resolve),
+                component: (resolve) => require(['@/views/toilet/ToiletInfo'], resolve),
                 meta: { requireAuth: true },
             },
             {
                 path: '/positionInfo',
-                component: (resolve) => require(['@/pages/position/PositionInfo'], resolve),
+                component: (resolve) => require(['@/views/position/PositionInfo'], resolve),
                 meta: { requireAuth: true },
             },
             {
                 path: '/deviceInfo',
-                component: (resolve) => require(['@/pages/device/DeviceInfo'], resolve),
+                component: (resolve) => require(['@/views/device/DeviceInfo'], resolve),
                 meta: { requireAuth: true },
             },
             {
                 path: '/dictInfo',
-                component: (resolve) => require(['@/pages/dict/DictInfo'], resolve),
+                component: (resolve) => require(['@/views/dict/DictInfo'], resolve),
                 meta: { requireAuth: true },
             }, {
                 path: '/loginLog',
-                component: (resolve) => require(['@/pages/common/LoginLog'], resolve),
+                component: (resolve) => require(['@/views/common/LoginLog'], resolve),
                 meta: { requireAuth: true },
             }, {
                 path: '/operatorLog',
-                component: (resolve) => require(['@/pages/common/OperatorLog'], resolve),
+                component: (resolve) => require(['@/views/common/OperatorLog'], resolve),
                 meta: { requireAuth: true },
             },
             {
                 path: '/apiNumber',
-                component: (resolve) => require(['@/pages/common/ApiNumber'], resolve),
+                component: (resolve) => require(['@/views/common/ApiNumber'], resolve),
                 meta: { requireAuth: true },
             }
         ]
