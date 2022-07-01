@@ -194,7 +194,7 @@ export default {
         }
       },
       handleCloseMeun(val){
-        console.log(val);
+        // console.log(val);
       },
        //处理面包屑事件
       handleCrumbs(val){
@@ -216,6 +216,12 @@ export default {
         let tabs = this.dynamicTags;
         //第一个标签不允许关闭
         if(tabs.length >1){
+          //同时删除相关面包屑数据
+          this.crumbsList.forEach((val,index)=>{
+            if(val == tag.routerName){
+               delete this.crumbsList[index];
+            }
+          })
           //获取关闭标签前一个打开的标签
           let tab = tabs[tabs.length-2];
           this.$router.push({
