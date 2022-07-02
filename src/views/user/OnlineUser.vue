@@ -1,185 +1,128 @@
 <template>
   <div>
-    <!-- 搜索栏  -->
+    <!-- 搜索栏 -->
     <div class="serach-input">
-    <label class="serach-propties">用户名:</label>    
-    <el-input placeholder="请输入用户名" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">账号:</label>    
-    <el-input placeholder="请输入账号" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">性别:</label>    
-    <el-input placeholder="请输入性别" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">状态:</label>    
-    <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
+    <label class="serach-propties">用户昵称:</label>    
+    <el-input placeholder="请输入用户昵称" suffix-icon="el-icon-text" v-model="data.nickName"/>
+    <label class="serach-propties">登录IP:</label>    
+    <el-input placeholder="请选择登录IP" suffix-icon="el-icon-text" v-model="data.ip"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error">重置</el-button>
+        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getOnlineUserList()">搜索</el-button>
+        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="geOnlineUseListReset()">重置</el-button>
     </div>
     </div>
-   <!-- 操作数据按钮区域 -->
-    <div class="operator-button-region">
-      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus">新增</el-button>
-    </div>
+    <!-- 表格组件 -->
     <div class="table-data"> 
-    <el-table :data="tableData" style="width: 100%">
-    <!-- 多选框 -->
-    <el-table-column
-      type="selection"
-      width="55">
-    </el-table-column>  
-    <!-- 用户名    -->
-    <el-table-column
-      label="用户名"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <!-- 账号 -->
-    <el-table-column
-      label="账号"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="登录时间"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-     <el-table-column
-      label="登录系统"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <!-- 状态 -->
-     <el-table-column
-      label="状态"
-      width="180">
-      <template slot-scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>姓名: {{ scope.row.name }}</p>
-          <p>住址: {{ scope.row.address }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
+    <el-table :data="onlineUserList" style="width: 100%" ref="multipleTable"  v-loading="loading">
+    <!-- :show-overflow-tooltip="showOverflowTooltip" -->
+    <el-table-column align="center" label="会话ID" width="180" prop="jti" key="jti" />
+    <el-table-column align="center" label="在线用户" width="130" prop="nickName" key="nickName"/>
+    <el-table-column align="center" label="客户端" width="130" prop="browserName" key="browserName"/>
+    <el-table-column align="center" label="客户端版本" width="130" prop="browserVersion" key="browserVersion"/>
+    <el-table-column align="center" label="操作系统" width="130" prop="operatorSystem" key="operatorSystem"/>
+    <el-table-column align="center" label="登录IP" width="130" prop="loginIp" key="loginIp"/>
+    <!-- <el-table-column align="center" label="登录地区" width="130" prop="address" key="address"/> -->
+    <el-table-column align="center" label="登录时间" width="130" prop="loginTime" key="loginTime"/>
     <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">强制登出</el-button>
-      </template>
+    <template slot-scope="scope">
+       <el-button size="mini"  type="danger" @click="handleKickOut(scope.row)">踢出</el-button>
+    </template>
     </el-table-column>
     </el-table>
-    <div class="pageHelper">
-    <el-pagination
-      layout="prev, pager, next"
-      :total="1000">
-    </el-pagination>
     </div>
+    <!-- 分页组件 -->
+    <div class="pageHelper" v-if="total !=0 && total>0">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="this.data.pageNum"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="this.data.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
     </div>
     </div>   
 </template>
 
 <script>
+import {listOnLineUser} from '@/api/system/onlineuser'
 export default {
     name:'OnlineUser',
     data() {
-      return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        },{
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
-      }
+       return {
+        //表格数据
+        onlineUserList: null,
+        //总数
+        total:null,
+        //分页参数
+        data:{
+           pageNum: 1,
+           pageSize: 10,
+           nickName:undefined,
+           ip:undefined
+        },
+        //是否加载中
+        loading: true,
+        //溢出时隐藏
+        showOverflowTooltip:true,
+    }
     },
     methods: {
-      handleEdit(index, row) {
-        console.log(index, row);
+      //查询在线用户信息列表
+      getOnlineUserList(){
+        let data= this.data;
+        listOnLineUser(data).then(response => {
+          if(response.count== 0){
+             this.onlineUserList = undefined;
+          }else{
+             this.onlineUserList = response.data;
+          }
+           this.total = response.count;
+           this.loading = false;
+        }).catch(error=>{
+        })
       },
-      handleDelete(index, row) {
-        console.log(index, row);
+      //在线用户信息列表重置
+      geOnlineUseListReset(){
+        this.data.nickName = undefined;
+        this.data.ip = undefined;
+        let resetData= {
+           pageNum: 1,
+           pageSize: 10,
+        }
+        listOnLineUser(resetData).then(response => {
+            this.onlineUserList = response.data;
+            this.total = response.count;
+            this.loading = false;
+        });
+      },
+      //踢出用户
+      handleKickOut(val){
+        console.log(val);
+      },
+      //更改每页大小
+      handleSizeChange(val) {
+        this.data.pageSize = val;
+        this.getOnlineUseList();  
+      },
+      //更改当前页
+      handleCurrentChange(val) {
+        this.data.pageNum = val;
+        this.getOnlineUseList(); 
       }
+    },
+    created(){
+      this.getOnlineUserList();
+    },
+    mounted(){
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+::v-deep .table-data{
+  margin-top: 1px !important;
+}
 </style>
