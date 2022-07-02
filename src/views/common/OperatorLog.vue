@@ -21,7 +21,7 @@
     <el-table-column align="center" label="操作功能" width="180" prop="operatorFunction" key="operatorFunction"/>
     <el-table-column align="center" label="执行动作" width="180" prop="operatorAction" key="operatorAction"/>
     <el-table-column align="center" label="请求方式" width="130" prop="requestMode" key="requestMode"/>
-    <el-table-column align="center" label="操作人" width="180" prop="createBy" key="createBy"/>
+    <el-table-column align="center" label="操作用户" width="180" prop="createBy" key="createBy"/>
     <el-table-column align="center" label="请求结果" width="180" prop="result" key="result"/>
     <el-table-column align="center" label="请求时间" width="180" prop="createTime" key="createTime"/>
     </el-table>
@@ -45,7 +45,7 @@
 import {listOperatorLog} from '@/api/system/operatorlog'
 export default {
     name:'OperatorLog',
-     data() {
+    data() {
        return {
         //表格数据
         operatorList: null,
@@ -67,7 +67,6 @@ export default {
       getOperatorLogList(){
         let data= this.data;
         listOperatorLog(data).then(response => {
-          console.log(response);
           if(response.count== 0){
             this.operatorList = undefined;
           }else{
@@ -76,7 +75,6 @@ export default {
           }
             this.loading = false;
         }).catch(error=>{
-            console.log(error);
         })
       },
       //操作日志信息列表重置
