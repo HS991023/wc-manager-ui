@@ -37,7 +37,7 @@ export default {
         if(form.userName != "" && form.passWord != ""){
             this.axios({
             method:'post',
-            url:'/api/wc/system/doLogin',
+            url:'/api/system/doLogin',
             data:{ 
                 username:this.form.userName,
                 password:this.form.passWord
