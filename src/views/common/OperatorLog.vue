@@ -17,12 +17,13 @@
     <!-- 表格组件 -->
     <div class="table-data"> 
     <el-table :data="operatorList" style="width: 100%" ref="multipleTable"  v-loading="loading">
-    <el-table-column label="操作模块" width="200" prop="operatorModule" key="operatorModule"/>
-    <el-table-column label="操作功能" width="200" prop="operatorFunction" key="operatorFunction"/>
-    <el-table-column label="执行动作" width="200" prop="operatorAction" key="operatorAction"/>
-    <el-table-column label="请求方式" width="200" prop="requestMode" key="requestMode"/>
-    <el-table-column label="请求结果" width="200" prop="result" key="result"/>
-    <el-table-column label="请求时间" width="200" prop="createTime" key="createTime"/>
+    <el-table-column align="center" label="操作模块" width="160" prop="operatorModule" key="operatorModule"/>
+    <el-table-column align="center" label="操作功能" width="180" prop="operatorFunction" key="operatorFunction"/>
+    <el-table-column align="center" label="执行动作" width="180" prop="operatorAction" key="operatorAction"/>
+    <el-table-column align="center" label="请求方式" width="130" prop="requestMode" key="requestMode"/>
+    <el-table-column align="center" label="操作人" width="180" prop="createBy" key="createBy"/>
+    <el-table-column align="center" label="请求结果" width="180" prop="result" key="result"/>
+    <el-table-column align="center" label="请求时间" width="180" prop="createTime" key="createTime"/>
     </el-table>
     </div>
     <!-- 分页组件 -->
