@@ -139,10 +139,10 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                store.dispatch('doLogOut').then(() => {
-                    location.href = '/login';
-                })
-            }).catch(() => {});
+              location.href = '/login';
+            }).catch(() => {
+              
+            });
         })
       },
       //新增标签页
