@@ -94,7 +94,7 @@
       ">
         <el-dropdown-item>个人中心</el-dropdown-item>
         <el-dropdown-item>修改密码</el-dropdown-item>
-        <el-dropdown-item>退出登录</el-dropdown-item>
+        <el-dropdown-item @click.native="logout()">退出登录</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
     </el-col>
@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import {logoutUser} from '@/api/system/user'
 import {MessageBox} from 'element-ui';
 export default {
     name:'Home',
@@ -130,6 +131,20 @@ export default {
       }
     },
     methods:{
+      //退出登录
+      logout(){
+        logoutUser().then(response =>{
+           MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+                confirmButtonText: '重新登录',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                store.dispatch('doLogOut').then(() => {
+                    location.href = '/login';
+                })
+            }).catch(() => {});
+        })
+      },
       //新增标签页
       handleMeunItem(val){
        //判断同一个标签是否存在

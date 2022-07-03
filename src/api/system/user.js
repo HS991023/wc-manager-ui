@@ -48,3 +48,11 @@ export function removeUser(ids) {
         }
     });
 }
+
+//注销
+export function logoutUser() {
+    return request({
+        url: '/api/system/doLogout',
+        method: 'get',
+    });
+}
