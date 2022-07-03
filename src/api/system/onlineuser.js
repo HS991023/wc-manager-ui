@@ -9,3 +9,15 @@ export function listOnLineUser(data) {
         data: data
     })
 }
+
+
+//强制提出用户
+export function kickOutUser(params) {
+    return request({
+        url: '/api/system/force/logout',
+        method: 'get',
+        params: {
+            sessionId: params
+        }
+    })
+}

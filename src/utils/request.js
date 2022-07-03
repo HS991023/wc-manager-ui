@@ -78,8 +78,20 @@ service.interceptors.response.use(res => {
         }
     },
     error => {
-        console.log('err' + error)
+        // console.log('err' + error)
         let { message } = error;
+        //登录状态失效或者未登录
+        if (error.response.data.code) {
+            MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+                confirmButtonText: '重新登录',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                store.dispatch('doLogOut').then(() => {
+                    location.href = '/login';
+                })
+            }).catch(() => {});
+        }
         if (message == "Network Error") {
             message = "后端接口连接异常";
         } else if (message.includes("timeout")) {

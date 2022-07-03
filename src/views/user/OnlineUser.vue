@@ -23,7 +23,7 @@
     <el-table-column align="center" label="操作系统" width="130" prop="operatorSystem" key="operatorSystem"/>
     <el-table-column align="center" label="登录IP" width="130" prop="loginIp" key="loginIp"/>
     <!-- <el-table-column align="center" label="登录地区" width="130" prop="address" key="address"/> -->
-    <el-table-column align="center" label="登录时间" width="130" prop="loginTime" key="loginTime"/>
+    <el-table-column align="center" label="登录时间" width="180" prop="loginTime" key="loginTime"/>
     <el-table-column label="操作">
     <template slot-scope="scope">
        <el-button size="mini"  type="danger" @click="handleKickOut(scope.row)">踢出</el-button>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import {listOnLineUser} from '@/api/system/onlineuser'
+import {listOnLineUser,kickOutUser} from '@/api/system/onlineuser'
 export default {
     name:'OnlineUser',
     data() {
@@ -100,7 +100,15 @@ export default {
       },
       //踢出用户
       handleKickOut(val){
-        console.log(val);
+        kickOutUser(val.jti).then(response=>{
+          this.getOnlineUserList();
+          this.$msgbox('踢出成功', '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'
+            });
+        }).catch(()=>{
+
+        })
       },
       //更改每页大小
       handleSizeChange(val) {
