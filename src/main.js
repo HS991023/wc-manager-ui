@@ -11,6 +11,9 @@ import router from './router/index.js'
 // 安装axios
 Vue.prototype.$axios = axios;
 Vue.use(VueAxios, axios);
+//  引入Echarts
+import * as echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 Vue.use(ElementUI, { locale });
 //Vuex
 import store from './store'
