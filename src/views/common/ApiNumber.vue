@@ -1,7 +1,8 @@
 <template>
      <div>
         <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
-       <div id="main" class="echarts-region" style="width: 600px;height:400px;"></div>
+        <div id="line-echarts" class="echarts-region" style="width: 600px;height:400px;"></div>
+        <div id="cake-echarts" class="echarts-region" style="width: 600px;height:400px;"></div>
     </div>
 </template>
 
@@ -11,9 +12,10 @@ export default {
     methods:{
       initEcharts(){
       //基于准备好的dom，初始化echarts实例
-      var myChart = this.$echarts.init(document.getElementById('main'));
+      var LineChart = this.$echarts.init(document.getElementById('line-echarts'));
+      var CakeChart = this.$echarts.init(document.getElementById('cake-echarts'));
       // 指定图表的配置项和数据
-      var option = {
+      var LineOption = {
         title: {
           text: '接口调用统计图'
         },
@@ -24,7 +26,9 @@ export default {
         xAxis: {
           data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
         },
-        yAxis: {},
+        yAxis: {
+           
+          },
         series: [
           {
             name: '调用成功',
@@ -40,8 +44,46 @@ export default {
           }
         ]
       };
+      var CakeOption = {
+        title: {
+          text: '接口调用统计图'
+        },
+       legend: {
+          orient: 'vertical',
+          x: 'left',
+          data: ['A', 'B', 'C', 'D', 'E']
+        },
+       series: [
+        {
+          type: 'pie',
+          // radius: ['50%', '70%'],
+          avoidLabelOverlap: true,
+          label: {
+            show: true,
+          },
+          labelLine: {
+            show: true
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '30',
+              fontWeight: 'bold'
+            }
+          },
+          data: [
+            { value: 335, name: 'A' },
+            { value: 310, name: 'B' },
+            { value: 234, name: 'C' },
+            { value: 135, name: 'D' },
+            { value: 1548, name: 'E' }
+          ]
+        }
+       ]
+      };
       // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+      LineChart.setOption(LineOption);
+      CakeChart.setOption(CakeOption);
       }
     },
     mounted() {
