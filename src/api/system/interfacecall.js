@@ -6,6 +6,9 @@ export function interfaceCallData(data) {
     return request({
         url: '/api/system/interface/call/data',
         method: 'post',
-        data: data
+        data: {
+            //当天日期
+            currentDate: data
+        }
     })
 }

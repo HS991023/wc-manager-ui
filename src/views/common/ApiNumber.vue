@@ -2,15 +2,25 @@
      <div class="main">
         <div class="date-select-region">
           <el-date-picker
-            v-model="value2"
+            v-model="value"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
             align="right"
             type="date"
+            size="small"
+            :editable="editable"
+            :clearable="clearable"
             placeholder="选择日期"
-            :picker-options="pickerOptions">
+            :picker-options="pickerOptions"
+            @change="sendRequest">
           </el-date-picker>
         </div>
         <div id="line-echarts" class="echarts-line-region" style="width:100%;height:400px;"></div>
         <div id="cake-echarts" class="echarts-cake-region" style="width: 538px;height:400px;"></div>
+        <!-- 无数据时展示 -->
+        <div class="no-data">
+             <el-empty description="暂无数据" v-if="show"></el-empty>
+        </div>
     </div>
 </template>
 
@@ -20,6 +30,13 @@ export default {
     name:'ApiNumber',
     data(){
       return{
+        value:'',
+        //文本框不可输入
+        editable: false,
+        //是否显示清除按钮
+        clearable: false,
+        //无数据时展示
+        show: false,
         pickerOptions: {
           disabledDate(time) {
             return time.getTime() > Date.now();
@@ -45,8 +62,6 @@ export default {
             }
           }]
         },
-        value1: '',
-        value2: '',
         //折线图选项
         LineOption:{
           title: {
@@ -133,24 +148,35 @@ export default {
         ]}};
     },
     methods:{
+      //选择日期后发送请求
+      sendRequest(){
+        this.reset();
+        this.refreshEcharts(this.value);
+      },
       //初始化echarts
       initEcharts(){
          var LineChart = this.$echarts.init(document.getElementById('line-echarts'));
          LineChart.setOption(this.LineOption);
          var CakeChart = this.$echarts.init(document.getElementById('cake-echarts'));
          CakeChart.setOption(this.CakeOption);
-         //刷新数据
-         this.refreshEcharts(LineChart,CakeChart);
       },
-      //刷新图
-      refreshEcharts(LineChart,CakeChart){
+      //刷新图标数据
+      refreshEcharts(value){
+        if(undefined == value || null === value){
+           value = this.value;
+        }
+        //获取实例
+        var LineChart = this.$echarts.getInstanceByDom(document.getElementById('line-echarts'));
+        var CakeChart = this.$echarts.getInstanceByDom(document.getElementById('cake-echarts'));
         let LineOption = this.LineOption;
         let CakeOption = this.CakeOption;
-        interfaceCallData().then(response=>{
+        interfaceCallData(value).then(response=>{
             if(response.code == 200){
                 this.data = response.data ;
-                //初始化x轴 调用成功数
-                this.data.forEach(obj=>{
+                if(response.count >0){
+                   this.show = false;
+                   //初始化x轴 调用成功数
+                   this.data.forEach(obj=>{
                     //折线图标签
                     LineOption.xAxis.data.push(obj.interfaceName);
                     //调用成功数
@@ -162,19 +188,48 @@ export default {
                     var data = {
                       value:obj.interfaceCallSuccessCount+obj.interfaceCallFailCount,
                       name:obj.interfaceName
-                    }
+                    };
                     //饼图数据
                     CakeOption.series[0].data.push(data);
                 });
                 LineChart.setOption(LineOption);
                 CakeChart.setOption(CakeOption);
+                }else{
+                  LineChart.clear();
+                  CakeChart.clear();
+                  this.show = true;
+                }
             }
         });
+      },
+      //重置数据
+      reset(){
+           //先清空
+        var LineChart = this.$echarts.getInstanceByDom(document.getElementById('line-echarts'));
+        var CakeChart = this.$echarts.getInstanceByDom(document.getElementById('cake-echarts'));
+        let LineOption = this.LineOption;
+        let CakeOption = this.CakeOption;
+        //折线图标签
+        LineOption.xAxis.data.length = 0;
+        //调用成功数
+        LineOption.series[0].data.length = 0;
+        //调用失败数
+        LineOption.series[1].data.length = 0;
+        //饼图数据
+        CakeOption.series[0].data.length = 0;
+        LineChart.setOption(LineOption);
+        CakeChart.setOption(CakeOption);
       }
   },
-  //初始化图表
+  created(){
+    //默认当天日期
+    this.value = new Date().toLocaleDateString().split('/').map(item=>{if (item<10){return '0'+ item}else {return item}}).join('-');
+  },
   mounted(){
-      this.initEcharts();
+     //初始化图表
+     this.initEcharts();
+     //挂载数据
+     this.refreshEcharts();
   }
 }
 </script>
@@ -185,10 +240,11 @@ export default {
 .date-select-region{
    position:absolute;
    top: 80px;
-   left: 850px;
+   left: 886px;
 }
 ::v-deep .date-select-region .el-input__inner{
   height: 34px !important;
+  width: 180px !important;
 }
 .echarts-line-region{
     float: left; 
@@ -198,5 +254,10 @@ export default {
     float: left; 
     margin-top: 30px;
     margin-left: 283px;
+}
+.no-data{
+    float: left; 
+    margin-top: -768px;
+    margin-left: 500px;
 }
 </style>
