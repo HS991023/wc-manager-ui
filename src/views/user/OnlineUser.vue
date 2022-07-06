@@ -8,8 +8,8 @@
     <el-input placeholder="请选择登录IP" suffix-icon="el-icon-text" v-model="data.ip"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getOnlineUserList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="geOnlineUseListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getOnlineUserList()">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="geOnlineUseListReset()">重置</el-button>
     </div>
     </div>
     <!-- 表格组件 -->
@@ -26,7 +26,7 @@
     <el-table-column align="center" label="登录时间" width="180" prop="loginTime" key="loginTime"/>
     <el-table-column label="操作">
     <template slot-scope="scope">
-       <el-button size="mini"  type="danger" @click="handleKickOut(scope.row)">踢出</el-button>
+       <el-button size="mini" type="text" style="color:#f12626cf" @click="handleKickOut(scope.row)">强制踢出</el-button>
     </template>
     </el-table-column>
     </el-table>

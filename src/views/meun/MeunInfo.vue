@@ -12,8 +12,8 @@
     <el-input placeholder="请输入状态" suffix-icon="el-icon-text" v-model="data.status"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getResList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getResListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getResList()">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResListReset()">重置</el-button>
     </div>
     </div>
    <!-- 操作数据按钮区域 -->
@@ -69,8 +69,8 @@
     <el-table-column label="状态" width="70" prop="status" key="status"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEditRole(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDeleteRes();handleResIds(scope.row)">删除</el-button>  
+        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true">编辑</el-button>
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteRes();handleResIds(scope.row)">删除</el-button>  
       </template>
     </el-table-column>
     </el-table>    

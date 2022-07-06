@@ -10,8 +10,8 @@
     <el-input placeholder="请选择执行动作" suffix-icon="el-icon-text"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getOperatorLogList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getOperatorLogListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getOperatorLogList()">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getOperatorLogListReset()">重置</el-button>
     </div>
     </div>
     <!-- 表格组件 -->

@@ -8,8 +8,8 @@
     <el-input placeholder="请输入公厕编码" suffix-icon="el-icon-text" v-model="data.toiletCode"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getToiletList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getToiletListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getToiletList()">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getToiletListReset()">重置</el-button>
     </div>
     </div>
    <!-- 操作数据按钮区域 -->
@@ -61,8 +61,8 @@
     <el-table-column label="创建时间" width="180" prop="createTime" key="createTime"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEditToilet(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleToiletIds(scope.row);handleDeleteToilet();">删除</el-button> 
+        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditToilet(scope.row);dialogFormVisible=true">编辑</el-button>
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleToiletIds(scope.row);handleDeleteToilet();">删除</el-button> 
       </template>
     </el-table-column>
     </el-table>

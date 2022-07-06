@@ -89,7 +89,7 @@
 .serach-input .serach-propties {
     float: left;
     margin-top: 6px;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
@@ -106,9 +106,9 @@
 /* 搜索输入框高度  */
 
 .serach-input .el-input__inner {
-    height: 33px !important;
-    line-height: 33px !important;
-    font-size: 14px !important;
+    height: 31px !important;
+    line-height: 31px !important;
+    font-size: 12px !important;
     text-align: left;
 }
 
@@ -120,10 +120,10 @@
     margin-left: 10px;
     padding: 0 0 !important;
     text-align: center !important;
-    height: 33px;
-    width: 80px;
+    height: 30px;
+    width: 71px;
     font-size: 6px !important;
-    line-height: 33px !important;
+    line-height: 30px !important;
 }
 
 
@@ -139,11 +139,11 @@
 /* 操作数据按钮样式 */
 
 .operator-button-region .operator-button {
-    width: 78px;
+    width: 71px;
     height: 29px;
     text-align: center;
     font-size: 6px !important;
-    line-height: 30px;
+    line-height: 29px;
     padding: 0 0 !important;
     font-size: 11px;
 }
@@ -159,7 +159,6 @@
 
 .operator-button-region .el-button span {
     font-size: 11px !important;
-    ;
 }
 
 
@@ -178,6 +177,13 @@
     line-height: 35px;
     padding: 0 0 !important;
     font-size: 11px;
+}
+
+
+/* 操作数据-删除按钮样式 */
+
+.delete-button {
+    color: #f12626cf;
 }
 
 

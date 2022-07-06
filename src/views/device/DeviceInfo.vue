@@ -10,8 +10,8 @@
     <el-input placeholder="请输入设备状态" suffix-icon="el-icon-text"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getDictDataList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getResetDictDataList()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getDictDataList()">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResetDictDataList()">重置</el-button>
     </div>
     </div>
     <!-- 操作数据按钮区域 -->
@@ -46,7 +46,7 @@
     </div>
     <!-- 表格组件 -->
     <div class="table-data"> 
-    <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
+    <el-table :data="deviceInfoList" style="width: 100%">
     <el-table-column type="selection" width="55"/>
     <el-table-column label="设备名称" width="180"/>
     <el-table-column label="设备编码" width="180"/>
@@ -54,9 +54,8 @@
     <el-table-column label="设备状态" width="180"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" plain @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-        <el-button size="mini" plain type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-        <el-button size="mini" plain type="danger" @click="handleDelete(scope.$index, scope.row)">状态</el-button>  
+        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
@@ -81,8 +80,8 @@ export default {
     name:'DeviceInfo',
     data(){
        return{
-        //资源/菜单表格数据
-        resList: null,
+        //设备列表
+        deviceInfoList: null,
         //表单数据
         form:{},
         //总数

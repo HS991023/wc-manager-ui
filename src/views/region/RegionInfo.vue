@@ -8,8 +8,8 @@
     <el-input placeholder="请输入地区类型" suffix-icon="el-icon-text"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getRegionList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getRegionListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getRegionList()">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getRegionListReset()">重置</el-button>
     </div>
     </div>
    <!-- 操作数据按钮区域 -->
@@ -57,8 +57,8 @@
     <el-table-column label="区域名称" width="180" prop="regionName" key="regionName"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEditRegion(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDeleteRegion();handleRegionIds(scope.row)">删除</el-button>
+        <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditRegion(scope.row);dialogFormVisible=true">编辑</el-button>
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteRegion();handleRegionIds(scope.row)">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
@@ -114,7 +114,6 @@ export default {
       getRegionList(){
         let data= this.data;
         listRegion(data).then(response => {
-          console.log(response);
           if(response.count== 0){
             this.regionList = undefined;
           }else{
@@ -154,7 +153,6 @@ export default {
       },
       //编辑地区按钮
       handleEditRegion(row) {
-        console.log(row);
         //重置表单
         this.reset();
         this.form = this.handleRegionInfo(row.id);

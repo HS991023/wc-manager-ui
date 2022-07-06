@@ -16,8 +16,8 @@
     <el-input placeholder="请输入字典代码" suffix-icon="el-icon-text" v-model="data.dictCode"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getDictDataList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getResetDictDataList()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getDictDataList()">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResetDictDataList()">重置</el-button>
     </div>
     </div>
    <!-- 操作数据按钮区域 -->
@@ -65,8 +65,8 @@
     <el-table-column align="center" label="状态" width="90" prop="status" key="status"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" @click="handleEditDict(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="danger" @click="handleDeleteDict();handleDictIds(scope.row)">删除</el-button>
+        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditDict(scope.row);dialogFormVisible=true">编辑</el-button>
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteDict();handleDictIds(scope.row)">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
@@ -488,14 +488,28 @@ export default {
 </script>
 
 <style scoped>
+/* 字典树区域 */
 ::v-deep .tree-region-style{
-  margin-top: 54px !important;
+  margin-top: 68px !important;
+  width: 150px !important;
 }
+/* 字典树上方输入框 */
 ::v-deep .serach-input{
-  margin-top: 62px !important
+  margin-top: 78px !important;
 }
+
+::v-deep .tree-region-style input{
+   font-size: 9px !important;
+}
+
+
 ::v-deep .table-data{
   margin-top: 78px !important;
+}
+
+/* 字典树字体大小 */
+::v-deep .tree-region .el-tree .el-tree-node__label{
+  font-size: 12.5px !important;
 }
 
 .table-data{

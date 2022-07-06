@@ -12,14 +12,16 @@
     <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="primary" icon="el-icon-search" @click="getUserList()">搜索</el-button>
-        <el-button type="primary" class="serach-button" icon="el-icon-error" @click="getUserListReset()">重置</el-button>
+        <el-row>
+        <el-button class="serach-button" type="success" icon="el-icon-search" plain @click="getUserList()">搜索</el-button>
+        <el-button class="serach-button" type="warning" icon="el-icon-refresh" plain @click="getUserListReset()">重置</el-button>
+        </el-row>
     </div>
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
       <el-button type="primary" class="operator-button" plain icon="el-icon-circle-plus" @click="handleAddUser();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger" class="operator-button"  plain icon="el-icon-error" @click="handleDeleteUser()">批量删除</el-button>
+      <el-button type="danger"  class="operator-button"  plain icon="el-icon-error" @click="handleDeleteUser()">批量删除</el-button>
     </div>
     <div class="form-data">
     <!-- 表单新增或编辑对话框   -->
@@ -93,9 +95,8 @@
     <el-table-column fixed prop="createTime" key="createTime" label="注册日期" width="170"/>
     <el-table-column label="操作">
     <template slot-scope="scope">
-       <el-button size="mini" @click="handleEidtUser(scope.row);dialogFormVisible = true">编辑</el-button>
-       <el-button size="mini" type="danger" @click="handleDeleteUser();handleUserIds(scope.row)">删除</el-button>
-       <!-- <el-button size="mini" type="danger" @click="">状态</el-button>   -->
+       <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEidtUser(scope.row);dialogFormVisible = true">编辑</el-button>
+       <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteUser();handleUserIds(scope.row)">删除</el-button>
     </template>
     </el-table-column>
     </el-table>
