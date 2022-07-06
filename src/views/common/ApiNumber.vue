@@ -1,6 +1,14 @@
 <template>
-     <div>
-        <!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+     <div class="main">
+        <div class="date-select-region">
+          <el-date-picker
+            v-model="value2"
+            align="right"
+            type="date"
+            placeholder="选择日期"
+            :picker-options="pickerOptions">
+          </el-date-picker>
+        </div>
         <div id="line-echarts" class="echarts-line-region" style="width:100%;height:400px;"></div>
         <div id="cake-echarts" class="echarts-cake-region" style="width: 538px;height:400px;"></div>
     </div>
@@ -12,92 +20,117 @@ export default {
     name:'ApiNumber',
     data(){
       return{
-           //列表数据
-           data:[],
-           //折线图选项
-           LineOption:{
-              title: {
-                text: '接口调用统计图'
-              },
-              tooltip: {},
-              legend: {
-                data: ['调用成功','调用失败']
-              },
-              xAxis: {
-                data: [],
-                axisLabel: {
-                  interval: 0, //全部显示x轴
-                  formatter: function (params) {
-                  var newParamsName = ''; // 拼接后的新字符串
-                  var paramsNameNumber = params.length; // 实际标签数
-                  var provideNumber = 3; // 每行显示的字数
-                  var rowNumber = Math.ceil(paramsNameNumber / provideNumber); // 如需换回，算出要显示的行数
-                  if (paramsNameNumber > provideNumber) {
-                    /** 循环每一行,p表示行 */
-                    for (var i = 0; i < rowNumber; i++) {
-                      var tempStr = ''; // 每次截取的字符串
-                      var start = i * provideNumber; // 截取位置开始
-                      var end = start + provideNumber; // 截取位置结束
-                      // 最后一行的需要单独处理
-                      if (i == rowNumber - 1) {
-                        tempStr = params.substring(start, paramsNameNumber);
-                      } else {
-                        tempStr = params.substring(start, end) + '\n';
-                      }
-                      newParamsName += tempStr;
-                      }
-                    } else {
-                      newParamsName = params;
-                    }
-                    return newParamsName;}
-                }
-              },
-              yAxis: {
-              },
-              series: [
-                {
-                  name: '调用成功',
-                  type: 'line',
-                  data: []
-                },
-                {
-                  name: '调用失败',
-                  type: 'line',
-                  data: [],
-                }
-              ],
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
           },
-          //饼图选项
-          CakeOption:{
-              title: {
-                text: ''
-              },
-            legend: {
-                orient: 'vertical',
-                x: 'left',
-                data: []
-              },
-            series: [
-               {
-                type: 'pie',
-                radius: '90%',
-                avoidLabelOverlap: true,
-                label: {
-                  show: true,
-                },
-                labelLine: {
-                  show: true
-                },
-                emphasis: {
-                  label: {
-                    show: true,
-                    fontSize: '30',
-                    fontWeight: 'bold'
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
+        value1: '',
+        value2: '',
+        //折线图选项
+        LineOption:{
+          title: {
+            text: '接口调用统计图'
+          },
+          tooltip: {},
+          legend: {
+            data: ['调用成功','调用失败']
+          },
+          xAxis: {
+            data: [],
+            axisLabel: {
+              interval: 0, //全部显示x轴
+              formatter: function (params) {
+              var newParamsName = ''; // 拼接后的新字符串
+              var paramsNameNumber = params.length; // 实际标签数
+              var provideNumber = 3; // 每行显示的字数
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber); // 如需换回，算出要显示的行数
+              if (paramsNameNumber > provideNumber) {
+                /** 循环每一行,p表示行 */
+                for (var i = 0; i < rowNumber; i++) {
+                  var tempStr = ''; // 每次截取的字符串
+                  var start = i * provideNumber; // 截取位置开始
+                  var end = start + provideNumber; // 截取位置结束
+                  // 最后一行的需要单独处理
+                  if (i == rowNumber - 1) {
+                    tempStr = params.substring(start, paramsNameNumber);
+                  } else {
+                    tempStr = params.substring(start, end) + '\n';
                   }
-                },
-                data: []
+                  newParamsName += tempStr;
+                  }
+                } else {
+                  newParamsName = params;
+                }
+                return newParamsName;}
+            }
+          },
+          yAxis: {
+          },
+          series: [
+            {
+              name: '调用成功',
+              type: 'line',
+              data: []
+            },
+            {
+              name: '调用失败',
+              type: 'line',
+              data: [],
+            }
+          ],
+      },
+      //饼图选项
+      CakeOption:{
+          title: {
+            text: ''
+          },
+        legend: {
+            orient: 'vertical',
+            x: 'left',
+            data: []
+          },
+        series: [
+            {
+            type: 'pie',
+            radius: '90%',
+            avoidLabelOverlap: true,
+            label: {
+              show: true,
+            },
+            labelLine: {
+              show: true
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '13',
+                fontWeight: 'bold'
               }
-            ]}};
+            },
+            data: []
+          }
+        ]}};
     },
     methods:{
       //初始化echarts
@@ -146,6 +179,17 @@ export default {
 }
 </script>
 <style scoped>
+.main{
+  position: relative;
+}
+.date-select-region{
+   position:absolute;
+   top: 80px;
+   left: 850px;
+}
+::v-deep .date-select-region .el-input__inner{
+  height: 34px !important;
+}
 .echarts-line-region{
     float: left; 
     margin-top: 100px;
