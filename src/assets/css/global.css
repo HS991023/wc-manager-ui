@@ -39,7 +39,7 @@
 .tabs-region {
     position: absolute;
     width: 100%;
-    left: 221px;
+    left: 198px;
     top: 43px;
     border-top: 1px solid transparent;
     border-bottom: 1px solid skyblue;
@@ -64,12 +64,28 @@
 }
 
 
+/* 侧边栏打开收缩样式 */
+
+.side-switch-region {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    left: 195px;
+    top: 3px;
+}
+
+.side-switch-region .el-button--primary {
+    color: black !important;
+    background-color: transparent !important;
+}
+
+
 /* 面包屑样式 */
 
 .crumbs-region {
     position: absolute;
     width: 100%;
-    left: 221px;
+    left: 245px;
     top: 10px;
 }
 
@@ -258,11 +274,16 @@
 .el-aside {
     margin-top: -5px;
     margin-bottom: -1px;
-    margin-left: -1px;
+    margin-left: -13px;
 }
 
 .el-menu {
     background-color: #1f2d3d!important;
+    left: -5px !important;
+}
+
+.el-menu--collapse {
+    width: 45px;
 }
 
 .el-submenu .el-menu-item {

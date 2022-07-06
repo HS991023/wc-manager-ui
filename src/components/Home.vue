@@ -1,15 +1,19 @@
 ··<template>
 <div class="container-home " style="overflow:hidden;">
+   <!--侧边拉展开收缩区域 -->
+   <div class="side-switch-region" ref="sideswitchregion">
+    <el-button type="primary" size="mini" icon="el-icon-share" @click="sideChange()"></el-button>
+   </div>
    <!-- 面包屑区域 -->
-   <div class="crumbs-region">
+   <div class="crumbs-region" ref="crumbsregion">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item  :key="item" v-for="item in crumbsList">
+      <el-breadcrumb-item :key="item" v-for="item in crumbsList">
         {{item}}
       </el-breadcrumb-item>
     </el-breadcrumb>
    </div>
    <!-- 标签栏 -->
-   <div class="tabs-region">
+  <div class="tabs-region" ref="tabsregion">
     <el-tag
       :key="tag.routerPath"
       v-for="tag in dynamicTags"
@@ -20,13 +24,12 @@
       effect="dark">
       {{tag.routerName}}
     </el-tag>
-   </div>
+  </div>
   <el-container style="height: 100%; border: 1px solid #eee">
-    <el-aside width="210px"  style="height: 100% background-color: rgb(238, 241, 246)">
+  <el-aside :width="isCollapse?'55px':'210px'"  style="height: 100% background-color: rgb(238, 241, 246)">
     <!-- <div class="banner"><img src="" alt="">图片</div>   -->
-    <!-- 默认打开菜单 -->
     <el-menu :default-openeds="openIndex" @open="handleOpenMeun" @close="handleCloseMeun" 
-    :unique-opened="opened" background-color="#1f2d3d">
+    :unique-opened="opened" background-color="#1f2d3d" :collapse="isCollapse">
       <el-submenu index="1">
           <template slot="title"><i class="el-icon-meun el-icon-user-solid"></i>用户管理</template>
           <el-menu-item index="1-1" @click="handleMeunItem({routerPath:'/userInfo',routerName:'用户信息'},handleCrumbs('用户信息'))"><router-link to="/userInfo">用户信息</router-link></el-menu-item>
@@ -116,6 +119,8 @@ export default {
     name:'Home',
     data() {
       return {
+        //默认侧边栏展开
+        isCollapse: false,
         //只保持一个菜单打开
         opened: true,
         openIndex:[],
@@ -144,6 +149,33 @@ export default {
               
             });
         })
+      },
+      //侧边栏打开或关闭
+      sideChange(){
+         let res = this.isCollapse;
+         if(!res){
+            this.isCollapse = true;
+         }else{
+            this.isCollapse = false;
+         }
+      }
+      ,
+      //侧边栏展开收缩时动态更换位置及样式
+      changeCrumbs(val){
+         var crumbs = this.$refs.crumbsregion;
+         var tabsregion = this.$refs.tabsregion;
+         var sideswitchregion = this.$refs.sideswitchregion;
+         if(val){
+           sideswitchregion.style.left = '33px'
+           sideswitchregion.icon = 'el-icon-caret-right'
+           crumbs.style.left = '81px'
+           tabsregion.style.left = '20px';
+         }else{
+           sideswitchregion.style.left = '195px'
+           sideswitchregion.icon = 'el-icon-caret-left'
+           crumbs.style.left = '245px'
+           tabsregion.style.left = '198px';
+         }
       },
       //新增标签页
       handleMeunItem(val){
@@ -244,6 +276,11 @@ export default {
           })
           this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
         };
+      },
+    },
+    watch:{
+      isCollapse:function(val1,val2){
+        this.changeCrumbs(val1);
       }
     }
   };
