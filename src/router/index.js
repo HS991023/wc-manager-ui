@@ -74,7 +74,7 @@ const routes = [{
                 meta: { requireAuth: true },
             },
             {
-                path: '/apiNumber',
+                path: '/interfaceCall',
                 component: (resolve) => require(['@/views/common/ApiNumber'], resolve),
                 meta: { requireAuth: true },
             }

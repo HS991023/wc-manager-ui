@@ -64,7 +64,7 @@
         <template slot="title"><i class="el-icon-meun el-icon-s-ticket"></i>公共模块</template>
         <el-menu-item index="9-1" @click="handleMeunItem({routerPath:'/loginLog',routerName:'登录日志'},handleCrumbs('登录日志'))"><router-link to="/loginLog">登录日志</router-link></el-menu-item>
         <el-menu-item index="9-2" @click="handleMeunItem({routerPath:'/operatorLog',routerName:'操作日志'},handleCrumbs('操作日志'))"><router-link to="/operatorLog">操作日志</router-link></el-menu-item>
-        <el-menu-item index="9-3" @click="handleMeunItem({routerPath:'/apiNumber',routerName:'接口调用次数'},handleCrumbs('接口调用次数'))"><router-link to="/apiNumber">接口调用次数</router-link></el-menu-item>
+        <el-menu-item index="9-3" @click="handleMeunItem({routerPath:'/interfaceCall',routerName:'接口调用次数'},handleCrumbs('接口调用次数'))"><router-link to="/interfaceCall">接口调用次数</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="10">
         <template slot="title"><i class="el-icon-meun el-icon-s-ticket"></i>字典管理</template>
