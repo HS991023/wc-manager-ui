@@ -1,4 +1,4 @@
-··<template>
+<template>
 <div class="container-home " style="overflow:hidden;">
    <!--侧边拉展开收缩区域 -->
    <div class="side-switch-region" ref="sideswitchregion">
@@ -26,7 +26,7 @@
     </el-tag>
   </div>
   <el-container style="height: 100%; border: 1px solid #eee">
-  <el-aside :width="isCollapse?'55px':'210px'"  style="height: 100% background-color: rgb(238, 241, 246)">
+  <el-aside  id="side" :width="isCollapse?'55px':'210px'"  style="height: 100% background-color: rgb(238, 241, 246)">
     <!-- <div class="banner"><img src="" alt="">图片</div>   -->
     <el-menu :default-openeds="openIndex" @open="handleOpenMeun" @close="handleCloseMeun" 
     :unique-opened="opened" background-color="#1f2d3d" :collapse="isCollapse">
@@ -59,7 +59,7 @@
         <template slot="title"><i class="el-icon-meun el-icon-info "></i>坑位管理</template>
         <el-menu-item index="7-1" @click="handleMeunItem({routerPath:'/positionInfo',routerName:'坑位信息'}),handleCrumbs('坑位信息')"><router-link to="/positionInfo">坑位信息</router-link></el-menu-item>
       </el-submenu>
-      <el-submenu index="8">
+      <el-submenu index="8">·
         <template slot="title"><i class="el-icon-meun el-icon-s-promotion"></i>设备管理</template>
         <el-menu-item index="8-1" @click="handleMeunItem({routerPath:'/deviceInfo',routerName:'设备信息'},handleCrumbs('设备信息'))"><router-link to="/deviceInfo">设备信息</router-link></el-menu-item>
       </el-submenu>
@@ -104,7 +104,7 @@
     </div>
     </el-header>
     <!-- 插入路由展示 -->
-    <el-main>
+    <el-main ref="main" id="main">
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -165,16 +165,20 @@ export default {
          var crumbs = this.$refs.crumbsregion;
          var tabsregion = this.$refs.tabsregion;
          var sideswitchregion = this.$refs.sideswitchregion;
+         var side = document.getElementById('side')
+         var main = document.getElementById('main')
          if(val){
            sideswitchregion.style.left = '33px'
            sideswitchregion.icon = 'el-icon-caret-right'
            crumbs.style.left = '81px'
            tabsregion.style.left = '20px';
+           main.style.marginLeft ='-123px';
          }else{
            sideswitchregion.style.left = '195px'
            sideswitchregion.icon = 'el-icon-caret-left'
            crumbs.style.left = '245px'
            tabsregion.style.left = '198px';
+           main.style.marginLeft ='5px';
          }
       },
       //新增标签页
@@ -287,6 +291,7 @@ export default {
 </script>
 
 <style scoped>
+
 .banner{
   width: 120px;
   height: 30px;

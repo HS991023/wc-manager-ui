@@ -524,4 +524,13 @@ export default {
    margin-left: 15px;
 }
 
+::v-deep .el-dialog{
+  width: 37%;
+}
+::v-deep .el-dialog__body{
+  padding: 8px 25px
+}
+::v-deep .el-dialog__footer{
+  padding: 3px 87px 16px;
+}
 </style>

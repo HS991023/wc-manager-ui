@@ -47,7 +47,7 @@
     </div>
     <!-- 表格组件 -->
     <div class="table-data"> 
-    <el-table :data="positionList" style="width: 100%" ref="multipleTable"  v-loading="loading">
+    <el-table :data="positionList" style="width: 100%" ref="multipleTable" v-loading="loading" @selection-change="handlePositionIds">
     <el-table-column type="selection" width="55"/>
     <el-table-column label="坑位名称" width="180" prop="name" key="name"/>
     <el-table-column label="坑位编码" width="180" prop="number" key="number"/>
@@ -58,7 +58,7 @@
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditPosition(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeletePosition(scope.row)">删除</el-button>
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeletePosition(),handlePositionIds(scope.row)">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
@@ -155,7 +155,6 @@ export default {
       },
       //编辑坑位按钮
       handleEditPosition(row) {
-        console.log(row);
         //重置表单
         this.reset();
         this.form = this.handlePositionInfo(row.id);
@@ -174,7 +173,7 @@ export default {
                 type: 'warning'
             });
             this.dialogFormVisible = false;     
-            this.getToiletList();    
+            this.getPositionList();    
             }
             });
           //新增坑位
@@ -276,6 +275,14 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+::v-deep .el-dialog{
+  width: 37%;
+}
+::v-deep .el-dialog__body{
+  padding: 8px 25px
+}
+::v-deep .el-dialog__footer{
+  padding: 3px 87px 16px;
+}
 </style>

@@ -275,6 +275,7 @@
     margin-top: -5px;
     margin-bottom: -1px;
     margin-left: -13px;
+    width: 170px !important;
 }
 
 .el-menu {
@@ -288,6 +289,7 @@
 
 .el-submenu .el-menu-item {
     color: white;
+    min-width: 166px
 }
 
 .el-submenu__title {

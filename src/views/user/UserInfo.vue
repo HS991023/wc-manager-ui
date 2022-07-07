@@ -328,4 +328,7 @@ export default {
   height: 100px;
   background-color:pink;
 }
+::v-deep .el-dialog__footer{
+  padding: 10px 266px 20px;
+}
 </style>

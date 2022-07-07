@@ -42,7 +42,7 @@ export function updatePosition(data) {
 //删除坑位(逻辑删除)
 export function removePosition(ids) {
     return request({
-        url: '/api/system/remove/positions',
+        url: '/api/system/remove/position',
         method: 'delete',
         params: {
             ids: ids
