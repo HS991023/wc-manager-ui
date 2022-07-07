@@ -1,9 +1,9 @@
 <template>
 <div class="container-home " style="overflow:hidden;">
    <!--侧边拉展开收缩区域 -->
-   <div class="side-switch-region" ref="sideswitchregion">
+   <!-- <div class="side-switch-region" ref="sideswitchregion">
     <el-button type="primary" size="mini" icon="el-icon-share" @click="sideChange()"></el-button>
-   </div>
+   </div> -->
    <!-- 面包屑区域 -->
    <div class="crumbs-region" ref="crumbsregion">
     <el-breadcrumb separator-class="el-icon-arrow-right">
