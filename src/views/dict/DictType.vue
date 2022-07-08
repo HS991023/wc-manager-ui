@@ -1,6 +1,5 @@
 <template>
     <div>
-    <!-- 搜索栏  -->
     <div class="serach-input">
     <label class="serach-propties">字典名称:</label>    
     <el-input placeholder="请输入字典名称" suffix-icon="el-icon-text" v-model="data.nickName"/>
@@ -8,7 +7,6 @@
     <el-input placeholder="请输入字典代码" suffix-icon="el-icon-text" v-model="data.userName"/>
     <label class="serach-propties">状态:</label>    
     <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
-    <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
         <el-row>
         <el-button class="serach-button" type="success" icon="el-icon-search" plain @click="getDictTypeList()">搜索</el-button>
@@ -16,13 +14,11 @@
         </el-row>
     </div>
     </div>
-   <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
       <el-button type="primary" class="operator-button" plain icon="el-icon-circle-plus" @click="handleAddDictType();dialogFormVisible=true">新增</el-button>
       <el-button type="danger"  class="operator-button"  plain icon="el-icon-error" @click="handleDeleteDictType()">批量删除</el-button>
     </div>
     <div class="form-data">
-    <!-- 表单新增或编辑对话框   -->
     <el-dialog title="字典信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
         <el-form-item label="字典序号" :label-width="formLabelWidth">
@@ -49,14 +45,11 @@
       </div>
     </el-dialog>
     </div>
-    <!-- 表格 -->
     <div class="table-data">     
     <el-table :data="dictTypeInfoList" style="width: 100%" max-height="100%" ref="multipleTable"  v-loading="loading" @selection-change="handleDictTypeIds">
-    <!-- 多选框 -->
     <el-table-column type="selection" width="55"></el-table-column> 
     <el-table-column align="center" fixed label="字典编号"  prop="orderNumber" key="orderNumber"  width="122"/>
     <el-table-column align="center" fixed label="字典名称" prop="dictName" key="dictName"  width="122">
-      <!-- 添加列事件 -->
       <template slot-scope="scope">
            <a @click="handleDictTypeInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.dictName}}</a>
       </template>
@@ -73,7 +66,6 @@
     </el-table-column>
     </el-table>
     </div>
-    <!-- 分页组件 -->
     <div class="pageHelper" v-if="total !=0 && total>0">
     <el-pagination
       @size-change="handleSizeChange"

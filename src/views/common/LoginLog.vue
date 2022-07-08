@@ -1,6 +1,5 @@
 <template>
 <div>
-    <!-- 搜索栏 -->
     <div class="serach-input">
     <label class="serach-propties">浏览器:</label>    
     <el-input placeholder="请选择浏览器" suffix-icon="el-icon-text"/>
@@ -8,13 +7,11 @@
     <el-input placeholder="请选择操作系统" suffix-icon="el-icon-text"/>
     <label class="serach-propties">登录用户:</label>    
     <el-input placeholder="请选择登录用户" suffix-icon="el-icon-text"/>
-    <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getLoginLogList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getLoginLogListReset()">重置</el-button>
     </div>
     </div>
-    <!-- 表格组件 -->
     <div class="table-data"> 
     <el-table :data="loginLogList" style="width: 100%" ref="multipleTable"  v-loading="loading">
     <el-table-column align="center" label="数据ID" width="160" prop="id" key="id" :show-overflow-tooltip="showOverflowTooltip"/>
@@ -26,7 +23,6 @@
     <el-table-column align="center" label="登录时间" width="180" prop="createTime" key="createTime"/>
     </el-table>
     </div>
-    <!-- 分页组件 -->
     <div class="pageHelper" v-if="total !=0 && total>0">
     <el-pagination
       @size-change="handleSizeChange"

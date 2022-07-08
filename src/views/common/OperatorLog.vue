@@ -1,6 +1,5 @@
 <template>
 <div>
-    <!-- 搜索栏 -->
     <div class="serach-input">
     <label class="serach-propties">操作模块:</label>    
     <el-input placeholder="请选择操作模块" suffix-icon="el-icon-text"/>
@@ -8,13 +7,11 @@
     <el-input placeholder="请选择操作功能" suffix-icon="el-icon-text"/>
     <label class="serach-propties">执行动作:</label>    
     <el-input placeholder="请选择执行动作" suffix-icon="el-icon-text"/>
-    <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getOperatorLogList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getOperatorLogListReset()">重置</el-button>
     </div>
     </div>
-    <!-- 表格组件 -->
     <div class="table-data"> 
     <el-table :data="operatorList" style="width: 100%" ref="multipleTable"  v-loading="loading">
     <el-table-column align="center" label="操作模块" width="160" prop="operatorModule" key="operatorModule"/>
@@ -26,7 +23,6 @@
     <el-table-column align="center" label="请求时间" width="180" prop="createTime" key="createTime"/>
     </el-table>
     </div>
-    <!-- 分页组件 -->
     <div class="pageHelper" v-if="total !=0 && total>0">
     <el-pagination
       @size-change="handleSizeChange"

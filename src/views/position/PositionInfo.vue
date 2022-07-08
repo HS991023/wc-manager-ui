@@ -1,24 +1,20 @@
 <template>
 <div>
-    <!-- 搜索栏  --> 
     <div class="serach-input">
     <label class="serach-propties">隶属公厕:</label>    
     <el-input placeholder="请输入隶属公厕" suffix-icon="el-icon-text"/>
     <label class="serach-propties">坑位序号:</label>    
     <el-input placeholder="请输入坑位序号" suffix-icon="el-icon-text"/>
-    <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getPositionList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getPositionListReset()">重置</el-button>
     </div>
     </div>
-   <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
       <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddPosition();dialogFormVisible=true">新增</el-button>
       <el-button type="danger" plain class="operator-button" icon="el-icon-error" @click="handleDeletePosition()">批量删除</el-button>
     </div>
     <div class="form-data">
-    <!-- 表单新增或编辑对话框   -->
     <el-dialog title="坑位信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
         <el-form-item label="坑位名称" :label-width="formLabelWidth">
@@ -45,7 +41,6 @@
       </div>
     </el-dialog>
     </div>
-    <!-- 表格组件 -->
     <div class="table-data"> 
     <el-table :data="positionList" style="width: 100%" ref="multipleTable" v-loading="loading" @selection-change="handlePositionIds">
     <el-table-column type="selection" width="55"/>
@@ -63,7 +58,6 @@
     </el-table-column>
     </el-table>
     </div>
-    <!-- 分页组件 -->
     <div class="pageHelper" v-if="total !=0 && total>0">
     <el-pagination
       @size-change="handleSizeChange"

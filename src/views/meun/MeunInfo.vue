@@ -1,6 +1,5 @@
 <template>
  <div>
-    <!-- 搜索栏   -->
     <div class="serach-input">
     <label class="serach-propties">菜单名称:</label>    
     <el-input placeholder="请输入菜单名称" suffix-icon="el-icon-text" v-model="data.resName"/>
@@ -10,19 +9,16 @@
     <el-input placeholder="请输入菜单类型" suffix-icon="el-icon-text" v-model="data.resType"/>
     <label class="serach-propties">状态:</label>    
     <el-input placeholder="请输入状态" suffix-icon="el-icon-text" v-model="data.status"/>
-    <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getResList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResListReset()">重置</el-button>
     </div>
     </div>
-   <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
       <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true">新增</el-button>
       <el-button type="danger" plain class="operator-button" icon="el-icon-error" @click="handleDeleteRes()">批量删除</el-button>
     </div>
     <div class="form-data">
-    <!-- 表单新增或编辑对话框   -->
     <el-dialog title="菜单信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
         <el-form-item label="菜单名称" :label-width="formLabelWidth">
@@ -52,12 +48,10 @@
       </div>
     </el-dialog>
     </div>
-    <!-- 表格组件 -->
     <div class="table-data"> 
     <el-table :data="resList" style="width: 100%"  ref="multipleTable" v-loading="loading" @selection-change="handleResIds">
     <el-table-column type="selection" width="55"> </el-table-column>  
     <el-table-column label="菜单名称" width="100" prop="name" key="name">
-      <!-- 添加列事件 -->
       <template slot-scope="scope">
            <a @click="handleResInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.name}}</a>
       </template>
@@ -75,7 +69,6 @@
     </el-table-column>
     </el-table>    
     </div>
-    <!-- 分页组件 -->
     <div class="pageHelper" v-if="total !=0 && total>0">
     <el-pagination
       @size-change="handleSizeChange"

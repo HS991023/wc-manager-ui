@@ -1,21 +1,17 @@
 <template>
   <div>
-    <!-- 搜索栏 -->
     <div class="serach-input">
     <label class="serach-propties">用户昵称:</label>    
     <el-input placeholder="请输入用户昵称" suffix-icon="el-icon-text" v-model="data.nickName"/>
     <label class="serach-propties">登录IP:</label>    
     <el-input placeholder="请选择登录IP" suffix-icon="el-icon-text" v-model="data.ip"/>
-    <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getOnlineUserList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="geOnlineUseListReset()">重置</el-button>
     </div>
     </div>
-    <!-- 表格组件 -->
     <div class="table-data"> 
     <el-table :data="onlineUserList" style="width: 100%" ref="multipleTable"  v-loading="loading">
-    <!-- :show-overflow-tooltip="showOverflowTooltip" -->
     <el-table-column align="center" label="会话ID" width="180" prop="jti" key="jti" />
     <el-table-column align="center" label="在线用户" width="130" prop="nickName" key="nickName"/>
     <el-table-column align="center" label="客户端" width="130" prop="browserName" key="browserName"/>
@@ -31,7 +27,6 @@
     </el-table-column>
     </el-table>
     </div>
-    <!-- 分页组件 -->
     <div class="pageHelper" v-if="total !=0 && total>0">
     <el-pagination
       @size-change="handleSizeChange"

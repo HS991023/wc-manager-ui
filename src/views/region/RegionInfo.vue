@@ -1,24 +1,20 @@
 <template>
  <div>
-    <!-- 搜索栏 -->
     <div class="serach-input">
     <label class="serach-propties">地区名称:</label>    
     <el-input placeholder="请输入地区名称" suffix-icon="el-icon-text"/>
     <label class="serach-propties">地区类型:</label>    
     <el-input placeholder="请输入地区类型" suffix-icon="el-icon-text"/>
-    <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getRegionList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getRegionListReset()">重置</el-button>
     </div>
     </div>
-   <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
       <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRegion();dialogFormVisible=true">新增</el-button>
       <el-button type="danger" plain class="operator-button" icon="el-icon-error" @click="handleDeleteRegion()">批量删除</el-button>
     </div>
     <div class="form-data">
-    <!-- 表单新增或编辑对话框   -->
     <el-dialog title="地区信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
         <el-form-item label="省份名称" :label-width="formLabelWidth">
@@ -42,13 +38,11 @@
       </div>
     </el-dialog>
     </div>
-    <!-- 表格组件 -->
     <div class="table-data"> 
     <el-table :data="regionList" style="width: 100%" ref="multipleTable"  v-loading="loading" @selection-change="handleRegionIds">
     <el-table-column type="selection" width="55"/>
      <el-table-column fixed label="地区ID" align="center" prop="id" key="userId" v-if="false"/>
     <el-table-column label="省份名称" width="180" prop="provinceName" key="provinceName">
-       <!-- 添加列事件 -->
       <template slot-scope="scope">
            <a @click="handleRegionInfo(scope.row.id);dialogFormVisible = true">{{scope.row.provinceName}}</a>
       </template>
@@ -63,7 +57,6 @@
     </el-table-column>
     </el-table>
     </div>
-    <!-- 分页组件 -->
     <div class="pageHelper" v-if="total !=0 && total>0">
     <el-pagination
       @size-change="handleSizeChange"
