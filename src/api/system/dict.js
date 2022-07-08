@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { getDictType } from '@/utils/sessionStorge';
 
 
 
@@ -30,15 +31,6 @@ export function getDictTypeTopData(data) {
     });
 }
 
-//根据字典类型查询字典数据列表
-export function getDictDataByType(data) {
-    return request({
-        url: '/api/system/dict/data/list',
-        method: 'post',
-        data: data
-    });
-}
-
 //查看字典类型信息详情
 export function getDictTypeInfo(id) {
     return request({
@@ -49,18 +41,6 @@ export function getDictTypeInfo(id) {
         }
     });
 }
-
-//查看字典数据信息详情
-export function getDictDataInfo(id) {
-    return request({
-        url: '/api/system/dict/data/detail',
-        method: 'get',
-        params: {
-            id: id
-        }
-    });
-}
-
 
 //新增字典类型信息
 export function addDictTypeInfo(data) {
@@ -113,8 +93,34 @@ export function removeDictType(ids) {
 }
 
 
+//根据字典类型查询字典数据列表
+export function getDictDataByType(data) {
+    return request({
+        url: '/api/system/dict/data/list',
+        method: 'post',
+        data: data
+    });
+}
+
+//查看字典数据信息详情
+export function getDictDataInfo(id) {
+    return request({
+        url: '/api/system/dict/data/detail',
+        method: 'get',
+        params: {
+            id: id
+        }
+    });
+}
+
 //新增字典数据信息 
 export function addDictDataInfo(data) {
+    //转换字段信息
+    var data = {
+        dictLabel: data.dictName,
+        dictValue: data.dictValue,
+        dictType: getDictType()
+    }
     return request({
         url: '/api/system/save/dict/data',
         method: 'post',
@@ -124,6 +130,13 @@ export function addDictDataInfo(data) {
 
 //更新字典数据信息 
 export function updateDictDataInfo(data) {
+    //转换字段信息
+    var data = {
+        id: data.id,
+        dictLabel: data.dictName,
+        dictValue: data.dictValue,
+        dictType: getDictType()
+    }
     return request({
         url: '/api/system/update/dict/data',
         method: 'put',
