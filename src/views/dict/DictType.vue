@@ -51,7 +51,7 @@
     <el-table-column align="center" fixed label="字典编号"  prop="orderNumber" key="orderNumber"  width="122"/>
     <el-table-column align="center" fixed label="字典名称" prop="dictName" key="dictName"  width="122">
       <template slot-scope="scope">
-           <a @click="handleDictTypeInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.dictName}}</a>
+           <a @click="jumpDictDataView();dialogFormVisible = true;">{{scope.row.dictName}}</a>
       </template>
     </el-table-column>  
     <el-table-column align="center" fixed prop="dictCode"  key="dictCode" label="字典类型" width="122"/>
@@ -244,17 +244,21 @@ export default {
             remark: undefined,
         }
       },
+      //跳转到字典数据页面
+      jumpDictDataView(){
+        this.$router.push({
+          path:'/dictData'
+        })
+      },
       //更改每页大小
       handleSizeChange(val) {
         this.data.pageSize = val;
         this.getDictTypeList();  
-        // console.log(`每页 ${val} 条`);
       },
       //更改当前页
       handleCurrentChange(val) {
         this.data.pageNum = val;
         this.getDictTypeList(); 
-        // console.log(`当前页: ${val}`);
       }
     },
     created(){

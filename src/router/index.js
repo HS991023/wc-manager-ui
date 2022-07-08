@@ -79,6 +79,11 @@ const routes = [{
                 component: (resolve) => require(['@/views/dict/DictType'], resolve),
                 meta: { requireAuth: true },
             },
+            {
+                path: '/dictData',
+                component: (resolve) => require(['@/views/dict/DictData'], resolve),
+                meta: { requireAuth: true },
+            }
         ]
     },
     {
