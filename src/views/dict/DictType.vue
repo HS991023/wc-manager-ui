@@ -58,7 +58,7 @@
     <el-table-column align="center" fixed label="字典名称" prop="dictName" key="dictName"  width="122">
       <!-- 添加列事件 -->
       <template slot-scope="scope">
-           <a @click="handleUserInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.dictName}}</a>
+           <a @click="handleDictTypeInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.dictName}}</a>
       </template>
     </el-table-column>  
     <el-table-column align="center" fixed prop="dictCode"  key="dictCode" label="字典类型" width="122"/>
