@@ -119,7 +119,7 @@
 <script>
 import {listUser,userInfo,addUser,updateUser,removeUser} from "@/api/system/user";
 export default {
-    name:'UserInfo',
+    name:'WcManagerUiUserInfo',
     data() {
       return {
         //表格数据

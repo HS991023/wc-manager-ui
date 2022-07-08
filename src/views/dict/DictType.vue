@@ -91,7 +91,7 @@
 <script>
 import {dictTypeList,getDictTypeInfo,addDictTypeInfo,updateDictTypeInfo,removeDictType} from "@/api/system/dict";
 export default {
-    name:'DictType',
+    name:'WcManagerUiDictType',
     data() {
       return {
         dictTypeInfoList: null,

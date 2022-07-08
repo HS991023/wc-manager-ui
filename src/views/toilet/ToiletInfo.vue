@@ -85,7 +85,7 @@
 <script>
 import {listToilet,toiletInfo,addToilet,updateToilet,removeToilet} from '@/api/business/toilet'
 export default {
-    name:'ToiletInfo',
+    name:'WcManagerUiToiletInfo',
     data(){
       return{
         //表格数据

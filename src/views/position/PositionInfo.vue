@@ -81,7 +81,7 @@
 <script>
 import {listPosition,positionInfo,addPosition,updatePosition,removePosition} from '@/api/business/position'
 export default {
-    name:'PositionInfo',
+    name:'WcManagerUiPositionInfo',
     data(){
       return{
          //表格数据

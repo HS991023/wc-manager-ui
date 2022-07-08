@@ -93,7 +93,7 @@
 <script>
 import {listRes,resInfo,addRes,updateRes,removeRes} from '@/api/system/res'
 export default {
-    name:'MeunInfo',
+    name:'WcManagerUiMeunInfo',
     data() {
       return {
         //资源/菜单表格数据

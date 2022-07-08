@@ -44,7 +44,7 @@
 <script>
 import {listOperatorLog} from '@/api/system/operatorlog'
 export default {
-    name:'OperatorLog',
+    name:'WcManagerUiOperatorLog',
     data() {
        return {
         //表格数据

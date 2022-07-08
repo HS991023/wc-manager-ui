@@ -44,7 +44,7 @@
 <script>
 import {listLoginlogList} from '@/api/system/loginlog'
 export default {
-    name:'LoginLog',
+    name:'WcManagerUiLoginLog',
     data() {
        return {
         //表格数据

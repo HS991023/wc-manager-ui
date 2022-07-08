@@ -81,7 +81,7 @@
 <script>
 import {listRegion,regionInfo,addRegion,updateRegion,removeRegion} from '@/api/business/region'
 export default {
-    name:'RegionInfo',
+    name:'WcManagerUiRegionInfo',
     data() {
        return {
         //表格数据

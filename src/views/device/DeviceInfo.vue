@@ -78,7 +78,7 @@
 <script>
 import {listDevice,deviceInfo,addDevice,updateDevice,removeDevice} from '@/api/business/device'
 export default {
-    name:'DeviceInfo',
+    name:'WcManagerUiDeviceInfo',
     data(){
        return{
         //设备列表

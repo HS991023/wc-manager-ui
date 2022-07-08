@@ -77,7 +77,7 @@
 <script>
 import {listRole,roleInfo,addRole,updateRole,removeRole} from '@/api/system/role'
 export default {
-    name:'RoleInfo',
+    name:'WcManagerUiRoleInfo',
     data() {
       return {
         //表格数据

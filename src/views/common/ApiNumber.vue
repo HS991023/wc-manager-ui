@@ -27,7 +27,7 @@
 <script>
 import {interfaceCallData} from '@/api/system/interfacecall'
 export default {
-    name:'ApiNumber',
+    name:'WcManagerUiApiNumber',
     data(){
       return{
         value:'',

@@ -49,7 +49,7 @@
 <script>
 import {listOnLineUser,kickOutUser} from '@/api/system/onlineuser'
 export default {
-    name:'OnlineUser',
+    name:'WcManagerUiOnlineUser',
     data() {
        return {
         //表格数据
