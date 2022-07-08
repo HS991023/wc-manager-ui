@@ -281,6 +281,7 @@
 .el-menu {
     background-color: #1f2d3d!important;
     left: -5px !important;
+    padding-left: 10px;
 }
 
 .el-menu--collapse {

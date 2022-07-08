@@ -61,10 +61,6 @@ const routes = [{
                 meta: { requireAuth: true },
             },
             {
-                path: '/dictInfo',
-                component: (resolve) => require(['@/views/dict/DictInfo'], resolve),
-                meta: { requireAuth: true },
-            }, {
                 path: '/loginLog',
                 component: (resolve) => require(['@/views/common/LoginLog'], resolve),
                 meta: { requireAuth: true },
@@ -78,6 +74,11 @@ const routes = [{
                 component: (resolve) => require(['@/views/common/ApiNumber'], resolve),
                 meta: { requireAuth: true },
             }
+            // {
+            //     path: '/dictInfo',
+            //     component: (resolve) => require(['@/views/dict/DictInfo'], resolve),
+            //     meta: { requireAuth: true },
+            // }, 
         ]
     },
     {
