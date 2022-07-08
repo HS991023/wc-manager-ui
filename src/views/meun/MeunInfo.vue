@@ -121,53 +121,53 @@ export default {
     methods: {
       //获取菜单列表
       getResList(){
-        let data= this.data;
+        let data= this.data
         listRes(data).then(response => {
           if(response.count== 0){
-            this.resList = undefined;
+            this.resList = undefined
           }else{
-             this.resList = response.data[0];
-             this.total = response.count;
+             this.resList = response.data[0]
+             this.total = response.count
           }
-            this.loading = false;
-        });
+            this.loading = false
+        })
       },
        //菜单列表重置
       getResListReset(){
-        this.data.resName = undefined;
-        this.data.permission = undefined;
-        this.data.resType = undefined;
-        this.data.status = undefined;
+        this.data.resName = undefined,
+        this.data.permission = undefined,
+        this.data.resType = undefined,
+        this.data.status = undefined
         let resetData= {
            pageNum: 1,
            pageSize: 10,
         }
         listRes(resetData).then(response => {
-            this.resList = response.data[0];
-            this.total = response.count;
+            this.resList = response.data[0]
+            this.total = response.count
             this.loading = false;
-        });
+        })
       },
       //查询菜单详情
       handleResInfo(id){
-        this.reset();
+        this.reset()
         this.showFormButton = false
         resInfo(id).then(response=>{
-          this.form = response.data;
+          this.form = response.data
         })
       },
        //新增菜单按钮
       handleAddRole(){
         //重置表单
-        this.reset();
+        this.reset()
         this.showFormButton = true;
       },
       //编辑按钮按钮
       handleEditRole(row) {
         //重置表单
-        this.reset();
-        this.form = this.handleResInfo(row.id);
-        this.showFormButton = true;
+        this.reset()
+        this.form = this.handleResInfo(row.id)
+        this.showFormButton = true
       },
       //提交表单
       submitForm(){
@@ -181,10 +181,10 @@ export default {
                 confirmButtonText: '确定',
                 type: 'warning'
             });
-            this.dialogFormVisible = false;     
-            this.getResList();    
+            this.dialogFormVisible = false
+            this.getResList()
             }
-            });
+            })
           //新增菜单
           }else{
           addRes(this.form).then(response =>{
@@ -193,28 +193,28 @@ export default {
                 confirmButtonText: '确定',
                 type: 'warning'
             });
-            this.dialogFormVisible = false;
-            this.getResList();     
+            this.dialogFormVisible = false
+            this.getResList()
             }
-          });        
+          })
           }
-        }});
+        }})
       },
       //获取菜单ID 多选
       handleResIds(val){
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
-          return item.id;});
+          return item.id;})
          }else{ 
           //单个
           if(val != undefined){
-            this.ids = val.id;
+            this.ids = val.id
           }
-          var rows = [];
-          rows.push(val);
-          this.toggleSelection(rows);
-         };
+          var rows = []
+          rows.push(val)
+          this.toggleSelection(rows)
+         }
       },
       //删除菜单逻辑删除
       handleDeleteRes() {
@@ -231,12 +231,12 @@ export default {
                 type: 'success',
                 message: '删除成功!'
              });
-             this.getResList();
+             this.getResList()
             }
           })
         }).catch(() => {
           //清除已选择的状态
-          this.toggleSelection();
+          this.toggleSelection()
           this.$message({
             type: 'info',
             message: '已取消删除'
@@ -247,10 +247,10 @@ export default {
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
+            this.$refs.multipleTable.toggleRowSelection(row)
           });
         } else {
-          this.$refs.multipleTable.clearSelection();
+          this.$refs.multipleTable.clearSelection()
         }
       },
       //重置表单
@@ -267,17 +267,17 @@ export default {
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getResList();  
+        this.data.pageSize = val
+        this.getResList()
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getResList(); 
+        this.data.pageNum = val
+        this.getResList()
       },
     },
     created(){
-      this.getResList();
+      this.getResList()
     }
 }
 </script>

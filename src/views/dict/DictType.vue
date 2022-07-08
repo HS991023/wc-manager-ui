@@ -111,15 +111,15 @@ export default {
     }},
     methods: {
       getDictTypeList(){
-        let data= this.data;
+        let data= this.data
         dictTypeList(data).then(response => {
           if(response.count== 0){
-            this.dictTypeInfoList = undefined;
+            this.dictTypeInfoList = undefined
           }else{
-             this.dictTypeInfoList = response.data[0];
-             this.total = response.count;
+             this.dictTypeInfoList = response.data[0]
+             this.total = response.count
           }
-            this.loading = false;
+            this.loading = false
         });
       },
       getDictTypeListReset(){
@@ -128,28 +128,28 @@ export default {
            pageSize: 10,
         }
         dictTypeList(resetData).then(response => {
-            this.dictTypeInfoList = response.data[0];
-            this.total = response.count;
-            this.loading = false;
-        });
+            this.dictTypeInfoList = response.data[0]
+            this.total = response.count
+            this.loading = false
+        })
       },
       handleDictTypeInfo(id){
-        this.reset();
+        this.reset()
         this.showFormButton = false
         getDictTypeInfo(id).then(response=>{
-          this.form = response.data;
+          this.form = response.data
         })
       },
       handleAddDictType(){
         //重置表单
-        this.reset();
-        this.showFormButton = true;
+        this.reset()
+        this.showFormButton = true
       },
       handleEidtDictType(row) {
         //重置表单
-        this.reset();
-        this.form = this.handleDictTypeInfo(row.id);
-        this.showFormButton = true;
+        this.reset()
+        this.form = this.handleDictTypeInfo(row.id)
+        this.showFormButton = true
       },
       //提交表单
       submitForm(){
@@ -162,10 +162,10 @@ export default {
              this.$msgbox('更新字典类型成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            });
-            this.dialogFormVisible = false;     
-            this.getDictTypeList();}
-            });
+            })
+            this.dialogFormVisible = false;    
+            this.getDictTypeList()}
+            })
           //新增字典类型数据  
           }else{
           addDictTypeInfo(this.form).then(response =>{
@@ -174,28 +174,28 @@ export default {
                 confirmButtonText: '确定',
                 type: 'warning'
             });
-            this.dialogFormVisible = false;
-            this.getDictTypeList();     
+            this.dialogFormVisible = false
+            this.getDictTypeList()
             }
-          });        
+          })
           }
-        }});
+        }})
       },
       //获取ID多选
       handleDictTypeIds(val){
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
-          return item.id;});
+          return item.id;})
          }else{ 
           //单个删除
           if(val != undefined){
-            this.ids = val.id;
+            this.ids = val.id
           }
-          var rows = [];
-          rows.push(val);
-          this.toggleSelection(rows);
-         };
+          var rows = []
+          rows.push(val)
+          this.toggleSelection(rows)
+         }
       },
       //删除字典类型数据
       handleDeleteDictType() {
@@ -205,33 +205,33 @@ export default {
           type: 'warning'
         }).then(() => {
           //发送删除请求
-          var dictTypeIds = this.ids;
+          var dictTypeIds = this.ids
           removeDictType(dictTypeIds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
                 type: 'success',
                 message: '删除成功!'
-             });
-             this.getDictTypeList();
+             })
+             this.getDictTypeList()
             }
           })
         }).catch(() => {
           //清除已选择的状态
-          this.toggleSelection();
+          this.toggleSelection()
           this.$message({
             type: 'info',
             message: '已取消删除'
-          }); 
-        });
+          })
+        })
       },
       //清除多选
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
+            this.$refs.multipleTable.toggleRowSelection(row)
+          })
         } else {
-          this.$refs.multipleTable.clearSelection();
+          this.$refs.multipleTable.clearSelection()
         }
       },
       //重置表单
@@ -254,19 +254,17 @@ export default {
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getDictTypeList();  
+        this.data.pageSize = val
+        this.getDictTypeList() 
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getDictTypeList(); 
+        this.data.pageNum = val
+        this.getDictTypeList() 
       }
     },
     created(){
-      this.getDictTypeList();
-    },
-    mounted(){
+      this.getDictTypeList()
     }
 }
 </script>

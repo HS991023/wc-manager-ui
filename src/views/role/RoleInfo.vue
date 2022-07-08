@@ -40,7 +40,7 @@
     <el-table-column type="selection" width="55"/>
     <el-table-column label="角色名" width="180" prop="roleName">
       <template slot-scope="scope">
-           <a @click="handleRoleInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.roleName}}</a>
+           <a @click="handleRoleInfo(scope.row.id);dialogFormVisible = true  ">{{scope.row.roleName}}</a>
       </template>
     </el-table-column>  
     <el-table-column label="角色代码" width="180" prop="roleCode"/>
@@ -102,49 +102,49 @@ export default {
     methods: {
       //获取角色列表
       getRoleList(){
-        let data= this.data;
+        let data= this.data  
         listRole(data).then(response => {
           if(response.count== 0){
-            this.roleList = undefined;
+            this.roleList = undefined  
           }else{
-             this.roleList = response.data[0];
-             this.total = response.count;
+             this.roleList = response.data[0]  
+             this.total = response.count  
           }
-            this.loading = false;
-        });
+            this.loading = false  
+        })  
       },
        //角色列表重置
       getRoleListReset(){
-        this.data.roleName = undefined;
-        this.data.roleCode = undefined;
+        this.data.roleName = undefined  
+        this.data.roleCode = undefined  
         let resetData= {
            pageNum: 1,
            pageSize: 10,
         }
         listRole(resetData).then(response => {
-            this.roleList = response.data[0];
-            this.total = response.count;
-            this.loading = false;
-        });
+            this.roleList = response.data[0]  
+            this.total = response.count  
+            this.loading = false  
+        })  
       },
       //查询角色详情
       handleRoleInfo(id){
-        this.reset();
-        this.showFormButton = false;
+        this.reset()  
+        this.showFormButton = false  
         roleInfo(id).then(response=>{
-         this.form = response.data;
+         this.form = response.data  
         })
       },
        //新增角色按钮
       handleAddRole(){
-        this.reset();
-        this.showFormButton = true;
+        this.reset()  
+        this.showFormButton = true  
       },
       //编辑角色按钮
       handleEditRole(row) {
-        this.reset();
-        this.form = this.handleRoleInfo(row.id);
-        this.showFormButton = true;
+        this.reset()  
+        this.form = this.handleRoleInfo(row.id)  
+        this.showFormButton = true  
       },
       //提交表单
       submitForm(){
@@ -156,40 +156,40 @@ export default {
              this.$msgbox('更新角色信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            });
-            this.dialogFormVisible = false;     
-            this.getgetUserList();    
+            })  
+            this.dialogFormVisible = false       
+            this.getgetUserList()      
             }
-            });
+            })  
           }else{
           addRole(this.form).then(response =>{
           if(response.code==200){
              this.$msgbox('保存角色信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            });
-            this.dialogFormVisible = false;
-            this.getgetUserList();     
+            })  
+            this.dialogFormVisible = false  
+            this.getgetUserList()       
             }
-          });        
+          })          
           }
-        }});
+        }})  
       },
        //获取角色ID 多选
       handleRoleIds(val){
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
-          return item.id;});
+          return item.id  })  
          }else{ 
           //单个删除
           if(val != undefined){
-            this.ids = val.id;
+            this.ids = val.id  
           }
-          var rows = [];
-          rows.push(val);
-          this.toggleSelection(rows);
-         };
+          var rows = []  
+          rows.push(val)  
+          this.toggleSelection(rows)  
+         }  
       },
       //删除角色逻辑删除
       handleDeleteRole() {
@@ -199,33 +199,33 @@ export default {
           type: 'warning'
         }).then(() => {
           //发送删除请求
-         var roleIds = this.ids;
+         var roleIds = this.ids  
          removeRole(roleIds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
                 type: 'success',
                 message: '删除成功!'
-             });
-             this.getUserList();
+             })  
+             this.getUserList()  
             }
           })
         }).catch(() => {
           //清除已选择的状态
-          this.toggleSelection();
+          this.toggleSelection()  
           this.$message({
             type: 'info',
             message: '已取消删除'
-          }); 
-        });
+          })   
+        })  
       },
       //清除多选
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
+            this.$refs.multipleTable.toggleRowSelection(row)  
+          })  
         } else {
-          this.$refs.multipleTable.clearSelection();
+          this.$refs.multipleTable.clearSelection()  
         }
       },
       //重置表单
@@ -238,29 +238,29 @@ export default {
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getRoleList();  
+        this.data.pageSize = val  
+        this.getRoleList()    
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getRoleList(); 
+        this.data.pageNum = val  
+        this.getRoleList()   
       },
     },
     created(){
-      this.getRoleList();
+      this.getRoleList()  
     }
 }
 </script>
 
 <style scoped>
 ::v-deep .el-dialog{
-  width: 37%;
+  width: 37%  
 }
 ::v-deep .el-dialog__body{
   padding: 8px 25px
 }
 ::v-deep .el-dialog__footer{
-  padding: 3px 87px 16px;
+  padding: 3px 87px 16px  
 }
 </style>

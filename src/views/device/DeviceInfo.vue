@@ -107,18 +107,18 @@ export default {
     methods:{
       //获取设备列表
       getDeviceList(){
-        let data= this.data;
+        let data= this.data
         listDevice(data).then(response => {
           if(response.count== 0){
-            this.total = response.count;
-            this.deviceInfoList = undefined;
+            this.total = response.count
+            this.deviceInfoList = undefined
           }else{
-             this.deviceInfoList = response.data[0];
-             this.total = response.count;
+             this.deviceInfoList = response.data[0]
+             this.total = response.count
           }
-            this.loading = false;
+            this.loading = false
         }).catch(error=>{
-            console.log(error);
+            console.log(error)
         })
       },
       //设备列表重置
@@ -129,31 +129,30 @@ export default {
         }
         listDevice(resetData).then(response => {
             this.deviceInfoList = response.data[0];
-            this.total = response.count;
-            this.loading = false;
+            this.total = response.count
+            this.loading = false
         });
       },
       //查询设备详情
       handleDeviceInfo(id){
-        this.reset();
+        this.reset()
         this.showFormButton = false
         deviceInfo(id).then(response=>{
-          this.form = response.data;
+          this.form = response.data
         })
       },
       //新增设备按钮
       handleAddDevice(){
         //重置表单
-        this.reset();
-        this.showFormButton = true;
+        this.reset()
+        this.showFormButton = true
       },
       //编辑设备按钮
       handleEditDevice(row) {
-        console.log(row);
         //重置表单
-        this.reset();
-        this.form = this.handleDeviceInfo(row.id);
-        this.showFormButton = true;
+        this.reset()
+        this.form = this.handleDeviceInfo(row.id)
+        this.showFormButton = true
       },
       //提交表单
       submitForm(){
@@ -168,7 +167,7 @@ export default {
                 type: 'warning'
             });
             this.dialogFormVisible = false;     
-            this.getDeviceList();    
+            this.getDeviceList()
             }
             });
           //新增设备
@@ -179,8 +178,8 @@ export default {
                 confirmButtonText: '确定',
                 type: 'warning'
             });
-            this.dialogFormVisible = false;
-            this.getDeviceList();     
+            this.dialogFormVisible = false
+            this.getDeviceList()
             }
           });        
           }
@@ -191,17 +190,17 @@ export default {
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
-          return item.id;
-          });
+          return item.id
+          })
          }else{ 
           //单个
           if(val != undefined){
             this.ids = val.id;
           }
-          var rows = [];
-          rows.push(val);
-          this.toggleSelection(rows);
-         };
+          var rows = []
+          rows.push(val)
+          this.toggleSelection(rows)
+         }
       },
       //删除设备(逻辑删除)
       handleDeleteDevice() {
@@ -218,26 +217,26 @@ export default {
                 type: 'success',
                 message: '删除成功!'
              });
-             this.getDeviceList();
+             this.getDeviceList()
             }
           })
         }).catch(() => {
           //清除已选择的状态
-          this.toggleSelection();
+          this.toggleSelection()
           this.$message({
             type: 'info',
             message: '已取消删除'
-          }); 
-        });
+          })
+        })
       },
       //清除多选
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
+            this.$refs.multipleTable.toggleRowSelection(row)
+          })
         } else {
-          this.$refs.multipleTable.clearSelection();
+          this.$refs.multipleTable.clearSelection()
         }
       },
       //重置表单
@@ -252,20 +251,18 @@ export default {
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getDeviceList();  
+        this.data.pageSize = val
+        this.getDeviceList()
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getDeviceList(); 
+        this.data.pageNum = val
+        this.getDeviceList()
       }
     },
     created(){
-      this.getDeviceList(); 
+      this.getDeviceList()
     },
-    mounted(){
-    }
 }
 </script>
 

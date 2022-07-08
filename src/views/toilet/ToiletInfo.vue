@@ -46,7 +46,7 @@
     <el-table-column type="selection" width="55"/>
     <el-table-column label="公厕名称"  width="180" prop="name" key="name">
       <template slot-scope="scope">
-           <a @click="handleToiletInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.name}}</a>
+           <a @click="handleToiletInfo(scope.row.id);dialogFormVisible = true  ">{{scope.row.name}}</a>
       </template>
     </el-table-column>
     <el-table-column label="公厕类型" width="180" prop="type" key="type"/>
@@ -56,7 +56,7 @@
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditToilet(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleToiletIds(scope.row);handleDeleteToilet();">删除</el-button> 
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleToiletIds(scope.row);handleDeleteToilet()  ">删除</el-button> 
       </template>
     </el-table-column>
     </el-table>
@@ -111,55 +111,55 @@ export default {
     methods:{
       //获取公厕列表
       getToiletList(){
-        let data= this.data;
+        let data= this.data  
         listToilet(data).then(response => {
           if(response.count== 0){
-            this.total = response.count;
-            this.toiletList = undefined;
+            this.total = response.count  
+            this.toiletList = undefined  
           }else{
-             this.toiletList = response.data[0];
-             this.total = response.count;
+             this.toiletList = response.data[0]  
+             this.total = response.count  
           }
-            this.loading = false;
+            this.loading = false  
         }).catch(error=>{
-            console.log(error);
+            console.log(error)  
         })
       },
       //公厕列表重置
       getToiletListReset(){
-        this.data.toiletName = undefined;
-        this.data.toiletCode = undefined;
+        this.data.toiletName = undefined  
+        this.data.toiletCode = undefined  
         let resetData= {
            pageNum: 1,
            pageSize: 10,
         }
         listToilet(resetData).then(response => {
-            this.toiletList = response.data[0];
-            this.total = response.count;
-            this.loading = false;
-        });
+            this.toiletList = response.data[0]  
+            this.total = response.count  
+            this.loading = false  
+        })  
       },
       //查询公厕详情
       handleToiletInfo(id){
-        this.reset();
+        this.reset()  
         this.showFormButton = false
         toiletInfo(id).then(response=>{
-          this.form = response.data;
+          this.form = response.data  
         })
       },
       //新增公厕按钮
       handleAddToilet(){
         //重置表单
-        this.reset();
-        this.showFormButton = true;
+        this.reset()  
+        this.showFormButton = true  
       },
       //编辑公厕按钮
       handleEditToilet(row) {
-        console.log(row);
+        console.log(row)  
         //重置表单
-        this.reset();
-        this.form = this.handleToiletInfo(row.id);
-        this.showFormButton = true;
+        this.reset()  
+        this.form = this.handleToiletInfo(row.id)  
+        this.showFormButton = true  
       },
       //提交表单
       submitForm(){
@@ -172,11 +172,11 @@ export default {
              this.$msgbox('更新公厕信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            });
-            this.dialogFormVisible = false;     
-            this.getToiletList();    
+            })  
+            this.dialogFormVisible = false       
+            this.getToiletList()      
             }
-            });
+            })  
           //新增用户  
           }else{
           addToilet(this.form).then(response =>{
@@ -184,30 +184,30 @@ export default {
              this.$msgbox('保存公厕信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            });
-            this.dialogFormVisible = false;
-            this.getToiletList();     
+            })  
+            this.dialogFormVisible = false  
+            this.getToiletList()       
             }
-          });        
+          })          
           }
-        }});
+        }})  
       },
       //获取公厕ID 
       handleToiletIds(val){
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
-          return item.id;
-          });
+          return item.id  
+          })  
          }else{ 
           //单个
           if(val != undefined){
-            this.ids = val.id;
+            this.ids = val.id  
           }
-          var rows = [];
-          rows.push(val);
-          this.toggleSelection(rows);
-         };
+          var rows = []  
+          rows.push(val)  
+          this.toggleSelection(rows)  
+         }  
       },
       //删除公厕(逻辑删除)
       handleDeleteToilet() {
@@ -217,33 +217,33 @@ export default {
           type: 'warning'
         }).then(() => {
           //发送删除请求
-          var tolietds = this.ids;
+          var tolietds = this.ids  
           removeToilet(tolietds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
                 type: 'success',
                 message: '删除成功!'
-             });
-             this.getToiletList();
+             })  
+             this.getToiletList()  
             }
           })
         }).catch(() => {
           //清除已选择的状态
-          this.toggleSelection();
+          this.toggleSelection()  
           this.$message({
             type: 'info',
             message: '已取消删除'
-          }); 
-        });
+          })   
+        })  
       },
       //清除多选
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
+            this.$refs.multipleTable.toggleRowSelection(row)  
+          })  
         } else {
-          this.$refs.multipleTable.clearSelection();
+          this.$refs.multipleTable.clearSelection()  
         }
       },
       //重置表单
@@ -259,17 +259,17 @@ export default {
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getToiletList();  
+        this.data.pageSize = val  
+        this.getToiletList()    
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getToiletList(); 
+        this.data.pageNum = val  
+        this.getToiletList()   
       }
     },
     created(){
-      this.getToiletList(); 
+      this.getToiletList()   
     },
     mounted(){
     }
@@ -279,12 +279,12 @@ export default {
 
 <style scoped>
 ::v-deep .el-dialog{
-  width: 37%;
+  width: 37%  
 }
 ::v-deep .el-dialog__body{
   padding: 8px 25px
 }
 ::v-deep .el-dialog__footer{
-  padding: 3px 87px 16px;
+  padding: 3px 87px 16px  
 }
 </style>

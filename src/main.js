@@ -8,16 +8,16 @@ import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/zh-CN'
 import { Button, Input, Row, MessageBox, Container } from 'element-ui'
 import router from './router/index.js'
-Vue.prototype.$axios = axios;
+Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
-Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$alert = MessageBox.alert
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI, { locale })
-Vue.component(Row.name, Row);
-Vue.component(Input.name, Input);
-Vue.component(Button.name, Button);
-Vue.component(MessageBox.name, MessageBox);
-Vue.component(Container.name, Container);
+Vue.component(Row.name, Row)
+Vue.component(Input.name, Input)
+Vue.component(Button.name, Button)
+Vue.component(MessageBox.name, MessageBox)
+Vue.component(Container.name, Container)
 Vue.config.productionTip = false
 
 //挂载路由,vuex等

@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name:'Show',
+    name:'WcManagerUiShow',
 
 }
 </script>

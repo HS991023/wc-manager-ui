@@ -15,8 +15,8 @@ export default {
     mounted() {
         //接收字典类型页面发送过来的数据
         this.$bus.$on('reviceDictTypeData',val=>{
-            console.log(val);
-        });
+            console.log(val)
+        })
     },
     methods: {
         

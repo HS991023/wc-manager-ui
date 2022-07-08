@@ -107,18 +107,18 @@ export default {
     methods:{
       //获取坑位列表
       getPositionList(){
-        let data= this.data;
+        let data= this.data
         listPosition(data).then(response => {
           if(response.count== 0){
-            this.total = response.count;
-            this.positionList = undefined;
+            this.total = response.count
+            this.positionList = undefined
           }else{
-             this.positionList = response.data[0];
-             this.total = response.count;
+             this.positionList = response.data[0]
+             this.total = response.count
           }
-            this.loading = false;
+            this.loading = false
         }).catch(error=>{
-            console.log(error);
+            console.log(error)
         })
       },
       //坑位列表重置
@@ -128,31 +128,31 @@ export default {
            pageSize: 10,
         }
         listPosition(resetData).then(response => {
-            this.positionList = response.data[0];
-            this.total = response.count;
-            this.loading = false;
-        });
+            this.positionList = response.data[0]
+            this.total = response.count
+            this.loading = false
+        })
       },
       //查询坑位详情
       handlePositionInfo(id){
-        this.reset();
+        this.reset()
         this.showFormButton = false
         positionInfo(id).then(response=>{
-          this.form = response.data;
+          this.form = response.data
         })
       },
       //新增坑位按钮
       handleAddPosition(){
         //重置表单
-        this.reset();
-        this.showFormButton = true;
+        this.reset()
+        this.showFormButton = true
       },
       //编辑坑位按钮
       handleEditPosition(row) {
         //重置表单
-        this.reset();
-        this.form = this.handlePositionInfo(row.id);
-        this.showFormButton = true;
+        this.reset()
+        this.form = this.handlePositionInfo(row.id)
+        this.showFormButton = true
       },
       //提交表单
       submitForm(){
@@ -166,10 +166,10 @@ export default {
                 confirmButtonText: '确定',
                 type: 'warning'
             });
-            this.dialogFormVisible = false;     
-            this.getPositionList();    
+            this.dialogFormVisible = false     
+            this.getPositionList()
             }
-            });
+            })
           //新增坑位
           }else{
           addPosition(this.form).then(response =>{
@@ -177,30 +177,30 @@ export default {
              this.$msgbox('保存坑位信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            });
-            this.dialogFormVisible = false;
-            this.getPositionList();     
+            })
+            this.dialogFormVisible = false
+            this.getPositionList()
             }
-          });        
+          })       
           }
-        }});
+        }})
       },
       //获取坑位ID 
       handlePositionIds(val){
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
-          return item.id;
-          });
+          return item.id
+          })
          }else{ 
           //单个
           if(val != undefined){
-            this.ids = val.id;
+            this.ids = val.id
           }
-          var rows = [];
-          rows.push(val);
-          this.toggleSelection(rows);
-         };
+          var rows = []
+          rows.push(val)
+          this.toggleSelection(rows)
+         }
       },
       //删除坑位(逻辑删除)
       handleDeletePosition() {
@@ -217,7 +217,7 @@ export default {
                 type: 'success',
                 message: '删除成功!'
              });
-             this.getPositionList();
+             this.getPositionList()
             }
           })
         }).catch(() => {
@@ -233,10 +233,10 @@ export default {
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
+            this.$refs.multipleTable.toggleRowSelection(row)
+          })
         } else {
-          this.$refs.multipleTable.clearSelection();
+          this.$refs.multipleTable.clearSelection()
         }
       },
       //重置表单
@@ -252,19 +252,17 @@ export default {
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getPositionList();  
+        this.data.pageSize = val
+        this.getPositionList() 
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getPositionList(); 
+        this.data.pageNum = val
+        this.getPositionList() 
       }
     },
     created(){
       this.getPositionList(); 
-    },
-    mounted(){
     }
 }
 </script>

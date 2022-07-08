@@ -64,12 +64,12 @@ export default {
         let data= this.data;
         listOperatorLog(data).then(response => {
           if(response.count== 0){
-            this.operatorList = undefined;
+            this.operatorList = undefined
           }else{
-             this.operatorList = response.data[0];
-             this.total = response.count;
+             this.operatorList = response.data[0]
+             this.total = response.count
           }
-            this.loading = false;
+            this.loading = false
         }).catch(error=>{
         })
       },
@@ -80,26 +80,24 @@ export default {
            pageSize: 10,
         }
         listOperatorLog(resetData).then(response => {
-            this.operatorList = response.data[0];
-            this.total = response.count;
-            this.loading = false;
+            this.operatorList = response.data[0]
+            this.total = response.count
+            this.loading = false
         });
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getOperatorLogList();  
+        this.data.pageSize = val
+        this.getOperatorLogList()  
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getOperatorLogList(); 
+        this.data.pageNum = val
+        this.getOperatorLogList()
       }
     },
     created(){
       this.getOperatorLogList();
-    },
-    mounted(){
     }
 }
 </script>

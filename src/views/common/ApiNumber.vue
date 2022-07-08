@@ -39,25 +39,25 @@ export default {
         show: false,
         pickerOptions: {
           disabledDate(time) {
-            return time.getTime() > Date.now();
+            return time.getTime() > Date.now()
           },
           shortcuts: [{
             text: '今天',
             onClick(picker) {
-              picker.$emit('pick', new Date());
+              picker.$emit('pick', new Date())
             }
           }, {
             text: '昨天',
             onClick(picker) {
               const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              date.setTime(date.getTime() - 3600 * 1000 * 24)
               picker.$emit('pick', date);
             }
           }, {
             text: '一周前',
             onClick(picker) {
               const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
               picker.$emit('pick', date);
             }
           }]
@@ -76,26 +76,26 @@ export default {
             axisLabel: {
               interval: 0, //全部显示x轴
               formatter: function (params) {
-              var newParamsName = ''; // 拼接后的新字符串
-              var paramsNameNumber = params.length; // 实际标签数
+              var newParamsName = '' // 拼接后的新字符串
+              var paramsNameNumber = params.length // 实际标签数
               var provideNumber = 3; // 每行显示的字数
-              var rowNumber = Math.ceil(paramsNameNumber / provideNumber); // 如需换回，算出要显示的行数
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber) // 如需换回，算出要显示的行数
               if (paramsNameNumber > provideNumber) {
                 /** 循环每一行,p表示行 */
                 for (var i = 0; i < rowNumber; i++) {
-                  var tempStr = ''; // 每次截取的字符串
-                  var start = i * provideNumber; // 截取位置开始
-                  var end = start + provideNumber; // 截取位置结束
+                  var tempStr = '' // 每次截取的字符串
+                  var start = i * provideNumber // 截取位置开始
+                  var end = start + provideNumber // 截取位置结束
                   // 最后一行的需要单独处理
                   if (i == rowNumber - 1) {
-                    tempStr = params.substring(start, paramsNameNumber);
+                    tempStr = params.substring(start, paramsNameNumber)
                   } else {
-                    tempStr = params.substring(start, end) + '\n';
+                    tempStr = params.substring(start, end) + '\n'
                   }
-                  newParamsName += tempStr;
+                  newParamsName += tempStr
                   }
                 } else {
-                  newParamsName = params;
+                  newParamsName = params
                 }
                 return newParamsName;}
             }
@@ -150,39 +150,39 @@ export default {
     methods:{
       //选择日期后发送请求
       sendRequest(){
-        this.reset();
-        this.refreshEcharts(this.value);
+        this.reset()
+        this.refreshEcharts(this.value)
       },
       //初始化echarts
       initEcharts(){
-         var LineChart = this.$echarts.init(document.getElementById('line-echarts'));
-         LineChart.setOption(this.LineOption);
-         var CakeChart = this.$echarts.init(document.getElementById('cake-echarts'));
-         CakeChart.setOption(this.CakeOption);
+         var LineChart = this.$echarts.init(document.getElementById('line-echarts'))
+         LineChart.setOption(this.LineOption)
+         var CakeChart = this.$echarts.init(document.getElementById('cake-echarts'))
+         CakeChart.setOption(this.CakeOption)
       },
       //刷新图标数据
       refreshEcharts(value){
         if(undefined == value || null === value){
-           value = this.value;
+           value = this.value
         }
         //获取实例
-        var LineChart = this.$echarts.getInstanceByDom(document.getElementById('line-echarts'));
-        var CakeChart = this.$echarts.getInstanceByDom(document.getElementById('cake-echarts'));
-        let LineOption = this.LineOption;
-        let CakeOption = this.CakeOption;
+        var LineChart = this.$echarts.getInstanceByDom(document.getElementById('line-echarts'))
+        var CakeChart = this.$echarts.getInstanceByDom(document.getElementById('cake-echarts'))
+        let LineOption = this.LineOption
+        let CakeOption = this.CakeOption
         interfaceCallData(value).then(response=>{
             if(response.code == 200){
-                this.data = response.data ;
+                this.data = response.data
                 if(response.count >0){
-                   this.show = false;
+                   this.show = false
                    //初始化x轴 调用成功数
                    this.data.forEach(obj=>{
                     //折线图标签
-                    LineOption.xAxis.data.push(obj.interfaceName);
+                    LineOption.xAxis.data.push(obj.interfaceName)
                     //调用成功数
-                    LineOption.series[0].data.push(obj.interfaceCallSuccessCount);
+                    LineOption.series[0].data.push(obj.interfaceCallSuccessCount)
                     //调用失败数
-                    LineOption.series[1].data.push(obj.interfaceCallFailCount);
+                    LineOption.series[1].data.push(obj.interfaceCallFailCount)
                      //饼图选项
                     // CakeOption.legend.data.push(obj.interfaceName);
                     var data = {
@@ -190,14 +190,14 @@ export default {
                       name:obj.interfaceName
                     };
                     //饼图数据
-                    CakeOption.series[0].data.push(data);
-                });
-                LineChart.setOption(LineOption);
-                CakeChart.setOption(CakeOption);
+                    CakeOption.series[0].data.push(data)
+                })
+                LineChart.setOption(LineOption)
+                CakeChart.setOption(CakeOption)
                 }else{
-                  LineChart.clear();
-                  CakeChart.clear();
-                  this.show = true;
+                  LineChart.clear()
+                  CakeChart.clear()
+                  this.show = true
                 }
             }
         });
@@ -205,31 +205,31 @@ export default {
       //重置数据
       reset(){
            //先清空
-        var LineChart = this.$echarts.getInstanceByDom(document.getElementById('line-echarts'));
-        var CakeChart = this.$echarts.getInstanceByDom(document.getElementById('cake-echarts'));
-        let LineOption = this.LineOption;
-        let CakeOption = this.CakeOption;
+        var LineChart = this.$echarts.getInstanceByDom(document.getElementById('line-echarts'))
+        var CakeChart = this.$echarts.getInstanceByDom(document.getElementById('cake-echarts'))
+        let LineOption = this.LineOption
+        let CakeOption = this.CakeOption
         //折线图标签
-        LineOption.xAxis.data.length = 0;
+        LineOption.xAxis.data.length = 0
         //调用成功数
-        LineOption.series[0].data.length = 0;
+        LineOption.series[0].data.length = 0
         //调用失败数
-        LineOption.series[1].data.length = 0;
+        LineOption.series[1].data.length = 0
         //饼图数据
-        CakeOption.series[0].data.length = 0;
-        LineChart.setOption(LineOption);
-        CakeChart.setOption(CakeOption);
+        CakeOption.series[0].data.length = 0
+        LineChart.setOption(LineOption)
+        CakeChart.setOption(CakeOption)
       }
   },
   created(){
     //默认当天日期
-    this.value = new Date().toLocaleDateString().split('/').map(item=>{if (item<10){return '0'+ item}else {return item}}).join('-');
+    this.value = new Date().toLocaleDateString().split('/').map(item=>{if (item<10){return '0'+ item}else {return item}}).join('-')
   },
   mounted(){
      //初始化图表
-     this.initEcharts();
+     this.initEcharts()
      //挂载数据
-     this.refreshEcharts();
+     this.refreshEcharts()
   }
 }
 </script>

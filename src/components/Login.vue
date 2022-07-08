@@ -18,7 +18,6 @@
 </template>
 
 <script>
-import router from '@/router'
 export default {
     name:'Login',
     data(){
@@ -30,7 +29,7 @@ export default {
         }
     },
     methods:{
-        doLogin(form){
+       doLogin(form){
         var router = this.$router;
         var alert  =  this.$alert;
         var store = this.$store;
@@ -41,10 +40,7 @@ export default {
             data:{ 
                 username:this.form.userName,
                 password:this.form.passWord
-                },
-            params:{
-               
-            },
+                }
             }).then(function(res){
                 if(res.data.code == 200){
                 let token = res.data.data;
@@ -59,18 +55,13 @@ export default {
                     confirmButtonText: '确定'
                   });
                 }
-            }).catch(function(error){
-                console.log(error) 
             })
         }else{
           alert('请完善表单信息', '提示', {
           confirmButtonText: '确定'
-        });
+        })
       }
-    }},
-    mounted() {
-    
-    }
+    }}
 }
 </script>
 

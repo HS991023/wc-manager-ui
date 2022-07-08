@@ -82,7 +82,7 @@
     <el-table-column fixed label="用户名"  prop="nickName" key="nickName"  width="100">
       <!-- 添加列事件 -->
       <template slot-scope="scope">
-           <a @click="handleUserInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.nickName}}</a>
+           <a @click="handleUserInfo(scope.row.id);dialogFormVisible = true    ">{{scope.row.nickName}}</a>
       </template>
     </el-table-column>  
     <el-table-column fixed prop="userName"  key="userName" label="账号" width="100"/>
@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import {listUser,userInfo,addUser,updateUser,removeUser} from "@/api/system/user";
+import {listUser,userInfo,addUser,updateUser,removeUser} from "@/api/system/user"    
 export default {
     name:'WcManagerUiUserInfo',
     data() {
@@ -151,51 +151,51 @@ export default {
     methods: {
       //获取用户列表
       getUserList(){
-        let data= this.data;
+        let data= this.data    
         listUser(data).then(response => {
           if(response.count== 0){
-            this.userList = undefined;
+            this.userList = undefined    
           }else{
-             this.userList = response.data[0];
-             this.total = response.count;
+             this.userList = response.data[0]    
+             this.total = response.count    
           }
-            this.loading = false;
-        });
+            this.loading = false    
+        })    
       },
       //用户列表重置
       getUserListReset(){
-        this.data.nickName = undefined;
-        this.data.userName = undefined;
+        this.data.nickName = undefined    
+        this.data.userName = undefined    
         let resetData= {
            pageNum: 1,
            pageSize: 10,
         }
         listUser(resetData).then(response => {
-            this.userList = response.data[0];
-            this.total = response.count;
-            this.loading = false;
-        });
+            this.userList = response.data[0]    
+            this.total = response.count    
+            this.loading = false    
+        })    
       },
       //查询用户详情
       handleUserInfo(id){
-        this.reset();
+        this.reset()    
         this.showFormButton = false
         userInfo(id).then(response=>{
-          this.form = response.data;
+          this.form = response.data    
         })
       },
       //新增用户按钮
       handleAddUser(){
         //重置表单
-        this.reset();
-        this.showFormButton = true;
+        this.reset()    
+        this.showFormButton = true    
       },
       //编辑用户按钮
       handleEidtUser(row) {
         //重置表单
-        this.reset();
-        this.form = this.handleUserInfo(row.id);
-        this.showFormButton = true;
+        this.reset()    
+        this.form = this.handleUserInfo(row.id)    
+        this.showFormButton = true    
       },
       //提交表单
       submitForm(){
@@ -208,11 +208,11 @@ export default {
              this.$msgbox('更新用户信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            });
-            this.dialogFormVisible = false;     
-            this.getUserList();    
+            })    
+            this.dialogFormVisible = false         
+            this.getUserList()        
             }
-            });
+            })    
           //新增用户  
           }else{
           addUser(this.form).then(response =>{
@@ -220,29 +220,29 @@ export default {
              this.$msgbox('保存用户信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            });
-            this.dialogFormVisible = false;
-            this.getUserList();     
+            })    
+            this.dialogFormVisible = false    
+            this.getUserList()         
             }
-          });        
+          })            
           }
-        }});
+        }})    
       },
       //获取用户ID 多选
       handleUserIds(val){
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
-          return item.id;});
+          return item.id    })    
          }else{ 
           //单个删除
           if(val != undefined){
-            this.ids = val.id;
+            this.ids = val.id    
           }
-          var rows = [];
-          rows.push(val);
-          this.toggleSelection(rows);
-         };
+          var rows = []    
+          rows.push(val)    
+          this.toggleSelection(rows)    
+         }    
       },
       //删除用户逻辑删除
       handleDeleteUser() {
@@ -252,33 +252,33 @@ export default {
           type: 'warning'
         }).then(() => {
           //发送删除请求
-          var userIds = this.ids;
+          var userIds = this.ids    
           removeUser(userIds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
                 type: 'success',
                 message: '删除成功!'
-             });
-             this.getUserList();
+             })    
+             this.getUserList()    
             }
           })
         }).catch(() => {
           //清除已选择的状态
-          this.toggleSelection();
+          this.toggleSelection()    
           this.$message({
             type: 'info',
             message: '已取消删除'
-          }); 
-        });
+          })     
+        })    
       },
       //清除多选
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
+            this.$refs.multipleTable.toggleRowSelection(row)    
+          })    
         } else {
-          this.$refs.multipleTable.clearSelection();
+          this.$refs.multipleTable.clearSelection()    
         }
       },
       //重置表单
@@ -299,19 +299,19 @@ export default {
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getUserList();  
-        // console.log(`每页 ${val} 条`);
+        this.data.pageSize = val    
+        this.getUserList()      
+        // console.log(`每页 ${val} 条`)    
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getUserList(); 
-        // console.log(`当前页: ${val}`);
+        this.data.pageNum = val    
+        this.getUserList()     
+        // console.log(`当前页: ${val}`)    
       }
     },
     created(){
-      this.getUserList();
+      this.getUserList()    
     },
     mounted(){
     }
@@ -320,15 +320,15 @@ export default {
 
 <style scoped>
 .user-avater{
-  display: inline-block;
-  position: relative;
-  top: 40px;
-  left: 56px;
-  width: 100px;
-  height: 100px;
-  background-color:pink;
+  display: inline-block;   
+  position: relative;  
+  top: 40px;    
+  left: 56px;    
+  width: 100px;    
+  height: 100px;    
+  background-color:pink    
 }
 ::v-deep .el-dialog__footer{
-  padding: 10px 266px 20px;
+  padding: 10px 266px 20px    
 }
 </style>

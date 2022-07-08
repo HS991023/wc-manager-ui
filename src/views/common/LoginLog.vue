@@ -61,17 +61,17 @@ export default {
     methods: {
       //查询操作日志信息列表
       getLoginLogList(){
-        let data= this.data;
+        let data= this.data
         listLoginlogList(data).then(response => {
           if(response.count== 0){
             this.loginLogList = undefined;
           }else{
-             this.loginLogList = response.data[0];
-             this.total = response.count;
+             this.loginLogList = response.data[0]
+             this.total = response.count
           }
             this.loading = false;
         }).catch(error=>{
-            console.log(error);
+            console.log(error)
         })
       },
       //操作日志信息列表重置
@@ -82,25 +82,23 @@ export default {
         }
         listLoginlogList(resetData).then(response => {
             this.loginLogList = response.data[0];
-            this.total = response.count;
-            this.loading = false;
+            this.total = response.count
+            this.loading = false
         });
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val;
-        this.getLoginLogList();  
+        this.data.pageSize = val
+        this.getLoginLogList() 
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val;
-        this.getLoginLogList(); 
+        this.data.pageNum = val
+        this.getLoginLogList()
       }
     },
     created(){
-      this.getLoginLogList();
-    },
-    mounted(){
+      this.getLoginLogList()
     }
 }
 </script>
