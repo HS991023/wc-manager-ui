@@ -73,12 +73,12 @@ const routes = [{
                 path: '/interfaceCall',
                 component: (resolve) => require(['@/views/common/ApiNumber'], resolve),
                 meta: { requireAuth: true },
-            }
-            // {
-            //     path: '/dictInfo',
-            //     component: (resolve) => require(['@/views/dict/DictInfo'], resolve),
-            //     meta: { requireAuth: true },
-            // }, 
+            },
+            {
+                path: '/dictType',
+                component: (resolve) => require(['@/views/dict/DictType'], resolve),
+                meta: { requireAuth: true },
+            },
         ]
     },
     {

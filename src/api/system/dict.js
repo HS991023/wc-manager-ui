@@ -11,6 +11,15 @@ export function dictTree(data) {
     });
 }
 
+//查询字典类型数据列表
+export function dictTypeList(data) {
+    return request({
+        url: '/api/system/dict/type/list',
+        method: 'post',
+        data: data
+    });
+}
+
 
 //查询字典顶级节点下属字典数据
 export function getDictTypeTopData(data) {
@@ -55,6 +64,16 @@ export function getDictDataInfo(id) {
 
 //新增字典类型信息
 export function addDictTypeInfo(data) {
+    //转换字段
+    var data = data;
+    data = {
+        id: data.id,
+        orderNumber: data.orderNumber,
+        label: data.dictName,
+        type: data.dictCode,
+        status: data.status,
+        remark: data.remark
+    }
     return request({
         url: '/api/system/save/dict/type',
         method: 'post',
@@ -64,6 +83,16 @@ export function addDictTypeInfo(data) {
 
 //更新字典类型信息
 export function updateDictTypeInfo(data) {
+    //转换字段
+    var data = data;
+    data = {
+        id: data.id,
+        orderNumber: data.orderNumber,
+        label: data.dictName,
+        type: data.dictCode,
+        status: data.status,
+        remark: data.remark
+    }
     return request({
         url: '/api/system/update/dict/type',
         method: 'put',

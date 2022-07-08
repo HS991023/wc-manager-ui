@@ -71,7 +71,7 @@
       </el-submenu>
       <el-submenu index="10">
         <template slot="title"><i class="el-icon-meun el-icon-s-ticket"></i>字典管理</template>
-        <el-menu-item index="10-1" @click="handleMeunItem({routerPath:'/dictInfo',routerName:'字典信息'},handleCrumbs('字典信息'))"><router-link to="/dictInfo">字典信息</router-link></el-menu-item>
+        <el-menu-item index="10-1" @click="handleMeunItem({routerPath:'/dictType',routerName:'字典信息'},handleCrumbs('字典信息'))"><router-link to="/dictType">字典信息</router-link></el-menu-item>
       </el-submenu>
     </el-menu>
   </el-aside>
