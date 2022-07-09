@@ -60,7 +60,7 @@
         <el-menu-item index="7-1" @click="handleMeunItem({routerPath:'/positionInfo',routerName:'坑位信息'}),handleCrumbs('坑位信息')"><router-link to="/positionInfo">坑位信息</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="8">·
-        <template slot="title"><i class="el-icon-meun el-icon-s-promotion"></i>设备管理</template>
+        <template slot="title"><i class="el-icon-meun el-icon-info"></i>设备管理</template>
         <el-menu-item index="8-1" @click="handleMeunItem({routerPath:'/deviceInfo',routerName:'设备信息'},handleCrumbs('设备信息'))"><router-link to="/deviceInfo">设备信息</router-link></el-menu-item>
       </el-submenu>
       <el-submenu index="9">

@@ -21,10 +21,10 @@
     <div class="form-data">
     <el-dialog title="字典信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
-        <el-form-item label="字典名称" :label-width="formLabelWidth">
+        <el-form-item label="字典标签" :label-width="formLabelWidth">
           <el-input v-model="form.dictName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="字典值" :label-width="formLabelWidth">
+        <el-form-item label="字典键值" :label-width="formLabelWidth">
           <el-input v-model="form.dictValue" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth">
@@ -42,7 +42,7 @@
     <div class="table-data">     
     <el-table :data="dictDataInfoList" style="width: 100%" max-height="100%" ref="multipleTable"  v-loading="loading" @selection-change="handleDictDataIds">
     <el-table-column type="selection" width="55"></el-table-column> 
-    <el-table-column align="center" fixed label="字典名称" prop="dictName" key="dictName"  width="122">
+    <el-table-column align="center" fixed label="字典标签" prop="dictName" key="dictName"  width="122">
       <template slot-scope="scope">
            <a @click="jumpDictDataView(scope.row);dialogFormVisible = true;">{{scope.row.dictName}}</a>
       </template>
@@ -170,10 +170,8 @@ export default {
                 type: 'warning'
             });
             this.dialogFormVisible = false
-            this.getDictDataList()
-            }
-          })
-          }
+            this.getDictDataList() }
+          })}
         }})
       },
       //获取ID多选
