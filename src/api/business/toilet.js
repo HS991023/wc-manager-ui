@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 
 //查询公厕列表
-export function listToilet(data) {
+export function toiletList(data) {
     return request({
         url: '/api/system/toilet/list',
         method: 'post',

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 
 
 //查询菜单列表
-export function listRes(data) {
+export function resList(data) {
     return request({
         url: '/api/system/res/list',
         method: 'post',

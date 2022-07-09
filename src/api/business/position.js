@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 
 //查询坑位列表
-export function listPosition(data) {
+export function positionList(data) {
     return request({
         url: '/api/system/position/list',
         method: 'post',

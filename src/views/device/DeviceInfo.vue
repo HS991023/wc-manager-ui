@@ -1,20 +1,20 @@
 <template>
 <div>
     <div class="serach-input">
-    <label class="serach-propties">设备名称:</label>    
-    <el-input placeholder="请输入设备名称" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">设备编码:</label>    
-    <el-input placeholder="请输入设备编码" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">设备状态:</label>    
-    <el-input placeholder="请输入设备状态" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">设备名称:</label>    
+      <el-input placeholder="请输入设备名称" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">设备编码:</label>    
+      <el-input placeholder="请输入设备编码" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">设备状态:</label>    
+      <el-input placeholder="请输入设备状态" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getDeviceList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getDeviceListReset()">重置</el-button>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button type="primary" plain  class="operator-button" icon="el-icon-circle-plus" @click="handleAddDevice();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger" plain class="operator-button" icon="el-icon-error" @click="handleDeleteDevice()">批量删除</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddDevice();dialogFormVisible=true">新增</el-button>
+      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteDevice()">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="设备信息" :visible.sync="dialogFormVisible">
@@ -35,42 +35,46 @@
       <div slot="footer" class="dialog-footer">
         <div class="from-button-region" v-if="showFormButton">
         <el-button class="button" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" class="button" @click="submitForm()">确 定</el-button>
+        <el-button class="button" type="primary" @click="submitForm()">确 定</el-button>
       </div>
       </div>
     </el-dialog>
     </div>
     <div class="table-data"> 
-    <el-table :data="deviceInfoList" style="width: 100%" ref="multipleTable"  v-loading="loading" @selection-change="handleDeviceIds">
+    <el-table :data="deviceInfoList" style="width: 100%" ref="multipleTable" v-loading="loading" @selection-change="handleDeviceIds" :header-cell-style="rowClass">
     <el-table-column type="selection" width="55"/>
-    <el-table-column label="设备名称" width="180" prop="name"/>
+    <el-table-column label="设备名称" width="180" prop="name">
+        <template slot-scope="scope">
+           <div class="table-column-region" @click="handleDeviceInfo(scope.row.id);dialogFormVisible = true">{{scope.row.name}}</div>
+         </template>
+    </el-table-column>
     <el-table-column label="设备编码" width="180" prop="code"/>
     <el-table-column label="设备机器码" width="180" prop="indexCode"/>
     <el-table-column label="设备状态" width="180" prop="status"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditDevice(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeviceIds(scope.row);handleDeleteDevice()">删除</el-button>
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeviceIds(scope.row);handleDeleteDevice()">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
     </div>
     <div class="pageHelper" v-if="total !=0 && total>0">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="this.data.pageNum"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="this.data.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="this.data.pageNum"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="this.data.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
     </div>   
 </template>
 
 <script>
-import {listDevice,deviceInfo,addDevice,updateDevice,removeDevice} from '@/api/business/device'
+import {deviceList,deviceInfo,addDevice,updateDevice,removeDevice} from '@/api/business/device'
 export default {
     name:'WcManagerUiDeviceInfo',
     data(){
@@ -108,7 +112,7 @@ export default {
       //获取设备列表
       getDeviceList(){
         let data= this.data
-        listDevice(data).then(response => {
+        deviceList(data).then(response => {
           if(response.count== 0){
             this.total = response.count
             this.deviceInfoList = undefined
@@ -127,7 +131,7 @@ export default {
            pageNum: 1,
            pageSize: 10,
         }
-        listDevice(resetData).then(response => {
+        deviceList(resetData).then(response => {
             this.deviceInfoList = response.data[0];
             this.total = response.count
             this.loading = false
@@ -258,6 +262,10 @@ export default {
       handleCurrentChange(val) {
         this.data.pageNum = val
         this.getDeviceList()
+      },
+      //设置表头颜色
+      rowClass({ row, rowIndex}) {
+        return 'background:#FAFAFA'
       }
     },
     created(){

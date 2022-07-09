@@ -1,22 +1,22 @@
 <template>
    <div>
     <div class="serach-input">
-    <label class="serach-propties">字典名称:</label>    
-    <el-input placeholder="请输入字典名称" suffix-icon="el-icon-text" v-model="data.nickName"/>
-    <label class="serach-propties">字典代码:</label>    
-    <el-input placeholder="请输入字典代码" suffix-icon="el-icon-text" v-model="data.userName"/>
-    <label class="serach-propties">状态:</label>    
-    <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">字典名称:</label>    
+      <el-input placeholder="请输入字典名称" suffix-icon="el-icon-text" v-model="data.nickName"/>
+      <label class="serach-propties">字典代码:</label>    
+      <el-input placeholder="请输入字典代码" suffix-icon="el-icon-text" v-model="data.userName"/>
+      <label class="serach-propties">状态:</label>    
+      <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
         <el-row>
-        <el-button class="serach-button" type="success" icon="el-icon-search" plain @click="getDictDataList()">搜索</el-button>
+        <el-button class="serach-button" type="success" icon="el-icon-search"  plain @click="getDictDataList()">搜索</el-button>
         <el-button class="serach-button" type="warning" icon="el-icon-refresh" plain @click="getDictDataListReset()">重置</el-button>
         </el-row>
     </div>
     </div>
     <div class="operator-button-region">
       <el-button type="primary" class="operator-button" plain icon="el-icon-circle-plus" @click="handleAddDictData();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger"  class="operator-button"  plain icon="el-icon-error" @click="handleDeleteDictData()">批量删除</el-button>
+      <el-button type="danger"  class="operator-button" plain icon="el-icon-error" @click="handleDeleteDictData()">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="字典信息" :visible.sync="dialogFormVisible">
@@ -40,11 +40,11 @@
     </el-dialog>
     </div>
     <div class="table-data">     
-    <el-table :data="dictDataInfoList" style="width: 100%" max-height="100%" ref="multipleTable"  v-loading="loading" @selection-change="handleDictDataIds">
+    <el-table :data="dictDataInfoList" style="width: 100%" max-height="100%" ref="multipleTable"  v-loading="loading" @selection-change="handleDictDataIds" :header-cell-style="rowClass">
     <el-table-column type="selection" width="55"></el-table-column> 
     <el-table-column align="center" fixed label="字典标签" prop="dictName" key="dictName"  width="122">
       <template slot-scope="scope">
-           <div class="table-column-region" @click="jumpDictDataView(scope.row);dialogFormVisible = true;">{{scope.row.dictName}}</div>
+           <div class="table-column-region" @click="handleDictDataInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.dictName}}</div>
       </template>
     </el-table-column>  
     <el-table-column align="center" fixed prop="dictValue" key="dictValue" label="字典值" width="122"/>
@@ -150,7 +150,7 @@ export default {
       submitForm(){
         this.$refs["form"].validate(valid => {
         if (valid) {
-          //更新字典类型数据
+          //更新字典数据
           if (this.form.id != undefined) {           
             updateDictDataInfo(this.form).then(response =>{
             if(response.code==200){
@@ -161,7 +161,7 @@ export default {
             this.dialogFormVisible = false;    
             this.getDictDataList()}
             })
-          //新增字典类型数据  
+          //新增字典数据  
           }else{
           addDictDataInfo(this.form).then(response =>{
           if(response.code==200){
@@ -190,7 +190,7 @@ export default {
           this.toggleSelection(rows)
          }
       },
-      //删除字典类型数据
+      //删除字典数据
       handleDeleteDictData() {
         this.$confirm('此操作将删除字典数据信息, 是否继续?', '系统提示', {
           confirmButtonText: '确定',
@@ -244,6 +244,10 @@ export default {
       handleCurrentChange(val) {
         this.data.pageNum = val
         this.getDictDataList() 
+      },
+      //设置表头颜色
+     rowClass({ row, rowIndex}) {
+        return 'background:#FAFAFA'
       }
     },
     mounted() {

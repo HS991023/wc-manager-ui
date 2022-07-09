@@ -1,22 +1,22 @@
 <template>
     <div>
     <div class="serach-input">
-    <label class="serach-propties">字典名称:</label>    
-    <el-input placeholder="请输入字典名称" suffix-icon="el-icon-text" v-model="data.nickName"/>
-    <label class="serach-propties">字典代码:</label>    
-    <el-input placeholder="请输入字典代码" suffix-icon="el-icon-text" v-model="data.userName"/>
-    <label class="serach-propties">状态:</label>    
-    <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">字典名称:</label>    
+      <el-input placeholder="请输入字典名称" suffix-icon="el-icon-text" v-model="data.nickName"/>
+      <label class="serach-propties">字典代码:</label>    
+      <el-input placeholder="请输入字典代码" suffix-icon="el-icon-text" v-model="data.userName"/>
+      <label class="serach-propties">状态:</label>    
+      <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
         <el-row>
-        <el-button class="serach-button" type="success" icon="el-icon-search" plain @click="getDictTypeList()">搜索</el-button>
+        <el-button class="serach-button" type="success" icon="el-icon-search"  plain @click="getDictTypeList()">搜索</el-button>
         <el-button class="serach-button" type="warning" icon="el-icon-refresh" plain @click="getDictTypeListReset()">重置</el-button>
         </el-row>
     </div>
     </div>
     <div class="operator-button-region">
       <el-button type="primary" class="operator-button" plain icon="el-icon-circle-plus" @click="handleAddDictType();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger"  class="operator-button"  plain icon="el-icon-error" @click="handleDeleteDictType()">批量删除</el-button>
+      <el-button type="danger"  class="operator-button" plain icon="el-icon-error" @click="handleDeleteDictType()">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="字典信息" :visible.sync="dialogFormVisible">
@@ -46,36 +46,36 @@
     </el-dialog>
     </div>
     <div class="table-data">     
-    <el-table :data="dictTypeInfoList" style="width: 100%" max-height="100%" ref="multipleTable"  v-loading="loading" @selection-change="handleDictTypeIds">
-    <el-table-column type="selection" width="55"></el-table-column> 
-    <el-table-column align="center" fixed label="字典编号"  prop="orderNumber" key="orderNumber"  width="122"/>
-    <el-table-column align="center" fixed label="字典名称" prop="dictName" key="dictName"  width="122">
+    <el-table :data="dictTypeInfoList" style="width: 100%" max-height="100%" ref="multipleTable"  v-loading="loading" @selection-change="handleDictTypeIds" :header-cell-style="rowClass">
+      <el-table-column align="center" type="selection" width="55"></el-table-column> 
+      <el-table-column align="center" label="字典编号" prop="orderNumber" key="orderNumber"  width="122"/>
+      <el-table-column align="center" label="字典名称" prop="dictName" key="dictName"  width="122">
+        <template slot-scope="scope">
+            <div class="table-column-region" @click="jumpDictDataView(scope.row);dialogFormVisible = true;">{{scope.row.dictName}}</div>
+        </template>
+      </el-table-column>  
+      <el-table-column align="center" label="字典类型" prop="dictCode"  key="dictCode"  width="122"/>
+      <el-table-column align="center" label="状态" prop="status" key="status" width="122"/>
+      <el-table-column align="center" label="备注" prop="remark" key="remark"  width="122"/>
+      <el-table-column align="center" label="创建时间" prop="createTime" key="createTime"  width="180" :show-overflow-tooltip="showOverflowTooltip"/>
+      <el-table-column label="操作">
       <template slot-scope="scope">
-           <div class="table-column-region" @click="jumpDictDataView(scope.row);dialogFormVisible = true;">{{scope.row.dictName}}</div>
+        <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEidtDictType(scope.row);dialogFormVisible = true">编辑</el-button>
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteDictType();handleDictTypeIds(scope.row)">删除</el-button>
       </template>
-    </el-table-column>  
-    <el-table-column align="center" fixed prop="dictCode"  key="dictCode" label="字典类型" width="122"/>
-    <el-table-column align="center" fixed prop="status" key="status" label="状态" width="122"/>
-    <el-table-column align="center" fixed prop="remark" key="remark" label="备注" width="122"/>
-    <el-table-column align="center" fixed prop="createTime" key="createTime" label="创建时间" width="180" :show-overflow-tooltip="showOverflowTooltip"/>
-    <el-table-column label="操作">
-    <template slot-scope="scope">
-       <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEidtDictType(scope.row);dialogFormVisible = true">编辑</el-button>
-       <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteDictType();handleDictTypeIds(scope.row)">删除</el-button>
-    </template>
-    </el-table-column>
+      </el-table-column>
     </el-table>
     </div>
     <div class="pageHelper" v-if="total !=0 && total>0">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="this.data.pageNum"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="this.data.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="this.data.pageNum"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="this.data.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
     </div>   
 </template>
@@ -261,6 +261,10 @@ export default {
       handleCurrentChange(val) {
         this.data.pageNum = val
         this.getDictTypeList() 
+      },
+      //设置表头颜色
+      rowClass({ row, rowIndex}) {
+        return 'background:#FAFAFA'
       }
     },
     created(){

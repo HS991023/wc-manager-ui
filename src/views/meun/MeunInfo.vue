@@ -1,14 +1,14 @@
 <template>
  <div>
     <div class="serach-input">
-    <label class="serach-propties">菜单名称:</label>    
-    <el-input placeholder="请输入菜单名称" suffix-icon="el-icon-text" v-model="data.resName"/>
-    <label class="serach-propties">权限代码:</label>    
-    <el-input placeholder="请输入权限代码" suffix-icon="el-icon-text" v-model="data.permission"/>
-    <label class="serach-propties">菜单类型:</label>    
-    <el-input placeholder="请输入菜单类型" suffix-icon="el-icon-text" v-model="data.resType"/>
-    <label class="serach-propties">状态:</label>    
-    <el-input placeholder="请输入状态" suffix-icon="el-icon-text" v-model="data.status"/>
+      <label class="serach-propties">菜单名称:</label>    
+      <el-input placeholder="请输入菜单名称" suffix-icon="el-icon-text" v-model="data.resName"/>
+      <label class="serach-propties">权限代码:</label>    
+      <el-input placeholder="请输入权限代码" suffix-icon="el-icon-text" v-model="data.permission"/>
+      <label class="serach-propties">菜单类型:</label>    
+      <el-input placeholder="请输入菜单类型" suffix-icon="el-icon-text" v-model="data.resType"/>
+      <label class="serach-propties">状态:</label>    
+      <el-input placeholder="请输入状态" suffix-icon="el-icon-text" v-model="data.status"/>
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getResList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResListReset()">重置</el-button>
@@ -16,7 +16,7 @@
     </div>
     <div class="operator-button-region">
       <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger" plain class="operator-button" icon="el-icon-error" @click="handleDeleteRes()">批量删除</el-button>
+      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteRes()">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="菜单信息" :visible.sync="dialogFormVisible">
@@ -49,23 +49,19 @@
     </el-dialog>
     </div>
     <div class="table-data"> 
-    <el-table :data="resList" style="width: 100%" ref="multipleTable" row-key="id" v-loading="loading" @selection-change="handleResIds"
+    <el-table :data="resList" style="width: 100%" ref="multipleTable" row-key="id" v-loading="loading" @selection-change="handleResIds" :header-cell-style="rowClass"
     lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-    <!-- <el-table-column type="selection" width="55"> </el-table-column>   -->
-    <el-table-column label="菜单名称" width="130" prop="name" key="name">
-      <!-- <template slot-scope="scope">
-           <div class="table-column-region" @click="handleResInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.name}}</div>
-      </template> -->
+    <el-table-column align="center" label="菜单名称" width="130" prop="name" key="name">
     </el-table-column>  
     <el-table-column align="center" label="菜单图标" width="180" prop="icon" key="icon"/>
     <el-table-column align="center" label="资源路径" width="180" prop="resUrl" key="resUrl"/>
     <el-table-column align="center" label="权限代码" width="180" prop="permission" key="permission"/>
     <el-table-column align="center" label="菜单类型" width="130" prop="resType" key="resType"/>
-    <el-table-column align="center" label="状态" width="70" prop="status" key="status"/>
+    <el-table-column align="center" label="状态"    width="70" prop="status" key="status"/>
     <el-table-column align="center" label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteRes();handleResIds(scope.row)">删除</el-button>  
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRes();handleResIds(scope.row)">删除</el-button>  
       </template>
     </el-table-column>
     </el-table>    
@@ -85,7 +81,7 @@
 </template>
 
 <script>
-import {listRes,resInfo,addRes,updateRes,removeRes} from '@/api/system/res'
+import {resList,resInfo,addRes,updateRes,removeRes} from '@/api/system/res'
 export default {
     name:'WcManagerUiMeunInfo',
     data() {
@@ -123,7 +119,7 @@ export default {
       //获取菜单列表
       getResList(){
         let data= this.data
-        listRes(data).then(response => {
+        resList(data).then(response => {
           if(response.count== 0){
             this.resList = undefined
           }else{
@@ -143,7 +139,7 @@ export default {
            pageNum: 1,
            pageSize: 10,
         }
-        listRes(resetData).then(response => {
+        resList(resetData).then(response => {
             this.resList = response.data[0]
             this.total = response.count
             this.loading = false;
@@ -297,6 +293,10 @@ export default {
         this.data.pageNum = val
         this.getResList()
       },
+      //设置表头颜色
+     rowClass({ row, rowIndex}) {
+        return 'background:#FAFAFA'
+      }
     },
     created(){
       this.getResList()

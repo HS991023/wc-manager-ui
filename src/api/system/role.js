@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 
 //查询角色列表
-export function listRole(data) {
+export function roleList(data) {
     return request({
         url: '/api/system/role/list',
         method: 'post',

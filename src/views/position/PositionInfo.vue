@@ -1,10 +1,10 @@
 <template>
 <div>
     <div class="serach-input">
-    <label class="serach-propties">隶属公厕:</label>    
-    <el-input placeholder="请输入隶属公厕" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">坑位序号:</label>    
-    <el-input placeholder="请输入坑位序号" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">隶属公厕:</label>    
+      <el-input placeholder="请输入隶属公厕" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">坑位序号:</label>    
+      <el-input placeholder="请输入坑位序号" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getPositionList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getPositionListReset()">重置</el-button>
@@ -12,7 +12,7 @@
     </div>
     <div class="operator-button-region">
       <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddPosition();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger" plain class="operator-button" icon="el-icon-error" @click="handleDeletePosition()">批量删除</el-button>
+      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeletePosition()">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="坑位信息" :visible.sync="dialogFormVisible">
@@ -36,44 +36,48 @@
       <div slot="footer" class="dialog-footer">
         <div class="from-button-region" v-if="showFormButton">
         <el-button class="button" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" class="button" @click="submitForm()">确 定</el-button>
+        <el-button class="button" type="primary" @click="submitForm()">确 定</el-button>
       </div>
       </div>
     </el-dialog>
     </div>
     <div class="table-data"> 
-    <el-table :data="positionList" style="width: 100%" ref="multipleTable" v-loading="loading" @selection-change="handlePositionIds">
-    <el-table-column type="selection" width="55"/>
-    <el-table-column label="坑位名称" width="180" prop="name" key="name"/>
-    <el-table-column label="坑位编码" width="180" prop="number" key="number"/>
-    <el-table-column label="隶属公厕" width="180"/>
-    <el-table-column label="地区位置" width="180"/>
-    <el-table-column label="是否绑定设备" width="180"/>
-    <el-table-column label="状态" width="60" prop="status" key="status"/>
-    <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditPosition(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeletePosition(),handlePositionIds(scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
+    <el-table :data="positionList" style="width: 100%" ref="multipleTable" v-loading="loading" @selection-change="handlePositionIds" :header-cell-style="rowClass">
+      <el-table-column type="selection" width="55"/>
+      <el-table-column label="坑位名称" width="180" prop="name" key="name">
+         <template slot-scope="scope">
+           <div class="table-column-region" @click="handlePositionInfo(scope.row.id);dialogFormVisible = true">{{scope.row.name}}</div>
+         </template>
+      </el-table-column>  
+      <el-table-column label="坑位编码" width="180" prop="number" key="number"/>
+      <el-table-column label="隶属公厕" width="180"/>
+      <el-table-column label="地区位置" width="180"/>
+      <el-table-column label="是否绑定设备" width="180"/>
+      <el-table-column label="状态" width="60" prop="status" key="status"/>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditPosition(scope.row);dialogFormVisible=true">编辑</el-button>
+          <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeletePosition(),handlePositionIds(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     </div>
     <div class="pageHelper" v-if="total !=0 && total>0">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="this.data.pageNum"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="this.data.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="this.data.pageNum"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="this.data.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
     </div>   
 </template>
 
 <script>
-import {listPosition,positionInfo,addPosition,updatePosition,removePosition} from '@/api/business/position'
+import {positionList,positionInfo,addPosition,updatePosition,removePosition} from '@/api/business/position'
 export default {
     name:'WcManagerUiPositionInfo',
     data(){
@@ -108,7 +112,7 @@ export default {
       //获取坑位列表
       getPositionList(){
         let data= this.data
-        listPosition(data).then(response => {
+        positionList(data).then(response => {
           if(response.count== 0){
             this.total = response.count
             this.positionList = undefined
@@ -127,7 +131,7 @@ export default {
            pageNum: 1,
            pageSize: 10,
         }
-        listPosition(resetData).then(response => {
+        positionList(resetData).then(response => {
             this.positionList = response.data[0]
             this.total = response.count
             this.loading = false
@@ -259,6 +263,10 @@ export default {
       handleCurrentChange(val) {
         this.data.pageNum = val
         this.getPositionList() 
+      },
+      //设置表头颜色
+     rowClass({ row, rowIndex}) {
+        return 'background:#FAFAFA'
       }
     },
     created(){

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 // 查询用户列表
-export function listUser(data) {
+export function userList(data) {
     return request({
         url: '/api/system/user/list',
         method: 'post',

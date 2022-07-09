@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 
 //查询设备列表
-export function listDevice(data) {
+export function deviceList(data) {
     return request({
         url: '/api/system/device/list',
         method: 'post',

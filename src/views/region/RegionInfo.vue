@@ -1,10 +1,10 @@
 <template>
  <div>
     <div class="serach-input">
-    <label class="serach-propties">地区名称:</label>    
-    <el-input placeholder="请输入地区名称" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">地区类型:</label>    
-    <el-input placeholder="请输入地区类型" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">地区名称:</label>    
+      <el-input placeholder="请输入地区名称" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">地区类型:</label>    
+      <el-input placeholder="请输入地区类型" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getRegionList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getRegionListReset()">重置</el-button>
@@ -12,7 +12,7 @@
     </div>
     <div class="operator-button-region">
       <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRegion();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger" plain class="operator-button" icon="el-icon-error" @click="handleDeleteRegion()">批量删除</el-button>
+      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteRegion()">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="地区信息" :visible.sync="dialogFormVisible">
@@ -33,15 +33,14 @@
       <div slot="footer" class="dialog-footer">
         <div class="from-button-region" v-if="showFormButton">
         <el-button class="button" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" class="button" @click="submitForm()">确 定</el-button>
+        <el-button class="button" type="primary" @click="submitForm()">确 定</el-button>
       </div>
       </div>
     </el-dialog>
     </div>
     <div class="table-data"> 
-    <el-table :data="regionList" style="width: 100%" ref="multipleTable"  v-loading="loading" @selection-change="handleRegionIds">
+    <el-table :data="regionList" style="width: 100%" ref="multipleTable" v-loading="loading" :header-cell-style="rowClass" @selection-change="handleRegionIds">
     <el-table-column type="selection" width="55"/>
-     <el-table-column fixed label="地区ID" align="center" prop="id" key="userId" v-if="false"/>
     <el-table-column label="省份名称" width="180" prop="provinceName" key="provinceName">
       <template slot-scope="scope">
            <div class="table-column-region" @click="handleRegionInfo(scope.row.id);dialogFormVisible = true">{{scope.row.provinceName}}</div>
@@ -52,27 +51,27 @@
     <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditRegion(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteRegion();handleRegionIds(scope.row)">删除</el-button>
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRegion();handleRegionIds(scope.row)">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
     </div>
     <div class="pageHelper" v-if="total !=0 && total>0">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="this.data.pageNum"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="this.data.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="this.data.pageNum"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="this.data.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
     </div>   
 </template>
 
 <script>
-import {listRegion,regionInfo,addRegion,updateRegion,removeRegion} from '@/api/business/region'
+import {regionList,regionInfo,addRegion,updateRegion,removeRegion} from '@/api/business/region'
 export default {
     name:'WcManagerUiRegionInfo',
     data() {
@@ -106,7 +105,7 @@ export default {
       //获取地区列表
       getRegionList(){
         let data= this.data;
-        listRegion(data).then(response => {
+        regionList(data).then(response => {
           if(response.count== 0){
             this.regionList = undefined;
           }else{
@@ -256,6 +255,10 @@ export default {
       handleCurrentChange(val) {
         this.data.pageNum = val;
         this.getRegionList(); 
+      },
+      //设置表头颜色
+      rowClass({ row, rowIndex}) {
+        return 'background:#FAFAFA'
       }
     },
     created(){

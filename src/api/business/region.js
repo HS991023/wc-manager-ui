@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 
 //查询地区列表
-export function listRegion(data) {
+export function regionList(data) {
     return request({
         url: '/api/system/region/list',
         method: 'post',

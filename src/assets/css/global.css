@@ -199,7 +199,7 @@
 /* 操作数据-删除按钮样式 */
 
 .delete-button {
-    color: #f12626cf;
+    color: #f12626cf !important;
 }
 
 

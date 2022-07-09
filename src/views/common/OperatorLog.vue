@@ -1,19 +1,19 @@
 <template>
 <div>
     <div class="serach-input">
-    <label class="serach-propties">操作模块:</label>    
-    <el-input placeholder="请选择操作模块" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">操作功能:</label>    
-    <el-input placeholder="请选择操作功能" suffix-icon="el-icon-text"/>
-    <label class="serach-propties">执行动作:</label>    
-    <el-input placeholder="请选择执行动作" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">操作模块:</label>    
+      <el-input placeholder="请选择操作模块" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">操作功能:</label>    
+      <el-input placeholder="请选择操作功能" suffix-icon="el-icon-text"/>
+      <label class="serach-propties">执行动作:</label>    
+      <el-input placeholder="请选择执行动作" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getOperatorLogList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getOperatorLogListReset()">重置</el-button>
     </div>
     </div>
     <div class="table-data"> 
-    <el-table :data="operatorList" style="width: 100%" ref="multipleTable"  v-loading="loading">
+    <el-table :data="operatorList" style="width: 100%" ref="multipleTable"  v-loading="loading" :header-cell-style="rowClass">
     <el-table-column align="center" label="操作模块" width="160" prop="operatorModule" key="operatorModule"/>
     <el-table-column align="center" label="操作功能" width="180" prop="operatorFunction" key="operatorFunction"/>
     <el-table-column align="center" label="执行动作" width="180" prop="operatorAction" key="operatorAction"/>
@@ -24,21 +24,21 @@
     </el-table>
     </div>
     <div class="pageHelper" v-if="total !=0 && total>0">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="this.data.pageNum"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="this.data.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="this.data.pageNum"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="this.data.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
     </div>   
 </template>
 
 <script>
-import {listOperatorLog} from '@/api/system/operatorlog'
+import {operatorLogList} from '@/api/system/operatorlog'
 export default {
     name:'WcManagerUiOperatorLog',
     data() {
@@ -62,7 +62,7 @@ export default {
       //查询操作日志信息列表
       getOperatorLogList(){
         let data= this.data;
-        listOperatorLog(data).then(response => {
+        operatorLogList(data).then(response => {
           if(response.count== 0){
             this.operatorList = undefined
           }else{
@@ -79,7 +79,7 @@ export default {
            pageNum: 1,
            pageSize: 10,
         }
-        listOperatorLog(resetData).then(response => {
+        operatorLogList(resetData).then(response => {
             this.operatorList = response.data[0]
             this.total = response.count
             this.loading = false
@@ -94,6 +94,10 @@ export default {
       handleCurrentChange(val) {
         this.data.pageNum = val
         this.getOperatorLogList()
+      },
+       //设置表头颜色
+     rowClass({ row, rowIndex}) {
+        return 'background:#FAFAFA'
       }
     },
     created(){

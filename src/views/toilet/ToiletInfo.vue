@@ -1,10 +1,10 @@
 <template>
 <div>
     <div class="serach-input">
-    <label class="serach-propties">公厕名称:</label>    
-    <el-input placeholder="请输入公厕名称" suffix-icon="el-icon-text" v-model="data.toiletName"/>
-    <label class="serach-propties">公厕编码:</label>    
-    <el-input placeholder="请输入公厕编码" suffix-icon="el-icon-text" v-model="data.toiletCode"/>
+      <label class="serach-propties">公厕名称:</label>    
+      <el-input placeholder="请输入公厕名称" suffix-icon="el-icon-text" v-model="data.toiletName"/>
+      <label class="serach-propties">公厕编码:</label>    
+      <el-input placeholder="请输入公厕编码" suffix-icon="el-icon-text" v-model="data.toiletCode"/>
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getToiletList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getToiletListReset()">重置</el-button>
@@ -36,47 +36,47 @@
       <div slot="footer" class="dialog-footer">
         <div class="from-button-region" v-if="showFormButton">
         <el-button class="button" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" class="button" @click="submitForm()">确 定</el-button>
+        <el-button class="button" type="primary"  @click="submitForm()">确 定</el-button>
       </div>
       </div>
     </el-dialog>
     </div>
     <div class="table-data"> 
-    <el-table :data="toiletList" style="width: 100%" ref="multipleTable"  v-loading="loading">
-    <el-table-column type="selection" width="55"/>
-    <el-table-column label="公厕名称"  width="180" prop="name" key="name">
-      <template slot-scope="scope">
-           <div class="table-column-region" @click="handleToiletInfo(scope.row.id);dialogFormVisible = true  ">{{scope.row.name}}</div>
-      </template>
-    </el-table-column>
-    <el-table-column label="公厕类型" width="180" prop="type" key="type"/>
-    <el-table-column label="公厕位置" width="180" prop="location" key="location"/>
-    <el-table-column label="状态" width="180" prop="status" key="status"/>
-    <el-table-column label="创建时间" width="180" prop="createTime" key="createTime"/>
-    <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditToilet(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleToiletIds(scope.row);handleDeleteToilet()  ">删除</el-button> 
-      </template>
-    </el-table-column>
+    <el-table :data="toiletList" style="width: 100%" ref="multipleTable" v-loading="loading" :header-cell-style="rowClass">
+      <el-table-column type="selection" width="55"/>
+      <el-table-column label="公厕名称"  width="180" prop="name" key="name">
+        <template slot-scope="scope">
+            <div class="table-column-region" @click="handleToiletInfo(scope.row.id);dialogFormVisible = true">{{scope.row.name}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="公厕类型" width="180" prop="type" key="type"/>
+      <el-table-column label="公厕位置" width="180" prop="location" key="location"/>
+      <el-table-column label="状态"    width="180" prop="status" key="status"/>
+      <el-table-column label="创建时间" width="180" prop="createTime" key="createTime"/>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditToilet(scope.row);dialogFormVisible=true">编辑</el-button>
+          <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete"  @click="handleToiletIds(scope.row);handleDeleteToilet()">删除</el-button> 
+        </template>
+      </el-table-column>
     </el-table>
     </div>
     <div class="pageHelper" v-if="total !=0 && total>0">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="this.data.pageNum"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="this.data.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="this.data.pageNum"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="this.data.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
+      </el-pagination>
     </div>
     </div>
 </template>
 
 <script>
-import {listToilet,toiletInfo,addToilet,updateToilet,removeToilet} from '@/api/business/toilet'
+import {toiletList,toiletInfo,addToilet,updateToilet,removeToilet} from '@/api/business/toilet'
 export default {
     name:'WcManagerUiToiletInfo',
     data(){
@@ -112,7 +112,7 @@ export default {
       //获取公厕列表
       getToiletList(){
         let data= this.data  
-        listToilet(data).then(response => {
+        toiletList(data).then(response => {
           if(response.count== 0){
             this.total = response.count  
             this.toiletList = undefined  
@@ -133,7 +133,7 @@ export default {
            pageNum: 1,
            pageSize: 10,
         }
-        listToilet(resetData).then(response => {
+        toiletList(resetData).then(response => {
             this.toiletList = response.data[0]  
             this.total = response.count  
             this.loading = false  
@@ -266,6 +266,10 @@ export default {
       handleCurrentChange(val) {
         this.data.pageNum = val  
         this.getToiletList()   
+      },
+      //设置表头颜色
+      rowClass({ row, rowIndex}) {
+        return 'background:#FAFAFA'
       }
     },
     created(){
