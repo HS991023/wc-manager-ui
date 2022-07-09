@@ -49,19 +49,20 @@
     </el-dialog>
     </div>
     <div class="table-data"> 
-    <el-table :data="resList" style="width: 100%"  ref="multipleTable" v-loading="loading" @selection-change="handleResIds">
-    <el-table-column type="selection" width="55"> </el-table-column>  
-    <el-table-column label="菜单名称" width="100" prop="name" key="name">
-      <template slot-scope="scope">
+    <el-table :data="resList" style="width: 100%" ref="multipleTable" row-key="id" v-loading="loading" @selection-change="handleResIds"
+    lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+    <!-- <el-table-column type="selection" width="55"> </el-table-column>   -->
+    <el-table-column label="菜单名称" width="130" prop="name" key="name">
+      <!-- <template slot-scope="scope">
            <div class="table-column-region" @click="handleResInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.name}}</div>
-      </template>
+      </template> -->
     </el-table-column>  
-    <el-table-column label="菜单图标" width="100" prop="icon" key="icon"/>
-    <el-table-column label="资源路径" width="180" prop="resUrl" key="resUrl"/>
-    <el-table-column label="权限代码" width="130" prop="permission" key="permission"/>
-    <el-table-column label="菜单类型" width="130" prop="resType" key="resType"/>
-    <el-table-column label="状态" width="70" prop="status" key="status"/>
-    <el-table-column label="操作">
+    <el-table-column align="center" label="菜单图标" width="180" prop="icon" key="icon"/>
+    <el-table-column align="center" label="资源路径" width="180" prop="resUrl" key="resUrl"/>
+    <el-table-column align="center" label="权限代码" width="180" prop="permission" key="permission"/>
+    <el-table-column align="center" label="菜单类型" width="130" prop="resType" key="resType"/>
+    <el-table-column align="center" label="状态" width="70" prop="status" key="status"/>
+    <el-table-column align="center" label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true">编辑</el-button>
         <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteRes();handleResIds(scope.row)">删除</el-button>  
@@ -90,7 +91,7 @@ export default {
     data() {
       return {
         //资源/菜单表格数据
-        resList: null,
+        resList: [],
         //表单数据
         form:{},
         //总数
@@ -265,6 +266,27 @@ export default {
           status:undefined
         }
       },
+      //加载菜单子节点数据
+      load(tree, treeNode, resolve) {
+        var data = [
+            {
+              id: 31,
+              date: '2016-05-01',
+              name: '王小虎',
+              address: '上海市普陀区金沙江路 1519 弄'
+            }, {
+              id: 32,
+              date: '2016-05-01',
+              name: '王小虎',
+              address: '上海市普陀区金沙江路 1519 弄'
+            }
+          ]
+        setTimeout(() => {
+          resolve(
+            data
+            )
+        }, 1000)
+      },
       //更改每页大小
       handleSizeChange(val) {
         this.data.pageSize = val
@@ -283,6 +305,13 @@ export default {
 </script>
 
 <style scoped>
+.el-dropdown-link {
+    cursor: pointer;
+    color: #409EFF;
+}
+.el-icon-arrow-down {
+    font-size: 12px;
+}
 ::v-deep .el-dialog{
   width: 37%;
 }
