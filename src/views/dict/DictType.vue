@@ -51,7 +51,7 @@
     <el-table-column align="center" fixed label="字典编号"  prop="orderNumber" key="orderNumber"  width="122"/>
     <el-table-column align="center" fixed label="字典名称" prop="dictName" key="dictName"  width="122">
       <template slot-scope="scope">
-           <a @click="jumpDictDataView(scope.row);dialogFormVisible = true;">{{scope.row.dictName}}</a>
+           <div class="table-column-region" @click="jumpDictDataView(scope.row);dialogFormVisible = true;">{{scope.row.dictName}}</div>
       </template>
     </el-table-column>  
     <el-table-column align="center" fixed prop="dictCode"  key="dictCode" label="字典类型" width="122"/>

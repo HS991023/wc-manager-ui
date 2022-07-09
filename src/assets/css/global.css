@@ -250,6 +250,13 @@
 }
 
 
+/* 表格列样式 */
+
+.table-column-region {
+    color: #177ec9cc;
+}
+
+
 /* 分页组件样式 */
 
 .pageHelper {

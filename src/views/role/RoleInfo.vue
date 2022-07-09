@@ -40,7 +40,7 @@
     <el-table-column type="selection" width="55"/>
     <el-table-column label="角色名" width="180" prop="roleName">
       <template slot-scope="scope">
-           <a @click="handleRoleInfo(scope.row.id);dialogFormVisible = true  ">{{scope.row.roleName}}</a>
+           <div class="table-column-region" @click="handleRoleInfo(scope.row.id);dialogFormVisible = true  ">{{scope.row.roleName}}</div>
       </template>
     </el-table-column>  
     <el-table-column label="角色代码" width="180" prop="roleCode"/>
@@ -158,7 +158,7 @@ export default {
                 type: 'warning'
             })  
             this.dialogFormVisible = false       
-            this.getgetUserList()      
+            this.getRoleList()      
             }
             })  
           }else{
@@ -169,7 +169,7 @@ export default {
                 type: 'warning'
             })  
             this.dialogFormVisible = false  
-            this.getgetUserList()       
+            this.getRoleList()       
             }
           })          
           }
@@ -206,7 +206,7 @@ export default {
                 type: 'success',
                 message: '删除成功!'
              })  
-             this.getUserList()  
+             this.getRoleList()  
             }
           })
         }).catch(() => {

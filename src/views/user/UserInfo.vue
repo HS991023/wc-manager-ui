@@ -82,7 +82,7 @@
     <el-table-column fixed label="用户名"  prop="nickName" key="nickName"  width="100">
       <!-- 添加列事件 -->
       <template slot-scope="scope">
-           <a @click="handleUserInfo(scope.row.id);dialogFormVisible = true    ">{{scope.row.nickName}}</a>
+           <div class="table-column-region" @click="handleUserInfo(scope.row.id);dialogFormVisible = true">{{scope.row.nickName}}</div>
       </template>
     </el-table-column>  
     <el-table-column fixed prop="userName"  key="userName" label="账号" width="100"/>

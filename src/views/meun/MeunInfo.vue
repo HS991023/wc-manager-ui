@@ -53,7 +53,7 @@
     <el-table-column type="selection" width="55"> </el-table-column>  
     <el-table-column label="菜单名称" width="100" prop="name" key="name">
       <template slot-scope="scope">
-           <a @click="handleResInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.name}}</a>
+           <div class="table-column-region" @click="handleResInfo(scope.row.id);dialogFormVisible = true;">{{scope.row.name}}</div>
       </template>
     </el-table-column>  
     <el-table-column label="菜单图标" width="100" prop="icon" key="icon"/>

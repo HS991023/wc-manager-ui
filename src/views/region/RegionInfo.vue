@@ -44,7 +44,7 @@
      <el-table-column fixed label="地区ID" align="center" prop="id" key="userId" v-if="false"/>
     <el-table-column label="省份名称" width="180" prop="provinceName" key="provinceName">
       <template slot-scope="scope">
-           <a @click="handleRegionInfo(scope.row.id);dialogFormVisible = true">{{scope.row.provinceName}}</a>
+           <div class="table-column-region" @click="handleRegionInfo(scope.row.id);dialogFormVisible = true">{{scope.row.provinceName}}</div>
       </template>
     </el-table-column>  
     <el-table-column label="城市名称" width="180" prop="cityName" key="cityName"/>
@@ -105,17 +105,17 @@ export default {
     methods: {
       //获取地区列表
       getRegionList(){
-        let data= this.data   
+        let data= this.data;
         listRegion(data).then(response => {
           if(response.count== 0){
-            this.regionList = undefined   
+            this.regionList = undefined;
           }else{
-             this.regionList = response.data[0]   
-             this.total = response.count   
+             this.regionList = response.data[0];
+             this.total = response.count;
           }
-            this.loading = false   
+            this.loading = false;
         }).catch(error=>{
-            console.log(error)   
+            console.log(error);
         })
       },
       //地区列表重置
@@ -125,31 +125,31 @@ export default {
            pageSize: 10,
         }
         listRegion(resetData).then(response => {
-            this.regionList = response.data[0]   
-            this.total = response.count   
-            this.loading = false   
-        })   
+            this.regionList = response.data[0];
+            this.total = response.count;
+            this.loading = false;
+        });
       },
       //查询地区详情
       handleRegionInfo(id){
-        this.reset()   
+        this.reset();
         this.showFormButton = false
         regionInfo(id).then(response=>{
-          this.form = response.data   
+          this.form = response.data;
         })
       },
       //新增地区按钮
       handleAddRegion(){
         //重置表单
-        this.reset()   
-        this.showFormButton = true   
+        this.reset();
+        this.showFormButton = true;
       },
       //编辑地区按钮
       handleEditRegion(row) {
         //重置表单
-        this.reset()   
-        this.form = this.handleRegionInfo(row.id)   
-        this.showFormButton = true   
+        this.reset();
+        this.form = this.handleRegionInfo(row.id);
+        this.showFormButton = true;
       },
       //提交表单
       submitForm(){
@@ -162,11 +162,11 @@ export default {
              this.$msgbox('更新地区信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            })   
-            this.dialogFormVisible = false        
-            this.getRegionList()       
+            });
+            this.dialogFormVisible = false;     
+            this.getRegionList();    
             }
-            })   
+            });
           //新增用户  
           }else{
           addRegion(this.form).then(response =>{
@@ -174,30 +174,30 @@ export default {
              this.$msgbox('保存地区信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
-            })   
-            this.dialogFormVisible = false   
-            this.getRegionList()        
+            });
+            this.dialogFormVisible = false;
+            this.getRegionList();     
             }
-          })           
+          });        
           }
-        }})   
+        }});
       },
       //获取地区ID 
       handleRegionIds(val){
          //批量ID
          if(val instanceof Array){
           this.ids = val.map(item=>{
-          return item.id   
-          })   
+          return item.id;
+          });
          }else{ 
           //单个
           if(val != undefined){
-            this.ids = val.id   
+            this.ids = val.id;
           }
-          var rows = []   
-          rows.push(val)   
-          this.toggleSelection(rows)   
-         }   
+          var rows = [];
+          rows.push(val);
+          this.toggleSelection(rows);
+         };
       },
       //删除地区(逻辑删除)
       handleDeleteRegion() {
@@ -207,33 +207,33 @@ export default {
           type: 'warning'
         }).then(() => {
           //发送删除请求
-          var regionIds = this.ids   
+          var regionIds = this.ids;
           removeRegion(regionIds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
                 type: 'success',
                 message: '删除成功!'
-             })   
-             this.getRegionList()   
+             });
+             this.getRegionList();
             }
           })
         }).catch(() => {
           //清除已选择的状态
-          this.toggleSelection()   
+          this.toggleSelection();
           this.$message({
             type: 'info',
             message: '已取消删除'
-          })    
-        })   
+          }); 
+        });
       },
       //清除多选
       toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row)   
-          })   
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
         } else {
-          this.$refs.multipleTable.clearSelection()   
+          this.$refs.multipleTable.clearSelection();
         }
       },
       //重置表单
@@ -249,17 +249,17 @@ export default {
       },
       //更改每页大小
       handleSizeChange(val) {
-        this.data.pageSize = val   
-        this.getRegionList()     
+        this.data.pageSize = val;
+        this.getRegionList();  
       },
       //更改当前页
       handleCurrentChange(val) {
-        this.data.pageNum = val   
-        this.getRegionList()    
+        this.data.pageNum = val;
+        this.getRegionList(); 
       }
     },
     created(){
-      this.getRegionList()   
+      this.getRegionList();
     },
     mounted(){
     }
@@ -268,12 +268,12 @@ export default {
 
 <style scoped>
 ::v-deep .el-dialog{
-  width: 37%   
+  width: 37%;
 }
 ::v-deep .el-dialog__body{
   padding: 8px 25px
 }
 ::v-deep .el-dialog__footer{
-  padding: 3px 87px 16px   
+  padding: 3px 87px 16px;
 }
 </style>

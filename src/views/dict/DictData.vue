@@ -44,7 +44,7 @@
     <el-table-column type="selection" width="55"></el-table-column> 
     <el-table-column align="center" fixed label="字典标签" prop="dictName" key="dictName"  width="122">
       <template slot-scope="scope">
-           <a @click="jumpDictDataView(scope.row);dialogFormVisible = true;">{{scope.row.dictName}}</a>
+           <div class="table-column-region" @click="jumpDictDataView(scope.row);dialogFormVisible = true;">{{scope.row.dictName}}</div>
       </template>
     </el-table-column>  
     <el-table-column align="center" fixed prop="dictValue" key="dictValue" label="字典值" width="122"/>

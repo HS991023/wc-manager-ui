@@ -46,7 +46,7 @@
     <el-table-column type="selection" width="55"/>
     <el-table-column label="公厕名称"  width="180" prop="name" key="name">
       <template slot-scope="scope">
-           <a @click="handleToiletInfo(scope.row.id);dialogFormVisible = true  ">{{scope.row.name}}</a>
+           <div class="table-column-region" @click="handleToiletInfo(scope.row.id);dialogFormVisible = true  ">{{scope.row.name}}</div>
       </template>
     </el-table-column>
     <el-table-column label="公厕类型" width="180" prop="type" key="type"/>
