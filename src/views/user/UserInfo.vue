@@ -33,14 +33,20 @@
         <el-form-item label="账号" :label-width="formLabelWidth" :required="true">
           <el-input v-model="form.userName" autocomplete="off"/>
         </el-form-item>
-        <!-- <div class="user-avater">
-           <el-avatar shape="square" :size="100"></el-avatar>      
-        </div> -->
+        <div class="user-avater">
+             <el-upload
+              class="avatar-uploader"
+              :show-file-list="false"
+              :before-upload="beforeAvatarUpload">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+        </div>
         <el-form-item label="性别" :label-width="formLabelWidth">
           <el-input v-model="form.sex" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth" :required="true">
-          <el-input v-model="form.passWord" autocomplete="off"/>
+          <el-input type="password" v-model="form.passWord" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth" :required="true">
             <el-select v-model="value" placeholder="请选择">
@@ -129,11 +135,13 @@
 </template>
 
 <script>
-import {userList,userInfo,addUser,updateUser,removeUser} from "@/api/system/user"    
+import {userList,userInfo,addUser,updateUser,removeUser} from "@/api/system/user"   
+import {uploadFile}  from '@/api/common/upload'
 export default {
     name:'WcManagerUiUserInfo',
     data() {
       return {
+        imageUrl:'', 
         //表格数据
         userList: null,
         //表单参数
@@ -320,35 +328,72 @@ export default {
         this.getUserList()      
       },
       //设置表头颜色
-     rowClass({ row, rowIndex}) {
+      rowClass({ row, rowIndex}) {
         return 'background:#FAFAFA'
+      },
+      beforeAvatarUpload(file) {
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+          return isLt2M;
+        }else{
+            let fileFormData = new FormData();
+            fileFormData.append('file',file);
+            uploadFile(fileFormData).then(res=>{
+              if(res.code == 200){
+                 this.imageUrl  = res.data;
+              }
+            })
+        }
+        return isLt2M;
       }
     },
     created(){
       this.getUserList()    
     },
-    mounted(){
-    }
 }
 </script>
 
 <style scoped>
-/* .user-avater{
+.user-avater{
   display: inline-block;   
   position: relative;  
-  top: 40px;    
-  left: 56px;    
-  width: 100px;    
-  height: 100px;    
-  background-color:pink    
+  top: 73px;    
+  left: 58px;    
+  width: 110px;    
+  height: 110px;    
+  background-color: #fcfcfc;
 }
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 110px;
+  height: 110px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  position:relative;
+  top: 15px;
+  display: inline-block; 
+  width: 110px;
+  height: 110px;
+  }
 ::v-deep .el-dialog__body {
-    margin-top: -29px;
-    margin-left: -6px;
-    padding: 22px 20px;
+    margin-top: -76px !important;
 }
 ::v-deep .el-dialog__footer{
   margin-top: -44px;
   padding: 1px 288px 11px;
-} */
+}
 </style>
