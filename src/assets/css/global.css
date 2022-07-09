@@ -177,15 +177,6 @@
     font-size: 11px !important;
 }
 
-
-/* 表单取消提交按钮样式 */
-
-.from-button-region {
-    margin-left: 220px;
-    width: 200px;
-    height: 35px;
-}
-
 .dialog-footer .button {
     width: 76px;
     height: 35px;
@@ -205,30 +196,40 @@
 
 /* 表单样式 */
 
-.el-form-item {
-    margin-bottom: 22px;
+.form-data .el-form-item {
     display: inline-block;
-    margin-left: -61px;
+    margin-left: -11px !important;
 }
 
-.el-form-item__label {
-    padding: 0 4px 0 0;
-}
-
-.el-dialog__body {
-    padding: 2px 20px;
+.form-data .el-dialog__body {
+    margin-top: -5px !important;
+    margin-left: -48px !important;
+    height: 100% !important;
 }
 
 .form-data .el-input {
-    float: left;
-    margin-left: 9px;
-    margin-right: 10px;
-    height: 20px !important;
-    width: 160px !important;
+    display: inline-block;
+    height: 30px !important;
+    width: 145px !important;
 }
 
 .form-data .el-input__inner {
     height: 33px !important;
+}
+
+.form-data .el-dialog__footer {
+    padding: 6px 275px 19px;
+    text-align: right;
+    box-sizing: border-box;
+}
+
+
+/* 表单取消提交按钮样式 */
+
+.from-button-region {
+    margin-left: 220px;
+    width: 200px;
+    height: 35px;
 }
 
 

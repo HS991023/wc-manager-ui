@@ -27,28 +27,42 @@
     <!-- 表单新增或编辑对话框   -->
     <el-dialog title="用户信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
-        <el-form-item label="用户名" :label-width="formLabelWidth">
+        <el-form-item label="用户名" :label-width="formLabelWidth" :required="true">
           <el-input v-model="form.nickName" autocomplete="off"/>
         </el-form-item>
-        <el-form-item label="账号" :label-width="formLabelWidth">
+        <el-form-item label="账号" :label-width="formLabelWidth" :required="true">
           <el-input v-model="form.userName" autocomplete="off"/>
         </el-form-item>
-        <div class="user-avater">
+        <!-- <div class="user-avater">
            <el-avatar shape="square" :size="100"></el-avatar>      
-        </div>
+        </div> -->
         <el-form-item label="性别" :label-width="formLabelWidth">
           <el-input v-model="form.sex" autocomplete="off"/>
         </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth">
+        <el-form-item label="密码" :label-width="formLabelWidth" :required="true">
           <el-input v-model="form.passWord" autocomplete="off"/>
         </el-form-item>
-        <el-form-item label="角色" :label-width="formLabelWidth">
-          <el-input v-model="form.roleName" autocomplete="off"/>
+        <el-form-item label="角色" :label-width="formLabelWidth" :required="true">
+            <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
-          <el-input v-model="form.status" autocomplete="off"/>
+        <el-form-item label="状态" :label-width="formLabelWidth" :required="true">
+          <el-select v-model="value" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-         <el-form-item label="电话" :label-width="formLabelWidth">
+        <el-form-item label="电话" :label-width="formLabelWidth">
           <el-input v-model="form.cellPhone" autocomplete="off"/>
         </el-form-item> 
         <el-form-item label="邮件" :label-width="formLabelWidth">
@@ -319,7 +333,7 @@ export default {
 </script>
 
 <style scoped>
-.user-avater{
+/* .user-avater{
   display: inline-block;   
   position: relative;  
   top: 40px;    
@@ -328,7 +342,13 @@ export default {
   height: 100px;    
   background-color:pink    
 }
-::v-deep .el-dialog__footer{
-  padding: 10px 266px 20px    
+::v-deep .el-dialog__body {
+    margin-top: -29px;
+    margin-left: -6px;
+    padding: 22px 20px;
 }
+::v-deep .el-dialog__footer{
+  margin-top: -44px;
+  padding: 1px 288px 11px;
+} */
 </style>
