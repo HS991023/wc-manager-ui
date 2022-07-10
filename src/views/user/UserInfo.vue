@@ -136,7 +136,7 @@
 
 <script>
 import {userList,userInfo,addUser,updateUser,removeUser} from "@/api/system/user"   
-import {uploadFile}  from '@/api/common/upload'
+import {uploadFile,queryFileById}  from '@/api/common/upload'
 export default {
     name:'WcManagerUiUserInfo',
     data() {
@@ -201,17 +201,29 @@ export default {
         this.reset()    
         this.showFormButton = false
         userInfo(id).then(response=>{
-          this.form = response.data    
+          this.form = response.data  
+          //获取用户头像
+          if(response.data.pictureId != null || response.data.pictureId != undefined){
+              queryFileById(response.data.pictureId).then(res=>{
+                 if(res.code==200){
+                  this.imageUrl = res.data.url;
+                 }
+              })
+          }
         })
       },
       //新增用户按钮
       handleAddUser(){
         //重置表单
         this.reset()    
+        //重置头像
+        this.imageUrl = undefined
         this.showFormButton = true    
       },
       //编辑用户按钮
       handleEidtUser(row) {
+        //重置头像
+        this.imageUrl = undefined
         //重置表单
         this.reset()    
         this.form = this.handleUserInfo(row.id)    
@@ -314,7 +326,8 @@ export default {
           mail:undefined,
           birthday:undefined,
           address:undefined,
-          sign:undefined
+          sign:undefined,
+          pictureId: undefined
         }
       },
       //更改每页大小
@@ -337,11 +350,14 @@ export default {
           this.$message.error('上传头像图片大小不能超过 2MB!');
           return isLt2M;
         }else{
+            //进行文件上传操作 
             let fileFormData = new FormData();
             fileFormData.append('file',file);
+            fileFormData.append('dataSource',0);
             uploadFile(fileFormData).then(res=>{
               if(res.code == 200){
-                 this.imageUrl  = res.data;
+                 this.imageUrl  = res.data.url;
+                 this.form.pictureId = res.data.id;
               }
             })
         }

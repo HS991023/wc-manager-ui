@@ -9,3 +9,14 @@ export function uploadFile(data) {
         data: data
     });
 }
+
+//根据附件ID查询数据
+export function queryFileById(id) {
+    return request({
+        url: '/api/system/query/file',
+        method: 'get',
+        params: {
+            id: id
+        }
+    });
+}
