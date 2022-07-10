@@ -36,6 +36,8 @@
         <div class="user-avater">
              <el-upload
               class="avatar-uploader"
+              action=""
+              :http-request="handleUploadFile"
               :show-file-list="false"
               :before-upload="beforeAvatarUpload">
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -56,14 +58,15 @@
           <el-input type="password" v-model="form.passWord" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth" :required="true">
-            <el-select v-model="value" placeholder="请选择">
+           <el-input v-model="form.roleName" autocomplete="off"/>
+            <!-- <el-select v-model="value" placeholder="请选择">
             <el-option
               v-for="item in options"
               :key="item.dictValue"
               :label="item.dictName"
               :value="item.dictValue">
             </el-option>
-          </el-select>
+          </el-select> -->
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth" :required="true">
           <el-select v-model="status" placeholder="请选择">
@@ -399,15 +402,11 @@ export default {
       rowClass({ row, rowIndex}) {
         return 'background:#FAFAFA'
       },
-      beforeAvatarUpload(file) {
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-          return isLt2M;
-        }else{
-            //进行文件上传操作 
+      //空函数
+      handleUploadFile(val){
+         //进行文件上传操作 
             let fileFormData = new FormData();
-            fileFormData.append('file',file);
+            fileFormData.append('file',val.file);
             fileFormData.append('dataSource',0);
             uploadFile(fileFormData).then(res=>{
               if(res.code == 200){
@@ -415,6 +414,12 @@ export default {
                  this.form.pictureId = res.data.id;
               }
             })
+      },
+      beforeAvatarUpload(file) {
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+          return isLt2M;
         }
         return isLt2M;
       }
