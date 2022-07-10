@@ -94,13 +94,26 @@ export function removeDictType(ids) {
 
 
 //根据字典类型查询字典数据列表
-export function getDictDataByType(data) {
+export function getDictDataByList(data) {
     return request({
         url: '/api/system/dict/data/list',
         method: 'post',
         data: data
     });
 }
+
+
+//根据字典类型查询字典数据
+export function getDictDataByType(data) {
+    return request({
+        url: '/api/system/dict/data/by/type',
+        method: 'post',
+        data: {
+            dictType: data
+        }
+    });
+}
+
 
 //查看字典数据信息详情
 export function getDictDataInfo(id) {

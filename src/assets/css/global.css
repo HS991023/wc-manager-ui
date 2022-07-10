@@ -214,6 +214,10 @@
     width: 145px !important;
 }
 
+.form-data .el-input__icon {
+    line-height: 27px !important;
+}
+
 .form-data .el-input__inner {
     height: 33px !important;
 }

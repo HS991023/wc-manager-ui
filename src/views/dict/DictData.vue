@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import {getDictDataByType,getDictDataInfo,addDictDataInfo,updateDictDataInfo,removeDictData} from '@/api/system/dict'
+import {getDictDataByList,getDictDataInfo,addDictDataInfo,updateDictDataInfo,removeDictData} from '@/api/system/dict'
 import {getDictType,setDictType} from '@/utils/sessionStorge'
 export default {
     name: 'WcManagerUiDictData',
@@ -107,7 +107,7 @@ export default {
     },
     methods: {
       getDictDataList(){
-        getDictDataByType(this.data).then(response => {
+        getDictDataByList(this.data).then(response => {
           if(response.count== 0){
             this.dictDataInfoList = undefined
           }else{
@@ -122,7 +122,7 @@ export default {
            pageNum: 1,
            pageSize: 10,
         }
-        getDictDataByType(resetData).then(response => {
+        getDictDataByList(resetData).then(response => {
             this.dictDataInfoList = response.data[0]
             this.total = response.count
             this.loading = false

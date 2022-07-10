@@ -43,7 +43,14 @@
             </el-upload>
         </div>
         <el-form-item label="性别" :label-width="formLabelWidth">
-          <el-input v-model="form.sex" autocomplete="off"/>
+              <el-select v-model="sex" placeholder="请选择">
+              <el-option
+                v-for="item in sexList"
+                :key="item.dictValue"
+                :label="item.dictName"
+                :value="item.dictValue">
+              </el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth" :required="true">
           <el-input type="password" v-model="form.passWord" autocomplete="off"/>
@@ -52,19 +59,19 @@
             <el-select v-model="value" placeholder="请选择">
             <el-option
               v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.dictValue"
+              :label="item.dictName"
+              :value="item.dictValue">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth" :required="true">
-          <el-select v-model="value" placeholder="请选择">
+          <el-select v-model="status" placeholder="请选择">
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              v-for="item in statusList"
+              :key="item.dictValue"
+              :label="item.dictName"
+              :value="item.dictValue">
             </el-option>
           </el-select>
         </el-form-item>
@@ -137,11 +144,11 @@
 <script>
 import {userList,userInfo,addUser,updateUser,removeUser} from "@/api/system/user"   
 import {uploadFile,queryFileById}  from '@/api/common/upload'
+import {getDictDataByType} from '@/api/system/dict'
 export default {
     name:'WcManagerUiUserInfo',
     data() {
       return {
-        imageUrl:'', 
         //表格数据
         userList: null,
         //表单参数
@@ -157,6 +164,14 @@ export default {
         },
         //用户ID列表
         ids:[],
+        //头像URL
+        imageUrl:'', 
+        //状态
+        status:'',
+        statusList:[],
+        //性别
+        sex:'',
+        sexList:[],
         formLabelWidth: '120px',
         //是否加载中
         loading: true,
@@ -202,20 +217,24 @@ export default {
         this.showFormButton = false
         userInfo(id).then(response=>{
           this.form = response.data  
+          this.viewDictData()
           //获取用户头像
           if(response.data.pictureId != null || response.data.pictureId != undefined){
               queryFileById(response.data.pictureId).then(res=>{
                  if(res.code==200){
-                  this.imageUrl = res.data.url;
+                  this.imageUrl = res.data.url
                  }
-              })
+          })
+          }else{
+             this.imageUrl = undefined
           }
         })
       },
       //新增用户按钮
       handleAddUser(){
         //重置表单
-        this.reset()    
+        this.reset()
+        this.clearSelectData()
         //重置头像
         this.imageUrl = undefined
         this.showFormButton = true    
@@ -225,13 +244,15 @@ export default {
         //重置头像
         this.imageUrl = undefined
         //重置表单
-        this.reset()    
+        this.reset()   
         this.form = this.handleUserInfo(row.id)    
         this.showFormButton = true    
       },
       //提交表单
       submitForm(){
         this.$refs["form"].validate(valid => {
+        //绑定下拉框数据到表单
+        this.bindFrom()
         if (valid) {
           //更新用户
           if (this.form.id != undefined) {
@@ -340,6 +361,40 @@ export default {
         this.data.pageNum = val    
         this.getUserList()      
       },
+      //清除下拉框值
+      clearSelectData(){
+        this.status = undefined
+        this.sex = undefined
+      },
+      //下拉框数据绑定到表单
+      bindFrom(){
+          this.form.sex = this.sex
+          this.form.status = this.status
+      },
+      //回显字典数据
+      viewDictData(){
+         this.sexList.forEach(value=>{
+            if(this.form.sex == value.dictValue){
+               this.sex = value.dictName
+            }
+          })
+          this.statusList.forEach(value=>{
+            if(this.form.status == value.dictValue){
+               this.status = value.dictName
+            }
+          })
+      },
+      //获取下拉框数据
+      getSelectData(){
+          //性别
+          getDictDataByType('sex').then(res=>{
+             this.sexList = res.data;
+          })
+          //状态
+          getDictDataByType('status').then(res=>{
+            this.statusList = res.data
+          })
+      },
       //设置表头颜色
       rowClass({ row, rowIndex}) {
         return 'background:#FAFAFA'
@@ -365,7 +420,8 @@ export default {
       }
     },
     created(){
-      this.getUserList()    
+      this.getUserList() 
+      this.getSelectData()   
     },
 }
 </script>
