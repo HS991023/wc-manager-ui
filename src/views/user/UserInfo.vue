@@ -44,7 +44,7 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
         </div>
-        <el-form-item label="性别" :label-width="formLabelWidth">
+        <el-form-item label="性别" :label-width="formLabelWidth" :required="true">
               <el-select v-model="sex" placeholder="请选择">
               <el-option
                 v-for="item in sexList"
@@ -57,7 +57,7 @@
         <el-form-item label="密码" :label-width="formLabelWidth" :required="true">
           <el-input type="password" v-model="form.passWord" autocomplete="off"/>
         </el-form-item>
-        <el-form-item label="角色" :label-width="formLabelWidth" :required="true">
+        <el-form-item label="角色" :label-width="formLabelWidth">
            <el-input v-model="form.roleName" autocomplete="off"/>
             <!-- <el-select v-model="value" placeholder="请选择">
             <el-option
@@ -192,11 +192,12 @@ export default {
         let data= this.data    
         userList(data).then(response => {
           if(response.count== 0){
-            this.userList = undefined    
+             this.userList = undefined    
           }else{
-             this.userList = response.data[0]    
+             this.userList = response.data[0]
              this.total = response.count    
           }
+            this.viewDictList() 
             this.loading = false    
         })    
       },
@@ -209,10 +210,12 @@ export default {
            pageSize: 10,
         }
         userList(resetData).then(response => {
-            this.userList = response.data[0]    
+            this.userList = response.data[0]  
+            this.viewDictList()       
             this.total = response.count    
             this.loading = false    
-        })    
+        })
+        
       },
       //查询用户详情
       handleUserInfo(id){
@@ -257,6 +260,8 @@ export default {
         //绑定下拉框数据到表单
         this.bindFrom()
         if (valid) {
+          //替换字典值
+          this.replaceDictData()
           //更新用户
           if (this.form.id != undefined) {
             updateUser(this.form).then(response =>{
@@ -369,10 +374,43 @@ export default {
         this.status = undefined
         this.sex = undefined
       },
+      //列表回显字典
+      viewDictList(){
+         var sexList  = this.sexList;
+         var statuList = this.statusList;
+         //列表回显为字典值    
+        this.userList.forEach(obj=>{
+            //性别
+            for (let index = 0; index < sexList.length; index++) {
+                 const element = sexList[index];
+                 if(element.dictValue == obj.sex){
+                    obj.sex = element.dictName }
+            }
+            //状态
+            for (let j = 0; j < statuList.length; j++) {
+                 const element = statuList[j];
+                 if(element.dictValue == obj.status){
+                    obj.status = element.dictName}
+             }
+        });
+      },
       //下拉框数据绑定到表单
       bindFrom(){
           this.form.sex = this.sex
           this.form.status = this.status
+      },
+      //表单字典标签替换为字典值
+      replaceDictData(){
+        this.sexList.forEach(value=>{
+            if(this.sex == value.dictName){
+               this.form.sex = value.dictValue
+            }
+          })
+          this.statusList.forEach(value=>{
+            if(this.status == value.dictName){
+               this.form.status = value.dictValue
+            }
+          })
       },
       //回显字典数据
       viewDictData(){
@@ -425,8 +463,8 @@ export default {
       }
     },
     created(){
-      this.getUserList() 
       this.getSelectData()   
+      this.getUserList() 
     },
 }
 </script>
