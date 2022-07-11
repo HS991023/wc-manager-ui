@@ -3,13 +3,31 @@
     <!-- 搜索栏  -->
     <div class="serach-input">
       <label class="serach-propties">用户名:</label>    
-      <el-input placeholder="请输入用户名" suffix-icon="el-icon-text" v-model="data.nickName"/>
+      <el-input placeholder="请输入用户名" suffix-icon="el-icon-text" v-model="data.nickName"></el-input>
       <label class="serach-propties">账号:</label>    
       <el-input placeholder="请输入账号"  suffix-icon="el-icon-text" v-model="data.userName"/>
-      <label class="serach-propties">性别:</label>    
-      <el-input placeholder="请输入性别" suffix-icon="el-icon-text"/>
-      <label class="serach-propties">状态:</label>    
-      <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
+      <div class="serach-select-region">
+        <label class="serach-propties">性别:</label>    
+           <el-select v-model="sex" placeholder="请选择">
+                <el-option
+                  v-for="item in sexList"
+                  :key="item.dictValue"
+                  :label="item.dictName"
+                  :value="item.dictValue">
+                </el-option>
+            </el-select>
+        </div>
+      <div class="serach-select-region">
+          <label class="serach-propties">状态:</label> 
+          <el-select v-model="status" placeholder="请选择">
+            <el-option
+              v-for="item in statusList"
+              :key="item.dictValue"
+              :label="item.dictName"
+              :value="item.dictValue">
+            </el-option>
+          </el-select>
+      </div>
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
       <el-row>
@@ -164,6 +182,8 @@ export default {
            pageSize: 10,
            nickName:undefined,
            userName:undefined,
+           sex:undefined,
+           status:undefined
         },
         //用户ID列表
         ids:[],
