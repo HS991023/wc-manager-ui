@@ -13,7 +13,7 @@
     </div>
     </div>
     <div class="table-data"> 
-    <el-table :data="loginLogList" style="width: 100%" ref="multipleTable"  v-loading="loading" :header-cell-style="rowClass">
+    <el-table :data="loginLogList" style="width: 100%" max-height="600px" ref="multipleTable"  v-loading="loading" :header-cell-style="rowClass">
       <el-table-column align="center" label="数据ID" width="160" prop="id" key="id" :show-overflow-tooltip="showOverflowTooltip"/>
       <el-table-column align="center" label="浏览器" width="180" prop="browserName" key="browserName"/>
       <el-table-column align="center" label="浏览器版本" width="180" prop="browserVersion" key="browserVersion"/>
