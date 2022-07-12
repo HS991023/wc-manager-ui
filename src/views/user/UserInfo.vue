@@ -72,6 +72,16 @@
               </el-option>
             </el-select>
         </el-form-item>
+        <el-form-item label="账号类型" :label-width="formLabelWidth" :required="true">
+              <el-select v-model="accountType" placeholder="请选择">
+              <el-option
+                v-for="item in accountTypeList"
+                :key="item.dictValue"
+                :label="item.dictName"
+                :value="item.dictValue">
+              </el-option>
+            </el-select>
+        </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth" prop="passWord">
           <el-input type="password" v-model="form.passWord" autocomplete="off" placeholder="请输入密码"/>
         </el-form-item>
@@ -139,10 +149,10 @@
       </el-table-column>  
       <el-table-column align="center" prop="userName" key="userName" label="账号" width="100"/>
       <el-table-column align="center" prop="sex" key="sex" label="性别" width="100"/>
-      <el-table-column align="center" prop="address" key="address" label="地址" width="100"/>
-      <el-table-column align="center" prop="cellPhone" key="cellPhone" label="手机号码" width="100" :show-overflow-tooltip="showOverflowTooltip"/>
-      <el-table-column align="center" prop="mail" key="mail" label="邮件" width="100" :show-overflow-tooltip="showOverflowTooltip"/>
+      <el-table-column align="center" prop="cellPhone" key="cellPhone" label="手机号码" width="120" :show-overflow-tooltip="showOverflowTooltip"/>
+      <el-table-column align="center" prop="mail" key="mail" label="邮件" width="120" :show-overflow-tooltip="showOverflowTooltip"/>
       <el-table-column align="center" prop="accountType" key="accountType" label="账户类型" width="100"/>
+      <!-- <el-table-column align="center" prop="address" key="address" label="地址" width="100"/> -->
       <el-table-column align="center" prop="status" key="status" label="状态" width="80"/>
       <el-table-column align="center" prop="createTime" key="createTime" label="注册日期" width="190"/>
       <el-table-column label="操作">
@@ -199,6 +209,9 @@ export default {
         imageUrl:'', 
         //生日
         birthday:'',
+        //账号类型
+        accountType:'',
+        accountTypeList:[],
         //状态
         status:'',
         statusList:[],
@@ -231,11 +244,11 @@ export default {
           ],
           cellPhone: [
             { required: true, message: '请输手机号码', trigger: 'blur' },
-            { min: 5, max: 10, message: '长度在 0 到 11 个字符', trigger: 'blur' }
+            { min: 5, max: 12, message: '长度在 0 到 12 个字符', trigger: 'blur' }
           ],
           mail: [
             { required: false, message: '请输入邮件', trigger: 'blur' },
-            { min: 5, max: 10, message: '长度在 0 到 30 个字符', trigger: 'blur' }
+            { min: 5, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
           ],
     }}},
     methods: {
@@ -430,7 +443,8 @@ export default {
           birthday:undefined,
           address:undefined,
           sign:undefined,
-          pictureId: undefined
+          pictureId: undefined,
+          accountType: undefined
         }
       },
       //更改每页大小
@@ -447,11 +461,13 @@ export default {
       clearSelectData(){
         this.status = undefined
         this.sex = undefined
+        this.accountType = undefined
       },
       //列表回显字典
       viewDictList(){
          var sexList  = this.sexList;
          var statuList = this.statusList;
+         var accountTypeList = this.accountTypeList;
          //列表回显为字典值    
         this.userList.forEach(obj=>{
             //性别
@@ -466,12 +482,19 @@ export default {
                  if(element.dictValue == obj.status){
                     obj.status = element.dictName}
              }
+            //账户类型
+            for (let index = 0; index < accountTypeList.length; index++) {
+                 const element = accountTypeList[index];
+                 if(element.dictValue == obj.accountType){
+                    obj.accountType = element.dictName}
+            } 
         });
       },
       //下拉框数据绑定到表单
       bindFrom(){
           this.form.sex = this.sex
           this.form.status = this.status
+          this.form.accountType = this.accountType
       },
       //表单字典标签替换为字典值
       replaceDictData(){
@@ -483,6 +506,11 @@ export default {
           this.statusList.forEach(value=>{
             if(this.status == value.dictName){
                this.form.status = value.dictValue
+            }
+          })
+          this.accountTypeList.forEach(value=>{
+            if(this.accountType == value.dictName){
+               this.form.accountType = value.dictValue
             }
           })
       },
@@ -499,6 +527,11 @@ export default {
                this.status = value.dictName
             }
           })
+          this.accountTypeList.forEach(value=>{
+            if(this.form.accountType == value.dictValue){
+               this.accountType = value.dictName
+            }
+          })
       },
       //获取下拉框数据
       getSelectData(){
@@ -510,6 +543,11 @@ export default {
           getDictDataByType('status').then(res=>{
             this.statusList = res.data
           })
+           //账号类型
+          getDictDataByType('accout_type').then(res=>{
+            this.accountTypeList = res.data
+          })
+          
       },
       //设置表头颜色
       rowClass({ row, rowIndex}) {
