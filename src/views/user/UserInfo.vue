@@ -83,7 +83,7 @@
             </el-select>
         </el-form-item>
         <el-form-item label="密码" :label-width="formLabelWidth" prop="passWord">
-          <el-input type="password" v-model="form.passWord" autocomplete="off" placeholder="请输入密码"/>
+          <el-input type="password" v-model="form.passWord" autocomplete="off" placeholder="请输入密码" show-password/>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth">
            <el-input v-model="form.roleName" autocomplete="off" placeholder="请输入角色"/>

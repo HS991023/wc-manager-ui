@@ -18,7 +18,7 @@
         <el-table-column align="center" label="客户端版本" width="130" prop="browserVersion" key="browserVersion"/>
         <el-table-column align="center" label="操作系统" width="130" prop="operatorSystem" key="operatorSystem"/>
         <el-table-column align="center" label="登录IP" width="130" prop="loginIp" key="loginIp"/>
-        <el-table-column align="center" label="登录地区" width="130" prop="address" key="address"/>
+        <!-- <el-table-column align="center" label="登录地区" width="130" prop="address" key="address"/> -->
         <el-table-column align="center" label="登录时间" width="180" prop="loginTime" key="loginTime"/>
         <el-table-column label="操作">
         <template slot-scope="scope">
@@ -72,7 +72,7 @@ export default {
           if(response.count== 0){
              this.onlineUserList = undefined   
           }else{
-             this.onlineUserList = response.data   
+             this.onlineUserList = response.data[0]   
           }
            this.total = response.count   
            this.loading = false   
@@ -88,7 +88,7 @@ export default {
            pageSize: 10,
         }
         onLineUserList(resetData).then(response => {
-            this.onlineUserList = response.data   
+            this.onlineUserList = response.data[0]   
             this.total = response.count   
             this.loading = false   
         })   
@@ -108,12 +108,12 @@ export default {
       //更改每页大小
       handleSizeChange(val) {
         this.data.pageSize = val   
-        this.getOnlineUseList()     
+        this.getOnlineUserList()     
       },
       //更改当前页
       handleCurrentChange(val) {
         this.data.pageNum = val   
-        this.getOnlineUseList()    
+        this.getOnlineUserList()    
       },
       //设置表头颜色
       rowClass({ row, rowIndex}) {
