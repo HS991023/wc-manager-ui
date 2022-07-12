@@ -8,7 +8,7 @@
       <el-input placeholder="请输入账号"  suffix-icon="el-icon-text" v-model="data.userName"/>
       <div class="serach-select-region">
         <label class="serach-propties">性别:</label>    
-           <el-select v-model="sex" placeholder="请选择">
+           <el-select v-model="data.sex" placeholder="请选择">
                 <el-option
                   v-for="item in sexList"
                   :key="item.dictValue"
@@ -19,7 +19,7 @@
         </div>
       <div class="serach-select-region">
           <label class="serach-propties">状态:</label> 
-          <el-select v-model="status" placeholder="请选择">
+          <el-select v-model="data.status" placeholder="请选择">
             <el-option
               v-for="item in statusList"
               :key="item.dictValue"
@@ -44,12 +44,12 @@
     <div class="form-data">
     <!-- 表单新增或编辑对话框   -->
     <el-dialog title="用户信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form">
-        <el-form-item label="用户名" :label-width="formLabelWidth" :required="true">
-          <el-input v-model="form.nickName" autocomplete="off"/>
+      <el-form :model="form" ref="form" :rules="rules" :disabled="disabled">
+        <el-form-item label="用户名" :label-width="formLabelWidth" prop="nickName">
+          <el-input v-model="form.nickName" autocomplete="off" placeholder="请输入用户名"/>
         </el-form-item>
-        <el-form-item label="账号" :label-width="formLabelWidth" :required="true">
-          <el-input v-model="form.userName" autocomplete="off"/>
+        <el-form-item label="账号" :label-width="formLabelWidth" prop="userName">
+          <el-input v-model="form.userName" autocomplete="off" placeholder="请输入账号"/>
         </el-form-item>
         <div class="user-avater">
              <el-upload
@@ -72,11 +72,11 @@
               </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth" :required="true">
-          <el-input type="password" v-model="form.passWord" autocomplete="off"/>
+        <el-form-item label="密码" :label-width="formLabelWidth" prop="passWord">
+          <el-input type="password" v-model="form.passWord" autocomplete="off" placeholder="请输入密码"/>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth">
-           <el-input v-model="form.roleName" autocomplete="off"/>
+           <el-input v-model="form.roleName" autocomplete="off" placeholder="请输入角色"/>
             <!-- <el-select v-model="value" placeholder="请选择">
             <el-option
               v-for="item in options"
@@ -96,20 +96,26 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="电话" :label-width="formLabelWidth">
-          <el-input v-model="form.cellPhone" autocomplete="off"/>
+        <el-form-item label="电话" :label-width="formLabelWidth" prop="cellPhone">
+          <el-input v-model="form.cellPhone" autocomplete="off" placeholder="请输入手机号码"/>
         </el-form-item> 
-        <el-form-item label="邮件" :label-width="formLabelWidth">
-          <el-input v-model="form.mail" autocomplete="off"/>
+        <el-form-item label="邮件" :label-width="formLabelWidth" prop="mail">
+          <el-input v-model="form.mail" autocomplete="off" placeholder="请输入邮件"/>
         </el-form-item>
         <el-form-item label="生日" :label-width="formLabelWidth">
-          <el-input v-model="form.birthday" autocomplete="off"/>
+            <el-date-picker class="select-region"
+              v-model="birthday"
+              type="date"
+              placeholder="选择日期"
+              format="yyyy年 MM月 dd日"
+              value-format="yyyy-MM-dd HH:mm:ss">
+            </el-date-picker>
         </el-form-item>
         <el-form-item label="地址" :label-width="formLabelWidth">
-          <el-input v-model="form.address" autocomplete="off"/>
+          <el-input v-model="form.address" autocomplete="off" placeholder="请输入地址"/>
         </el-form-item>
         <el-form-item label="个性签名" :label-width="formLabelWidth">
-          <el-input v-model="form.sign" autocomplete="off"/>
+          <el-input v-model="form.sign" autocomplete="off" placeholder="请输入个性签名"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -137,8 +143,8 @@
       <el-table-column align="center" prop="cellPhone" key="cellPhone" label="手机号码" width="100" :show-overflow-tooltip="showOverflowTooltip"/>
       <el-table-column align="center" prop="mail" key="mail" label="邮件" width="100" :show-overflow-tooltip="showOverflowTooltip"/>
       <el-table-column align="center" prop="accountType" key="accountType" label="账户类型" width="100"/>
-      <el-table-column align="center" prop="status" key="status" label="状态" width="70"/>
-      <el-table-column align="center" prop="createTime" key="createTime" label="注册日期" width="170"/>
+      <el-table-column align="center" prop="status" key="status" label="状态" width="80"/>
+      <el-table-column align="center" prop="createTime" key="createTime" label="注册日期" width="190"/>
       <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button type="text" size="mini" icon="el-icon-edit"  @click="handleEidtUser(scope.row);dialogFormVisible = true">编辑</el-button>
@@ -172,6 +178,8 @@ export default {
       return {
         //表格数据
         userList: null,
+        //是否禁用表单
+        disabled: false,
         //表单参数
         form:{},
         //总数
@@ -189,6 +197,8 @@ export default {
         ids:[],
         //头像URL
         imageUrl:'', 
+        //生日
+        birthday:'',
         //状态
         status:'',
         statusList:[],
@@ -205,7 +215,29 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
-    }},
+        //检验规则
+        rules: {
+         nickName: [
+            { required: true, message: '请输入用户昵称', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+          ],
+          userName: [
+            { required: true, message: '请输入账号', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+          ],
+          passWord: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+          ],
+          cellPhone: [
+            { required: true, message: '请输手机号码', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 0 到 11 个字符', trigger: 'blur' }
+          ],
+          mail: [
+            { required: false, message: '请输入邮件', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 0 到 30 个字符', trigger: 'blur' }
+          ],
+    }}},
     methods: {
       //获取用户列表
       getUserList(){
@@ -215,16 +247,18 @@ export default {
              this.userList = undefined    
           }else{
              this.userList = response.data[0]
+             this.viewDictList() 
              this.total = response.count    
           }
-            this.viewDictList() 
             this.loading = false    
         })    
       },
       //用户列表重置
       getUserListReset(){
         this.data.nickName = undefined    
-        this.data.userName = undefined    
+        this.data.userName = undefined   
+        this.data.sex = undefined
+        this.data.status = undefined 
         let resetData= {
            pageNum: 1,
            pageSize: 10,
@@ -240,6 +274,8 @@ export default {
       //查询用户详情
       handleUserInfo(id){
         this.reset()    
+        //禁用表单
+        this.disabled = true
         this.showFormButton = false
         userInfo(id).then(response=>{
           this.form = response.data  
@@ -260,9 +296,13 @@ export default {
       handleAddUser(){
         //重置表单
         this.reset()
+        //启用表单
+        this.disabled = false
         this.clearSelectData()
         //重置头像
         this.imageUrl = undefined
+        //重置生日
+        this.birthday = undefined
         this.showFormButton = true    
       },
       //编辑用户按钮
@@ -271,7 +311,9 @@ export default {
         this.imageUrl = undefined
         //重置表单
         this.reset()   
-        this.form = this.handleUserInfo(row.id)    
+        this.form = this.handleUserInfo(row.id)  
+        //启用表单
+        this.disabled = false  
         this.showFormButton = true    
       },
       //提交表单
@@ -279,6 +321,8 @@ export default {
         this.$refs["form"].validate(valid => {
         //绑定下拉框数据到表单
         this.bindFrom()
+        //绑定生日
+        this.form.birthday = this.birthday 
         if (valid) {
           //替换字典值
           this.replaceDictData()
@@ -292,6 +336,11 @@ export default {
             })    
             this.dialogFormVisible = false         
             this.getUserList()        
+            }else{
+               var msg = response.msg;
+               this.$msgbox(response.msg, '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'})    
             }
             })    
           //新增用户  
@@ -304,6 +353,11 @@ export default {
             })    
             this.dialogFormVisible = false    
             this.getUserList()         
+            }else{
+               var msg = response.msg;
+               this.$msgbox(response.msg, '系统提示', {
+                confirmButtonText: '确定',
+                type: 'warning'})    
             }
           })            
           }
@@ -432,8 +486,9 @@ export default {
             }
           })
       },
-      //回显字典数据
+      //回显字典数据及生日数据
       viewDictData(){
+         this.birthday = this.form.birthday
          this.sexList.forEach(value=>{
             if(this.form.sex == value.dictValue){
                this.sex = value.dictName

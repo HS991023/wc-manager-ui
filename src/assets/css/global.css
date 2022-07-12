@@ -207,12 +207,15 @@
 }
 
 
-/* 表单样式 */
+/* 表单项样式 */
 
 .form-data .el-form-item {
     display: inline-block;
     margin-left: -11px !important;
 }
+
+
+/* 表单主题样式 */
 
 .form-data .el-dialog__body {
     margin-top: -5px !important;
@@ -221,19 +224,38 @@
     padding: 11px 20px;
 }
 
+
+/* 表单输入框样式 */
+
 .form-data .el-input {
     display: inline-block;
     height: 30px !important;
-    width: 145px !important;
+    width: 150px !important;
 }
+
+
+/* 表单输入框图标样式 */
 
 .form-data .el-input__icon {
     line-height: 27px !important;
 }
 
+
+/* 选择框样式 */
+
+.select-region .el-input__inner {
+    padding-left: 29px !important;
+    padding-right: 7px !important
+}
+
 .form-data .el-input__inner {
     height: 33px !important;
+    font-size: 13px !important;
+    line-height: 13px !important;
 }
+
+
+/* 表单尾部样式 */
 
 .form-data .el-dialog__footer {
     margin-top: -30px !important;
