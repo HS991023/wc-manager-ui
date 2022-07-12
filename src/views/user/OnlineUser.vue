@@ -11,7 +11,7 @@
     </div>
     </div>
     <div class="table-data"> 
-      <el-table :data="onlineUserList" style="width: 100%" ref="multipleTable"  v-loading="loading" :header-cell-style="rowClass">
+      <el-table :data="onlineUserList" style="width: 100%" max-height="590px" ref="multipleTable"  v-loading="loading" :header-cell-style="rowClass">
         <el-table-column align="center" label="会话ID" width="180" prop="jti" key="jti" />
         <el-table-column align="center" label="在线用户" width="130" prop="nickName" key="nickName"/>
         <el-table-column align="center" label="客户端" width="130" prop="browserName" key="browserName"/>
