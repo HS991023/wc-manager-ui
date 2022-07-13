@@ -40,12 +40,13 @@
         <!-- 选择菜单区域 -->
         <div class="select-meun-region">
           <el-tree
+          node-key="id"
+          ref="tree" 
+          highlight-current
           :data="meunTree"
           :props="defaultProps"
-          lazy
-          ref="tree"
+          :check-strictly="checkstrictly"
           :default-expand-all="open"
-          node-key="id"
           show-checkbox>
         </el-tree>
         </div>
@@ -87,7 +88,7 @@
         :total="total">
       </el-pagination>
     </div>
-    </div> 
+  </div> 
 </template>
 
 <script>
@@ -119,13 +120,13 @@ export default {
         checkeall: false,
         //父子联动
         linkage: false,
+        checkstrictly: true,
         //菜单树
         meunTree:[],
         //启用禁用
         radio:undefined,
         statusList:[],
         defaultProps: {
-          id:'id',
           label: 'label',
           children: 'children'
         },
@@ -178,16 +179,24 @@ export default {
         this.disabled = true
         this.showFormButton = false  
         this.getMeunTreeData()
+        this.resetMeunAuthButton()
         roleInfo(id).then(response=>{
          this.form = response.data  
          this.radio = this.form.status 
         })
       },
-       //新增角色按钮
+      //重置菜单权限树按钮
+      resetMeunAuthButton(){
+         this.open = false;
+         this.checkeall = false;
+         this.linkage = false;
+      },
+      //新增角色按钮
       handleAddRole(){
         this.reset()  
         this.disabled = false
         this.getMeunTreeData();
+        this.resetMeunAuthButton()
         this.showFormButton = true  
       },
       //编辑角色按钮
@@ -308,50 +317,77 @@ export default {
      getMeunTreeData(){
         getMeunTree().then(res=>{
            if(res.code == 200){
-             this.meunTree = res.data
+              this.meunTree = res.data
            }
         })
-      },
-      //获取下拉框数据
-      getSelectData(){
+     },
+     //获取下拉框数据
+    getSelectData(){
           //状态
           getDictDataByType('status').then(res=>{
             this.statusList = res.data
           })
-      },
-      //回显列表字典值
-      viewDictList(){
-         var statuList = this.statusList;
-         //列表回显为字典值    
-        this.roleList.forEach(obj=>{
-            //状态
-            for (let j = 0; j < statuList.length; j++) {
-                 const element = statuList[j];
-                 if(element.dictValue == obj.status){
-                    obj.status = element.dictName}
-             }
-        });}
+    },
+    //回显列表字典值
+    viewDictList(){
+        var statuList = this.statusList;
+        //列表回显为字典值    
+      this.roleList.forEach(obj=>{
+          //状态
+          for (let j = 0; j < statuList.length; j++) {
+                const element = statuList[j];
+                if(element.dictValue == obj.status){
+                  obj.status = element.dictName}
+            }
+      });},
+    //遍历函数
+    arrForEach (arr, arr1, str) {
+          arr.forEach(item => {
+            if (str) {
+              arr1.push(item[str])
+            } else {
+              arr1.push(item)
+            }
+            if (item.children && item.children.length) {
+              this.arrForEach(item.children, arr1, str)
+            }
+          })
+        }
     },
     watch:{
+       // 展开/折叠
        open:{
          handler(newValue,oldValue){
             this.open = newValue
             let nodesMap =  this.$refs.tree.store.nodesMap;
             for (let key in nodesMap) {
-            //全部关闭
-            nodesMap[key].expanded = newValue;
-            nodesMap[key].isCurrent = newValue;
+              nodesMap[key].expanded = newValue;
             }
        }},
+       // 全选/全不选
        checkeall:{
           handler(newValue,oldValue){
           if (this.checkeall) {
               //全选
-              this.$refs.tree.setCheckedNodes(this.meunTree);
+              let arr = []
+              //遍历
+              this.arrForEach(this.meunTree, arr, 'id')
+              this.$refs.tree.setCheckedKeys(arr)
           }else{
               //取消选中
               this.$refs.tree.setCheckedKeys([]);
           }
+         }
+       },
+       // 父子联动
+       linkage:{
+         handler(newValue,oldValue){
+            if(newValue == true){
+              this.checkstrictly = false;
+            }
+            if(newValue == false){
+              this.checkstrictly = true;
+            }
          }
        }
     },
@@ -365,10 +401,11 @@ export default {
 <style scoped>
 ::v-deep .select-meun-region{
     width: 90%;
+    height: 100px;
+    overflow-x: auto;
     margin-left: 43px;
     margin-top: -21px;
     margin-bottom: 10px;
-    height: 82px;
     border: 1px solid #00000021;
 }
 ::v-deep .form-data .el-input__inner{
