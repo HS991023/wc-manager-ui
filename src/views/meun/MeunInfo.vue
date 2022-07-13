@@ -377,7 +377,15 @@ export default {
     // 获取菜单权限树
      getMeunTreeData(){
         getMeunTree().then(res=>{
-              this.menuTree = res.data
+              var result = [{
+                id: "0",
+                label: "主类目",
+                code: undefined,
+                colum: null,
+                level: 0,
+                children:res.data
+              }]
+              this.menuTree = result
         })
      },
      // 节点点击事件
