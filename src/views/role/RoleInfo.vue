@@ -16,16 +16,39 @@
     </div>
     <div class="form-data">
     <el-dialog title="角色信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form">
+      <el-form :model="form" ref="form" :disabled="disabled">
         <el-form-item label="角色名称" :label-width="formLabelWidth">
-          <el-input v-model="form.roleName" autocomplete="off"></el-input>
+          <el-input v-model="form.roleName" autocomplete="off" placeholder="请输入角色名称"/>
         </el-form-item>
         <el-form-item label="角色代码" :label-width="formLabelWidth">
-          <el-input v-model="form.roleCode" autocomplete="off"></el-input>
+          <el-input v-model="form.roleCode" autocomplete="off" placeholder="请输入角色代码"/>
         </el-form-item>
         <el-form-item label="角色描述" :label-width="formLabelWidth">
-          <el-input v-model="form.roleExplain" autocomplete="off"></el-input>
+          <el-input v-model="form.roleExplain" autocomplete="off" placeholder="请输入角色描述"/>
         </el-form-item>
+        <el-form-item label="状态" :label-width="formLabelWidth">
+            <el-radio-group v-model="radio">
+            <el-radio :label="0">启用</el-radio>
+            <el-radio :label="2">禁用</el-radio>
+            </el-radio-group>
+        </el-form-item>
+        <el-form-item label="菜单权限" :label-width="formLabelWidth">
+          <el-checkbox v-model="open">展开/折叠</el-checkbox>
+          <el-checkbox v-model="checkeall">全选/全不选</el-checkbox>
+          <el-checkbox v-model="linkage">父子联动</el-checkbox>
+        </el-form-item>
+        <!-- 选择菜单区域 -->
+        <div class="select-meun-region">
+          <el-tree
+          :data="meunTree"
+          :props="defaultProps"
+          lazy
+          ref="tree"
+          :default-expand-all="open"
+          node-key="id"
+          show-checkbox>
+        </el-tree>
+        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <div class="from-button-region" v-if="showFormButton">
@@ -44,7 +67,7 @@
         </template>
       </el-table-column>  
       <el-table-column label="角色代码" prop="roleCode" width="180"/>
-      <el-table-column label="状态"    prop="status" width="180"/>
+      <el-table-column label="状态" prop="status" width="180"/>
       <el-table-column label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible = true">编辑</el-button>
@@ -68,6 +91,8 @@
 </template>
 
 <script>
+import {getMeunTree} from '@/api/common/tree'
+import {getDictDataByType} from '@/api/system/dict'
 import {roleList,roleInfo,addRole,updateRole,removeRole} from '@/api/system/role'
 export default {
     name:'WcManagerUiRoleInfo',
@@ -75,6 +100,8 @@ export default {
       return {
         //表格数据
         roleList: null,
+        //表单禁用启用
+        disabled: false,
         //表单数据
         form:{},
         //总数
@@ -85,6 +112,22 @@ export default {
            pageSize: 10,
            roleName:undefined,
            roleCode:undefined
+        },
+        //展示折叠
+        open: false,
+        //全选
+        checkeall: false,
+        //父子联动
+        linkage: false,
+        //菜单树
+        meunTree:[],
+        //启用禁用
+        radio:undefined,
+        statusList:[],
+        defaultProps: {
+          id:'id',
+          label: 'label',
+          children: 'children'
         },
         //角色ID列表
         ids:[],
@@ -108,6 +151,7 @@ export default {
             this.roleList = undefined  
           }else{
              this.roleList = response.data[0]  
+             this.viewDictList()
              this.total = response.count  
           }
             this.loading = false  
@@ -123,6 +167,7 @@ export default {
         }
         roleList(resetData).then(response => {
             this.roleList = response.data[0]  
+            this.viewDictList()
             this.total = response.count  
             this.loading = false  
         })  
@@ -130,24 +175,32 @@ export default {
       //查询角色详情
       handleRoleInfo(id){
         this.reset()  
+        this.disabled = true
         this.showFormButton = false  
+        this.getMeunTreeData()
         roleInfo(id).then(response=>{
          this.form = response.data  
+         this.radio = this.form.status 
         })
       },
        //新增角色按钮
       handleAddRole(){
         this.reset()  
+        this.disabled = false
+        this.getMeunTreeData();
         this.showFormButton = true  
       },
       //编辑角色按钮
       handleEditRole(row) {
         this.reset()  
         this.form = this.handleRoleInfo(row.id)  
+        this.disabled = false
         this.showFormButton = true  
       },
       //提交表单
       submitForm(){
+        //状态赋值给from
+        this.form.status = this.radio
         this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != undefined) {
@@ -234,6 +287,7 @@ export default {
           roleName:undefined,
           roleCode:undefined,
           roleExplain:undefined,
+          status:undefined
         }
       },
       //更改每页大小
@@ -249,22 +303,93 @@ export default {
       //设置表头颜色
      rowClass({ row, rowIndex}) {
         return 'background:#FAFAFA'
-      }
+      },
+      // 获取菜单权限树
+     getMeunTreeData(){
+        getMeunTree().then(res=>{
+           if(res.code == 200){
+             this.meunTree = res.data
+           }
+        })
+      },
+      //获取下拉框数据
+      getSelectData(){
+          //状态
+          getDictDataByType('status').then(res=>{
+            this.statusList = res.data
+          })
+      },
+      //回显列表字典值
+      viewDictList(){
+         var statuList = this.statusList;
+         //列表回显为字典值    
+        this.roleList.forEach(obj=>{
+            //状态
+            for (let j = 0; j < statuList.length; j++) {
+                 const element = statuList[j];
+                 if(element.dictValue == obj.status){
+                    obj.status = element.dictName}
+             }
+        });}
+    },
+    watch:{
+       open:{
+         handler(newValue,oldValue){
+            this.open = newValue
+            let nodesMap =  this.$refs.tree.store.nodesMap;
+            for (let key in nodesMap) {
+            //全部关闭
+            nodesMap[key].expanded = newValue;
+            nodesMap[key].isCurrent = newValue;
+            }
+       }},
+       checkeall:{
+          handler(newValue,oldValue){
+          if (this.checkeall) {
+              //全选
+              this.$refs.tree.setCheckedNodes(this.meunTree);
+          }else{
+              //取消选中
+              this.$refs.tree.setCheckedKeys([]);
+          }
+         }
+       }
     },
     created(){
-      this.getRoleList()  
+      this.getSelectData();
+      this.getRoleList() 
     }
 }
 </script>
 
 <style scoped>
+::v-deep .select-meun-region{
+    width: 90%;
+    margin-left: 43px;
+    margin-top: -21px;
+    margin-bottom: 10px;
+    height: 82px;
+    border: 1px solid #00000021;
+}
+::v-deep .form-data .el-input__inner{
+  width: 219px;
+}
+::v-deep .from-button-region {
+    margin-top: 11px;
+    margin-bottom: -7px;
+    margin-left: 230px;
+    width: 200px;
+    height: 35px;
+}
 ::v-deep .el-dialog{
-  width: 37%  
+  width: 32%  
 }
 ::v-deep .el-dialog__body{
+  margin-left: -29px !important;
   padding: 8px 25px
 }
 ::v-deep .el-dialog__footer{
+  margin-left: -77px !important;
   padding: 3px 87px 16px  
 }
 </style>
