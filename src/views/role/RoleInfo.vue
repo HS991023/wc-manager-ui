@@ -182,6 +182,8 @@ export default {
         this.resetMeunAuthButton()
         roleInfo(id).then(response=>{
          this.form = response.data  
+         //渲染已勾选的菜单权限
+         this.viewResTree(this.form.menuAuthList)
          this.radio = this.form.status 
         })
       },
@@ -210,29 +212,27 @@ export default {
       submitForm(){
         //状态赋值给from
         this.form.status = this.radio
+        //菜单权限列表赋值给from
+        this.form.menuAuthList = this.$refs.tree.getCheckedKeys();
         this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != undefined) {
             updateRole(this.form).then(response =>{
-            if(response.code==200){
-             this.$msgbox('更新角色信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })  
-            this.dialogFormVisible = false       
-            this.getRoleList()      
-            }
+                this.$msgbox('更新角色信息成功', '系统提示', {
+                  confirmButtonText: '确定',
+                  type: 'warning'
+              })  
+              this.dialogFormVisible = false       
+              this.getRoleList()      
             })  
           }else{
           addRole(this.form).then(response =>{
-          if(response.code==200){
-             this.$msgbox('保存角色信息成功', '系统提示', {
+            this.$msgbox('保存角色信息成功', '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'
             })  
             this.dialogFormVisible = false  
-            this.getRoleList()       
-            }
+            this.getRoleList()   
           })          
           }
         }})  
@@ -263,13 +263,12 @@ export default {
           //发送删除请求
          var roleIds = this.ids  
          removeRole(roleIds.toString()).then(response=>{
-            if(response.code==200){
-               this.$message({
+             this.$message({
                 type: 'success',
                 message: '删除成功!'
              })  
              this.getRoleList()  
-            }
+            
           })
         }).catch(() => {
           //清除已选择的状态
@@ -296,7 +295,9 @@ export default {
           roleName:undefined,
           roleCode:undefined,
           roleExplain:undefined,
-          status:undefined
+          status:undefined,
+          //菜单权限ID列表
+          menuAuthList:[]
         }
       },
       //更改每页大小
@@ -321,38 +322,43 @@ export default {
            }
         })
      },
-     //获取下拉框数据
-    getSelectData(){
-          //状态
-          getDictDataByType('status').then(res=>{
-            this.statusList = res.data
-          })
-    },
-    //回显列表字典值
-    viewDictList(){
-        var statuList = this.statusList;
-        //列表回显为字典值    
-      this.roleList.forEach(obj=>{
-          //状态
-          for (let j = 0; j < statuList.length; j++) {
-                const element = statuList[j];
-                if(element.dictValue == obj.status){
-                  obj.status = element.dictName}
-            }
-      });},
-    //遍历函数
-    arrForEach (arr, arr1, str) {
-          arr.forEach(item => {
-            if (str) {
-              arr1.push(item[str])
-            } else {
-              arr1.push(item)
-            }
-            if (item.children && item.children.length) {
-              this.arrForEach(item.children, arr1, str)
-            }
-          })
-        }
+      //获取下拉框数据
+     getSelectData(){
+            //状态
+            getDictDataByType('status').then(res=>{
+              this.statusList = res.data
+            })
+      },
+      //渲染菜单权限树
+      viewResTree(menuAuthList){
+        //更新菜单权限树为选中状态
+         this.$refs.tree.setCheckedKeys(menuAuthList)
+      },
+      //回显列表字典值
+      viewDictList(){
+          var statuList = this.statusList;
+          //列表回显为字典值    
+        this.roleList.forEach(obj=>{
+            //状态
+            for (let j = 0; j < statuList.length; j++) {
+                  const element = statuList[j];
+                  if(element.dictValue == obj.status){
+                    obj.status = element.dictName}
+              }
+        });},
+      //遍历函数
+      arrForEach (arr, arr1, str) {
+            arr.forEach(item => {
+              if (str) {
+                arr1.push(item[str])
+              } else {
+                arr1.push(item)
+              }
+              if (item.children && item.children.length) {
+                this.arrForEach(item.children, arr1, str)
+              }
+            })
+          }
     },
     watch:{
        // 展开/折叠
