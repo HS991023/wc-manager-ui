@@ -317,9 +317,7 @@ export default {
       // 获取菜单权限树
      getMeunTreeData(){
         getMeunTree().then(res=>{
-           if(res.code == 200){
               this.meunTree = res.data
-           }
         })
      },
       //获取下拉框数据
@@ -415,7 +413,7 @@ export default {
     border: 1px solid #00000021;
 }
 ::v-deep .form-data .el-input__inner{
-  width: 219px;
+  width: 285px;
 }
 ::v-deep .from-button-region {
     margin-top: 11px;

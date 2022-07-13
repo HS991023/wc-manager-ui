@@ -39,6 +39,21 @@
     <div class="form-data">
     <el-dialog title="菜单信息" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form">
+        <el-form-item label="上级菜单" :label-width="formLabelWidth">   
+           <!-- clear点击清空的实现  ref属性注册，用于操作dom元素-->
+            <el-select v-model="chooseName" placeholder="请选择" clearable @clear="handleClear" ref="selectUpResId" >
+              <el-option hidden :key="form.pid" value="一级菜单" :label="chooseName"></el-option>
+              <!-- data数据， props配置选项 expand-on-click-node是否在点击节点的时候展开或者收缩节点  check-on-click-node是否在点击节点的时候选中节点 node-click节点被点击时的回调-->
+              <el-tree
+                :data="menuTree"
+                :props="defaultProps"
+                :expand-on-click-node="false"
+                :check-on-click-node="true"
+                @node-click="handleNodeClick"
+              >
+              </el-tree>
+            </el-select>
+        </el-form-item>
         <el-form-item label="菜单名称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
@@ -106,8 +121,9 @@
 </template>
 
 <script>
-import {resList,resInfo,addRes,updateRes,removeRes} from '@/api/system/res'
 import {getDictDataByType} from '@/api/system/dict'
+import {getMeunTree} from '@/api/common/tree'
+import {resList,resInfo,addRes,updateRes,removeRes} from '@/api/system/res'
 export default {
     name:'WcManagerUiMeunInfo',
     data() {
@@ -129,6 +145,14 @@ export default {
         },
         //菜单ID列表
         ids:[],
+        //菜单树
+        menuTree:[],
+        //选择的节点名称
+        chooseName:'',
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        },
         //状态
         status:'',
         statusList:[],
@@ -187,6 +211,7 @@ export default {
           this.form = response.data
           this.viewDictData()
         })
+        this.getMeunTreeData()
       },
        //新增菜单按钮
       handleAddRole(){
@@ -194,6 +219,7 @@ export default {
         this.clearSelectData();
         //重置表单
         this.reset()
+        this.getMeunTreeData()
         this.showFormButton = true;
       },
       //编辑按钮按钮
@@ -292,6 +318,7 @@ export default {
       //重置表单
       reset() {
         this.form={
+          superRes:undefined,//上级资源ID
           name: undefined,
           resUrl: undefined,
           permission: undefined,
@@ -346,10 +373,31 @@ export default {
         getDictDataByType('res_type').then(res=>{
           this.resTypeList = res.data
         })
+     },
+    // 获取菜单权限树
+     getMeunTreeData(){
+        getMeunTree().then(res=>{
+              this.menuTree = res.data
+        })
+     },
+     // 节点点击事件
+    handleNodeClick(data) {
+      // 配置树形组件点击节点后，设置选择器的值，配置组件的数据
+      this.chooseName = data.label
+      this.form.pid = data.id
+      // 选择器执行完成后，使其失去焦点隐藏下拉框效果
+      this.$refs.selectUpResId.blur()
+    },
+    // 选择器配置可以清空选项，用户点击清空按钮触发
+    handleClear () {
+      // 将选择器的值置空
+      this.chooseName = ''
+      this.form.pid = ''
     },
     //列表回显字典
     viewDictList(){
         var statuList = this.statusList;
+        var resTypeList = this.resTypeList;
          //列表回显为字典值    
         this.resList.forEach(obj=>{
             //状态
@@ -357,6 +405,12 @@ export default {
                  const element = statuList[j];
                  if(element.dictValue == obj.status){
                     obj.status = element.dictName}
+             }
+             //类型
+            for (let j = 0; j < resTypeList.length; j++) {
+                 const element = resTypeList[j];
+                 if(element.dictValue == obj.resType){
+                    obj.resType = element.dictName}
              }
         });
       },
@@ -389,9 +443,12 @@ export default {
 </script>
 
 <style scoped>
-
 ::v-deep .form-data .el-input__inner{
   width: 265px !important;
+}
+
+::v-deep .el-tree-node__content{
+  width: 260px !important;
 }
 
 ::v-deep .form-data .el-form-item{
@@ -405,6 +462,10 @@ export default {
   height: 28px !important;
 }
 
+::v-deep .el-input__suffix{
+  left: 224px !important;
+}
+
 .el-dropdown-link {
     cursor: pointer;
     color: #409EFF;
@@ -413,12 +474,12 @@ export default {
     font-size: 12px;
 }
 ::v-deep .el-dialog{
-  width: 31%;
+  width: 33%;
 }
 ::v-deep .el-dialog__body{
-  padding: 8px 34px
+  padding: 8px 50px
 }
 ::v-deep .el-dialog__footer{
-  padding: 3px 87px 16px;
+  padding: 3px 112px 16px;
 }
 </style>
