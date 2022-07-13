@@ -448,7 +448,7 @@ export default {
 }
 
 ::v-deep .el-tree-node__content{
-  width: 260px !important;
+  width: 230px !important;
 }
 
 ::v-deep .form-data .el-form-item{
