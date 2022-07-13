@@ -5,10 +5,28 @@
       <el-input placeholder="请输入菜单名称" suffix-icon="el-icon-text" v-model="data.resName"/>
       <label class="serach-propties">权限代码:</label>    
       <el-input placeholder="请输入权限代码" suffix-icon="el-icon-text" v-model="data.permission"/>
-      <label class="serach-propties">菜单类型:</label>    
-      <el-input placeholder="请输入菜单类型" suffix-icon="el-icon-text" v-model="data.resType"/>
-      <label class="serach-propties">状态:</label>    
-      <el-input placeholder="请输入状态" suffix-icon="el-icon-text" v-model="data.status"/>
+      <div class="serach-select-region">
+          <label class="serach-propties">菜单类型:</label> 
+          <el-select v-model="data.resType" placeholder="请选择">
+            <el-option
+              v-for="item in resTypeList"
+              :key="item.dictValue"
+              :label="item.dictName"
+              :value="item.dictValue">
+            </el-option>
+          </el-select>
+      </div>
+      <div class="serach-select-region">
+          <label class="serach-propties">状态:</label> 
+          <el-select v-model="data.status" placeholder="请选择">
+            <el-option
+              v-for="item in statusList"
+              :key="item.dictValue"
+              :label="item.dictName"
+              :value="item.dictValue">
+            </el-option>
+          </el-select>
+      </div>
     <div class="serach-button-region"> 
         <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getResList()">搜索</el-button>
         <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResListReset()">重置</el-button>
@@ -31,13 +49,20 @@
           <el-input v-model="form.permission" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="菜单类型" :label-width="formLabelWidth">
-          <el-input v-model="form.resType" autocomplete="off"></el-input>
+            <el-radio-group v-model="resType">
+              <el-radio :label="0">目录</el-radio>
+              <el-radio :label="1">菜单</el-radio>
+              <el-radio :label="2">按钮</el-radio>
+            </el-radio-group>
         </el-form-item>
         <el-form-item label="菜单图标" :label-width="formLabelWidth">
           <el-input v-model="form.icon" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="菜单状态" :label-width="formLabelWidth">
-          <el-input v-model="form.status" autocomplete="off"></el-input>
+           <el-radio-group v-model="status">
+              <el-radio :label="0">启用</el-radio>
+              <el-radio :label="2">禁用</el-radio>
+            </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -82,6 +107,7 @@
 
 <script>
 import {resList,resInfo,addRes,updateRes,removeRes} from '@/api/system/res'
+import {getDictDataByType} from '@/api/system/dict'
 export default {
     name:'WcManagerUiMeunInfo',
     data() {
@@ -103,6 +129,12 @@ export default {
         },
         //菜单ID列表
         ids:[],
+        //状态
+        status:'',
+        statusList:[],
+        //菜单类型
+        resType:'',
+        resTypeList:[],
         formLabelWidth: '120px',
         //是否加载中
         loading: true,
@@ -124,6 +156,7 @@ export default {
             this.resList = undefined
           }else{
              this.resList = response.data[0]
+             this.viewDictList()
              this.total = response.count
           }
             this.loading = false
@@ -141,6 +174,7 @@ export default {
         }
         resList(resetData).then(response => {
             this.resList = response.data[0]
+            this.viewDictList()
             this.total = response.count
             this.loading = false;
         })
@@ -151,10 +185,13 @@ export default {
         this.showFormButton = false
         resInfo(id).then(response=>{
           this.form = response.data
+          this.viewDictData()
         })
       },
        //新增菜单按钮
       handleAddRole(){
+        //重置下拉框
+        this.clearSelectData();
         //重置表单
         this.reset()
         this.showFormButton = true;
@@ -169,9 +206,11 @@ export default {
       //提交表单
       submitForm(){
         this.$refs["form"].validate(valid => {
+        this.bindFrom();
         if (valid) {
           //更新菜单
           if (this.form.id != undefined) {
+            this.replaceDictData();
             updateRes(this.form).then(response =>{
             if(response.code==200){
              this.$msgbox('更新菜单信息成功', '系统提示', {
@@ -184,7 +223,7 @@ export default {
             })
           //新增菜单
           }else{
-          addRes(this.form).then(response =>{
+            addRes(this.form).then(response =>{
           if(response.code==200){
              this.$msgbox('保存菜单信息成功', '系统提示', {
                 confirmButtonText: '确定',
@@ -296,15 +335,76 @@ export default {
       //设置表头颜色
      rowClass({ row, rowIndex}) {
         return 'background:#FAFAFA'
-      }
+      },
+     //获取下拉框数据
+     getSelectData(){
+        //状态
+        getDictDataByType('status').then(res=>{
+          this.statusList = res.data
+        })
+        //类型
+        getDictDataByType('res_type').then(res=>{
+          this.resTypeList = res.data
+        })
+    },
+    //列表回显字典
+    viewDictList(){
+        var statuList = this.statusList;
+         //列表回显为字典值    
+        this.resList.forEach(obj=>{
+            //状态
+            for (let j = 0; j < statuList.length; j++) {
+                 const element = statuList[j];
+                 if(element.dictValue == obj.status){
+                    obj.status = element.dictName}
+             }
+        });
+      },
+      //下拉框数据绑定到表单
+      bindFrom(){   
+         this.form.status = this.status
+         this.form.resType = this.resType
+      },
+      //表单字典标签替换为字典值
+      replaceDictData(){
+         this.form.status = this.status
+         this.form.resType = this.resType
+      },
+      //详情回显字典数据
+      viewDictData(){
+         this.resType = this.form.resType
+         this.status = this.form.status
+        
+      },
+       //清除下拉框值
+      clearSelectData(){
+        this.status = undefined
+      },
     },
     created(){
+      this.getSelectData()
       this.getResList()
     }
 }
 </script>
 
 <style scoped>
+
+::v-deep .form-data .el-input__inner{
+  width: 265px !important;
+}
+
+::v-deep .form-data .el-form-item{
+    display: inline-block;
+    margin-left: -5px !important;
+    margin-top: 2px;
+}
+
+::v-deep .from-button-region{
+  margin-left: 150px !important;
+  height: 28px !important;
+}
+
 .el-dropdown-link {
     cursor: pointer;
     color: #409EFF;
@@ -313,10 +413,10 @@ export default {
     font-size: 12px;
 }
 ::v-deep .el-dialog{
-  width: 37%;
+  width: 31%;
 }
 ::v-deep .el-dialog__body{
-  padding: 8px 25px
+  padding: 8px 34px
 }
 ::v-deep .el-dialog__footer{
   padding: 3px 87px 16px;
