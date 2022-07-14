@@ -50,8 +50,7 @@
                 :expand-on-click-node="false"
                 :check-on-click-node="true"
                 @node-click="handleNodeClick"
-              >
-              </el-tree>
+              />
             </el-select>
         </el-form-item>
         <el-form-item label="菜单名称" :label-width="formLabelWidth">
@@ -89,11 +88,11 @@
     </el-dialog>
     </div>
     <div class="table-data"> 
-    <el-table :data="resList" style="width: 100%" ref="multipleTable" row-key="id" v-loading="loading" @selection-change="handleResIds" :header-cell-style="rowClass"
+    <el-table :data="resList" style="width: 100%" max-height="580px" ref="multipleTable" row-key="id" v-loading="loading" @selection-change="handleResIds" :header-cell-style="rowClass"
     lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-    <el-table-column align="center" label="菜单名称" width="130" prop="name" key="name">
+    <el-table-column fixed="left" label="菜单名称" width="170" prop="name" key="name">
     </el-table-column>  
-    <el-table-column align="center" label="菜单图标" width="180" prop="icon" key="icon"/>
+    <el-table-column align="center" label="菜单图标" width="100" prop="icon" key="icon"/>
     <el-table-column align="center" label="资源路径" width="180" prop="resUrl" key="resUrl"/>
     <el-table-column align="center" label="权限代码" width="180" prop="permission" key="permission"/>
     <el-table-column align="center" label="菜单类型" width="130" prop="resType" key="resType"/>
@@ -105,17 +104,6 @@
       </template>
     </el-table-column>
     </el-table>    
-    </div>
-    <div class="pageHelper" v-if="total !=0 && total>0">
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="this.data.pageNum"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="this.data.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total">
-    </el-pagination>
     </div>
     </div>
 </template>
@@ -207,18 +195,21 @@ export default {
       handleResInfo(id){
         this.reset()
         this.showFormButton = false
+        this.getMeunTreeData()
         resInfo(id).then(response=>{
           this.form = response.data
+          this.chooseName  = this.form.name
           this.viewDictData()
         })
-        this.getMeunTreeData()
       },
        //新增菜单按钮
       handleAddRole(){
         //重置下拉框
         this.clearSelectData();
         //重置表单
-        this.reset()
+        this.reset();
+        //重置树
+        this.handleClear();
         this.getMeunTreeData()
         this.showFormButton = true;
       },
@@ -245,6 +236,8 @@ export default {
             });
             this.dialogFormVisible = false
             this.getResList()
+            //刷新页面
+            this.$router.go(0);
             }
             })
           //新增菜单
@@ -257,6 +250,8 @@ export default {
             });
             this.dialogFormVisible = false
             this.getResList()
+            //刷新页面
+            this.$router.go(0);
             }
           })
           }
@@ -330,24 +325,21 @@ export default {
       },
       //加载菜单子节点数据
       load(tree, treeNode, resolve) {
-        var data = [
-            {
-              id: 31,
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-              id: 32,
-              date: '2016-05-01',
-              name: '王小虎',
-              address: '上海市普陀区金沙江路 1519 弄'
-            }
-          ]
-        setTimeout(() => {
-          resolve(
-            data
-            )
-        }, 1000)
+        // console.log(tree,treeNode,resolve);
+        //查询菜单下属子菜单
+        let data={
+           pageNum: 1,
+           pageSize: 100,
+           pid: tree.id
+        }
+        resList(data).then(response=>{
+           let res = response.data[0]
+           this.viewDictList(res)
+           //渲染结果
+           resolve(
+            res
+           );
+        })
       },
       //更改每页大小
       handleSizeChange(val) {
@@ -374,7 +366,7 @@ export default {
           this.resTypeList = res.data
         })
      },
-    // 获取菜单权限树
+     //获取菜单权限树
      getMeunTreeData(){
         getMeunTree().then(res=>{
               var result = [{
@@ -390,20 +382,20 @@ export default {
      },
      // 节点点击事件
     handleNodeClick(data) {
-      // 配置树形组件点击节点后，设置选择器的值，配置组件的数据
-      this.chooseName = data.label
-      this.form.pid = data.id
-      // 选择器执行完成后，使其失去焦点隐藏下拉框效果
-      this.$refs.selectUpResId.blur()
+        // 配置树形组件点击节点后，设置选择器的值，配置组件的数据
+        this.chooseName = data.label
+        this.form.pid = data.id
+        // 选择器执行完成后，使其失去焦点隐藏下拉框效果
+        this.$refs.selectUpResId.blur()
     },
-    // 选择器配置可以清空选项，用户点击清空按钮触发
+    //选择器配置可以清空选项，用户点击清空按钮触发
     handleClear () {
-      // 将选择器的值置空
-      this.chooseName = ''
-      this.form.pid = ''
+        // 将选择器的值置空
+        this.chooseName = ''
+        this.form.pid = ''
     },
     //列表回显字典
-    viewDictList(){
+    viewDictList(res){
         var statuList = this.statusList;
         var resTypeList = this.resTypeList;
          //列表回显为字典值    
@@ -421,6 +413,22 @@ export default {
                     obj.resType = element.dictName}
              }
         });
+        if(null != res && undefined != res){
+          res.forEach(obj=>{
+            //状态
+              for (let j = 0; j < statuList.length; j++) {
+                  const element = statuList[j];
+                  if(element.dictValue == obj.status){
+                      obj.status = element.dictName}
+              }
+              //类型
+              for (let j = 0; j < resTypeList.length; j++) {
+                  const element = resTypeList[j];
+                  if(element.dictValue == obj.resType){
+                      obj.resType = element.dictName}
+              }
+          })
+        }
       },
       //下拉框数据绑定到表单
       bindFrom(){   
@@ -451,12 +459,18 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .form-data .el-input__inner{
-  width: 265px !important;
+::v-deep .el-dialog{
+  width: 33%;
+}
+::v-deep .el-dialog__body{
+  padding: 8px 50px
+}
+::v-deep .el-dialog__footer{
+  padding: 3px 112px 16px;
 }
 
-::v-deep .el-tree-node__content{
-  width: 230px !important;
+::v-deep .form-data .el-input__inner{
+  width: 265px !important;
 }
 
 ::v-deep .form-data .el-form-item{
@@ -474,20 +488,25 @@ export default {
   left: 224px !important;
 }
 
-.el-dropdown-link {
+::v-deep .el-select-dropdown__list{
+   padding: 4px 4px !important;
+}
+
+::v-deep .el-tree-node__content{
+  width: 200px !important;
+  /* padding-left: 5px !important; */
+}
+
+::v-deep .el-tree-node__label{
+  font-size: 12.5px;
+}
+
+::v-deep .el-dropdown-link {
     cursor: pointer;
     color: #409EFF;
 }
-.el-icon-arrow-down {
+::v-deep .el-icon-arrow-down {
     font-size: 12px;
 }
-::v-deep .el-dialog{
-  width: 33%;
-}
-::v-deep .el-dialog__body{
-  padding: 8px 50px
-}
-::v-deep .el-dialog__footer{
-  padding: 3px 112px 16px;
-}
+
 </style>

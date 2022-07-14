@@ -33,9 +33,9 @@
             </el-radio-group>
         </el-form-item>
         <el-form-item label="菜单权限" :label-width="formLabelWidth">
-          <el-checkbox v-model="open">展开/折叠</el-checkbox>
-          <el-checkbox v-model="checkeall">全选/全不选</el-checkbox>
-          <el-checkbox v-model="linkage">父子联动</el-checkbox>
+          <el-checkbox v-model="open" size="small">展开/折叠</el-checkbox>
+          <el-checkbox v-model="checkeall" size="small">全选/全不选</el-checkbox>
+          <el-checkbox v-model="linkage" size="small">父子联动</el-checkbox>
         </el-form-item>
         <!-- 选择菜单区域 -->
         <div class="select-meun-region">
@@ -422,6 +422,11 @@ export default {
     width: 200px;
     height: 35px;
 }
+
+::v-deep .el-tree-node__label{
+    font-size: 13px;
+}
+
 ::v-deep .el-dialog{
   width: 32%  
 }
