@@ -199,6 +199,10 @@ export default {
         this.disabled = false
         this.getMeunTreeData();
         this.resetMeunAuthButton()
+        if(this.$refs.tree !=null){
+            //取消选中
+           this.$refs.tree.setCheckedKeys([]);
+        }
         this.showFormButton = true  
       },
       //编辑角色按钮

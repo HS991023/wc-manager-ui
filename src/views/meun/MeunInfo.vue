@@ -56,6 +56,9 @@
         <el-form-item label="菜单名称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="序号" :label-width="formLabelWidth">
+          <el-input v-model="form.orderNumber" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="资源路径" :label-width="formLabelWidth">
           <el-input v-model="form.resUrl" autocomplete="off"></el-input>
         </el-form-item>
@@ -90,13 +93,13 @@
     <div class="table-data"> 
     <el-table :data="resList" style="width: 100%" max-height="580px" ref="multipleTable" row-key="id" v-loading="loading" @selection-change="handleResIds" :header-cell-style="rowClass"
     lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-    <el-table-column fixed="left" label="菜单名称" width="170" prop="name" key="name">
-    </el-table-column>  
+    <el-table-column fixed="left" label="菜单名称" width="200" prop="name" key="name"/>
+    <el-table-column align="center" label="序号" width="100" prop="orderNumber" key="orderNumber"/>
     <el-table-column align="center" label="菜单图标" width="100" prop="icon" key="icon"/>
     <el-table-column align="center" label="资源路径" width="180" prop="resUrl" key="resUrl"/>
     <el-table-column align="center" label="权限代码" width="180" prop="permission" key="permission"/>
     <el-table-column align="center" label="菜单类型" width="130" prop="resType" key="resType"/>
-    <el-table-column align="center" label="状态"    width="70" prop="status" key="status"/>
+    <el-table-column align="center" label="状态"    width="100" prop="status" key="status"/>
     <el-table-column align="center" label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true">编辑</el-button>
@@ -215,6 +218,7 @@ export default {
       },
       //编辑按钮按钮
       handleEditRole(row) {
+        console.log(row);
         //重置表单
         this.reset()
         this.form = this.handleResInfo(row.id)
@@ -237,7 +241,7 @@ export default {
             this.dialogFormVisible = false
             this.getResList()
             //刷新页面
-            this.$router.go(0);
+            // this.$router.go(0);
             }
             })
           //新增菜单
@@ -251,7 +255,7 @@ export default {
             this.dialogFormVisible = false
             this.getResList()
             //刷新页面
-            this.$router.go(0);
+            // this.$router.go(0);
             }
           })
           }
@@ -318,6 +322,7 @@ export default {
           resUrl: undefined,
           permission: undefined,
           resType: undefined,
+          orderNumber:undefined,
           pid: undefined,
           icon: undefined,
           status:undefined
@@ -325,7 +330,7 @@ export default {
       },
       //加载菜单子节点数据
       load(tree, treeNode, resolve) {
-        // console.log(tree,treeNode,resolve);
+        console.log(tree,treeNode,resolve);
         //查询菜单下属子菜单
         let data={
            pageNum: 1,
