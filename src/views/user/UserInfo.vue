@@ -228,7 +228,7 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
-        //检验规则
+        //校验规则
         rules: {
          nickName: [
             { required: true, message: '请输入用户昵称', trigger: 'blur' },

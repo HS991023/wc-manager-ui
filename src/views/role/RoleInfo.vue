@@ -16,17 +16,17 @@
     </div>
     <div class="form-data">
     <el-dialog title="角色信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form" :disabled="disabled">
-        <el-form-item label="角色名称" :label-width="formLabelWidth">
+      <el-form :model="form" ref="form" :rules="rules" :disabled="disabled">
+        <el-form-item label="角色名称" :label-width="formLabelWidth" prop="roleName">
           <el-input v-model="form.roleName" autocomplete="off" placeholder="请输入角色名称"/>
         </el-form-item>
-        <el-form-item label="角色代码" :label-width="formLabelWidth">
+        <el-form-item label="角色代码" :label-width="formLabelWidth" prop="roleCode">
           <el-input v-model="form.roleCode" autocomplete="off" placeholder="请输入角色代码"/>
         </el-form-item>
         <el-form-item label="角色描述" :label-width="formLabelWidth">
           <el-input v-model="form.roleExplain" autocomplete="off" placeholder="请输入角色描述"/>
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
+        <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
             <el-radio-group v-model="radio">
             <el-radio :label="0">启用</el-radio>
             <el-radio :label="2">禁用</el-radio>
@@ -142,6 +142,20 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
+        //校验规则
+        rules: {
+         roleName:[
+            { required: true, message: '请输入角色名称', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+          ],
+          roleCode:[
+            { required: true, message: '请输入角色代码', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+          ],
+          status:[
+            { required: true, message: '请选择状态', trigger: 'blur' },
+          ]
+    }
     }},
     methods: {
       //获取角色列表
