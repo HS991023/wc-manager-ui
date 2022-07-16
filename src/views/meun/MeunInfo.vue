@@ -150,6 +150,8 @@ export default {
         //菜单类型
         resType:'',
         resTypeList:[],
+        //列表下拉刷新辅助变量
+        tableTreeRefreshTool: {},
         formLabelWidth: '120px',
         //是否加载中
         loading: true,
@@ -162,31 +164,31 @@ export default {
         showFormButton: true,
         //校验规则
         rules: {
-         superMenu: [
-            { required: true, message: '请选择上级菜单', trigger: 'blur' },
-          ],
-          name: [
-            { required: true, message: '请输入菜单名称', trigger: 'blur' },
-            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
-          ],
-          orderNumber: [
-            { required: true, message: '请输入序号', trigger: 'blur' },
-            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
-          ],
-          resUrl: [
-            { required: true, message: '请输入资源路径', trigger: 'blur' },
-            { min: 5, max: 12, message: '长度在 0 到 12 个字符', trigger: 'blur' }
-          ],
-          permission: [
-            { required: true, message: '请输入权限代码', trigger: 'blur' },
-            { min: 5, max: 100, message: '长度在 0 到 50个字符', trigger: 'blur' }
-          ],
-          resType: [
-            { required: true, message: '请选择菜单类型', trigger: 'blur' },
-          ],
-          status:[
-            { required: true, message: '请选择状态', trigger: 'blur' },
-          ],
+        //  superMenu: [
+        //     { required: true, message: '请选择上级菜单', trigger: 'blur' },
+        //   ],
+        //   name: [
+        //     { required: true, message: '请输入菜单名称', trigger: 'blur' },
+        //     { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+        //   ],
+        //   orderNumber: [
+        //     { required: true, message: '请输入序号', trigger: 'blur' },
+        //     { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+        //   ],
+        //   resUrl: [
+        //     { required: true, message: '请输入资源路径', trigger: 'blur' },
+        //     { min: 5, max: 12, message: '长度在 0 到 12 个字符', trigger: 'blur' }
+        //   ],
+        //   permission: [
+        //     { required: true, message: '请输入权限代码', trigger: 'blur' },
+        //     { min: 5, max: 100, message: '长度在 0 到 50个字符', trigger: 'blur' }
+        //   ],
+        //   resType: [
+        //     { required: true, message: '请选择菜单类型', trigger: 'blur' },
+        //   ],
+        //   status:[
+        //     { required: true, message: '请选择状态', trigger: 'blur' },
+        //   ],
     }
       }
     },
@@ -246,7 +248,6 @@ export default {
       },
       //编辑按钮按钮
       handleEditRole(row) {
-        console.log(row);
         //重置表单
         this.reset()
         this.form = this.handleResInfo(row.id)
@@ -268,8 +269,8 @@ export default {
             });
             this.dialogFormVisible = false
             this.getResList()
-            //刷新页面
-            // this.$router.go(0);
+            //刷新列表树子节点
+            this.refreshChildData(this.form.pid)
             }
             })
           //新增菜单
@@ -282,8 +283,8 @@ export default {
             });
             this.dialogFormVisible = false
             this.getResList()
-            //刷新页面
-            // this.$router.go(0);
+             //刷新列表树子节点
+            this.refreshChildData(this.form.pid)
             }
           })
           }
@@ -358,7 +359,10 @@ export default {
       },
       //加载菜单子节点数据
       load(tree, treeNode, resolve) {
-        console.log(tree,treeNode,resolve);
+        // 在之前声明的全局变量中，增加一个key为 本条数据的id，id可替换为你数据中的任意唯一值
+        this.tableTreeRefreshTool[tree.id] = {}
+        // 重要！保存resolve方法，以便后续使用
+        this.tableTreeRefreshTool[tree.id].resolve = resolve
         //查询菜单下属子菜单
         let data={
            pageNum: 1,
@@ -373,6 +377,20 @@ export default {
             res
            );
         })
+      },
+      //刷新菜单子节点数据
+      refreshChildData(pid){
+        const curr = this.tableTreeRefreshTool[pid]
+        if(curr){
+            //查询菜单下属子菜单
+            let data={ pageNum: 1, pageSize: 100, pid: pid }
+            resList(data).then(response=>{
+              let res = response.data[0]
+              this.viewDictList(res)
+              //渲染结果
+              curr.resolve(res);
+            }) 
+        }
       },
       //更改每页大小
       handleSizeChange(val) {
