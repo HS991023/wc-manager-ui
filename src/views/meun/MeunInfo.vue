@@ -38,8 +38,8 @@
     </div>
     <div class="form-data">
     <el-dialog title="菜单信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form">
-        <el-form-item label="上级菜单" :label-width="formLabelWidth">   
+      <el-form :model="form" ref="form" :rules="rules">
+        <el-form-item label="上级菜单" :label-width="formLabelWidth" prop="superMenu">   
            <!-- clear点击清空的实现  ref属性注册，用于操作dom元素-->
             <el-select v-model="chooseName" placeholder="请选择" clearable @clear="handleClear" ref="selectUpResId" >
               <el-option hidden :key="form.pid" value="一级菜单" :label="chooseName"></el-option>
@@ -53,19 +53,19 @@
               />
             </el-select>
         </el-form-item>
-        <el-form-item label="菜单名称" :label-width="formLabelWidth">
+        <el-form-item label="菜单名称" :label-width="formLabelWidth" prop="name">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="序号" :label-width="formLabelWidth">
+        <el-form-item label="序号" :label-width="formLabelWidth" prop="orderNumber">
           <el-input v-model="form.orderNumber" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="资源路径" :label-width="formLabelWidth">
+        <el-form-item label="资源路径" :label-width="formLabelWidth" prop="resUrl">
           <el-input v-model="form.resUrl" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="权限代码" :label-width="formLabelWidth">
+        <el-form-item label="权限代码" :label-width="formLabelWidth" prop="permission">
           <el-input v-model="form.permission" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="菜单类型" :label-width="formLabelWidth">
+        <el-form-item label="菜单类型" :label-width="formLabelWidth" prop="resType">
             <el-radio-group v-model="resType">
               <el-radio :label="0">目录</el-radio>
               <el-radio :label="1">菜单</el-radio>
@@ -75,7 +75,7 @@
         <el-form-item label="菜单图标" :label-width="formLabelWidth">
           <el-input v-model="form.icon" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="菜单状态" :label-width="formLabelWidth">
+        <el-form-item label="菜单状态" :label-width="formLabelWidth" prop="status">
            <el-radio-group v-model="status">
               <el-radio :label="0">启用</el-radio>
               <el-radio :label="2">禁用</el-radio>
@@ -160,6 +160,34 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
+        //校验规则
+        rules: {
+         superMenu: [
+            { required: true, message: '请选择上级菜单', trigger: 'blur' },
+          ],
+          name: [
+            { required: true, message: '请输入菜单名称', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+          ],
+          orderNumber: [
+            { required: true, message: '请输入序号', trigger: 'blur' },
+            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+          ],
+          resUrl: [
+            { required: true, message: '请输入资源路径', trigger: 'blur' },
+            { min: 5, max: 12, message: '长度在 0 到 12 个字符', trigger: 'blur' }
+          ],
+          permission: [
+            { required: true, message: '请输入权限代码', trigger: 'blur' },
+            { min: 5, max: 100, message: '长度在 0 到 50个字符', trigger: 'blur' }
+          ],
+          resType: [
+            { required: true, message: '请选择菜单类型', trigger: 'blur' },
+          ],
+          status:[
+            { required: true, message: '请选择状态', trigger: 'blur' },
+          ],
+    }
       }
     },
     methods: {

@@ -62,7 +62,7 @@
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
         </div>
-        <el-form-item label="性别" :label-width="formLabelWidth" :required="true">
+        <el-form-item label="性别" :label-width="formLabelWidth" prop="sex">
               <el-select v-model="sex" placeholder="请选择">
               <el-option
                 v-for="item in sexList"
@@ -72,7 +72,7 @@
               </el-option>
             </el-select>
         </el-form-item>
-        <el-form-item label="账号类型" :label-width="formLabelWidth" :required="true">
+        <el-form-item label="账号类型" :label-width="formLabelWidth" prop="accountType">
               <el-select v-model="accountType" placeholder="请选择">
               <el-option
                 v-for="item in accountTypeList"
@@ -96,7 +96,7 @@
             </el-option>
           </el-select> -->
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth" :required="true">
+        <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
           <el-select v-model="status" placeholder="请选择">
             <el-option
               v-for="item in statusList"
@@ -242,13 +242,22 @@ export default {
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
           ],
+          accountType: [
+            { required: true, message: '请选择账号类型', trigger: 'blur' },
+          ],
+          sex: [
+            { required: true, message: '请选择性别', trigger: 'blur' },
+          ],
           cellPhone: [
-            { required: true, message: '请输手机号码', trigger: 'blur' },
+            { required: true, message: '请输入手机号码', trigger: 'blur' },
             { min: 5, max: 12, message: '长度在 0 到 12 个字符', trigger: 'blur' }
           ],
           mail: [
             { required: false, message: '请输入邮件', trigger: 'blur' },
             { min: 5, max: 100, message: '长度在 0 到 100 个字符', trigger: 'blur' }
+          ],
+          status:[
+            { required: true, message: '请选择状态', trigger: 'blur' },
           ],
     }}},
     methods: {
