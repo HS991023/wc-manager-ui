@@ -34,7 +34,6 @@
     </div>
     <div class="operator-button-region">
       <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteRes()">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="菜单信息" :visible.sync="dialogFormVisible">
@@ -91,7 +90,7 @@
     </el-dialog>
     </div>
     <div class="table-data"> 
-    <el-table :data="resList" style="width: 100%" max-height="580px" ref="multipleTable" row-key="id" v-loading="loading" @selection-change="handleResIds" :header-cell-style="rowClass"
+    <el-table :data="resList" style="width: 100%" max-height="580px" ref="multipleTable" row-key="id" v-loading="loading" :header-cell-style="rowClass"
     lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
     <el-table-column fixed="left" label="菜单名称" width="200" prop="name" key="name"/>
     <el-table-column align="center" label="序号" width="100" prop="orderNumber" key="orderNumber"/>
@@ -103,7 +102,7 @@
     <el-table-column align="center" label="操作">
       <template slot-scope="scope">
         <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRes();handleResIds(scope.row)">删除</el-button>  
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRes(scope.row)">删除</el-button>  
       </template>
     </el-table-column>
     </el-table>    
@@ -290,31 +289,16 @@ export default {
           }
         }})
       },
-      //获取菜单ID 多选
-      handleResIds(val){
-         //批量ID
-         if(val instanceof Array){
-          this.ids = val.map(item=>{
-          return item.id;})
-         }else{ 
-          //单个
-          if(val != undefined){
-            this.ids = val.id
-          }
-          var rows = []
-          rows.push(val)
-          this.toggleSelection(rows)
-         }
-      },
       //删除菜单逻辑删除
-      handleDeleteRes() {
+      handleDeleteRes(row) {
         this.$confirm('此操作将删除菜单, 是否继续?', '系统提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           //发送删除请求
-          var resIds = this.ids;
+          var resIds = row.id
+          console.log(row);
           removeRes(resIds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
@@ -322,6 +306,8 @@ export default {
                 message: '删除成功!'
              });
              this.getResList()
+             //刷新列表树子节点
+             this.refreshChildData(row.pid)
             }
           })
         }).catch(() => {
