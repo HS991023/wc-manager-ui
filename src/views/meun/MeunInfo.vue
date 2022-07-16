@@ -275,10 +275,10 @@ export default {
           //新增菜单
           }else{
             addRes(this.form).then(response =>{
-          if(response.code==200){
-             this.$msgbox('保存菜单信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
+            if(response.code==200){
+              this.$msgbox('保存菜单信息成功', '系统提示', {
+                  confirmButtonText: '确定',
+                  type: 'warning'
             });
             this.dialogFormVisible = false
             this.getResList()
@@ -298,7 +298,6 @@ export default {
         }).then(() => {
           //发送删除请求
           var resIds = row.id
-          console.log(row);
           removeRes(resIds.toString()).then(response=>{
             if(response.code==200){
                this.$message({
