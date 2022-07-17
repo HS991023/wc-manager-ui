@@ -327,14 +327,15 @@ export default {
 
 <style scoped>
 .form-data .el-input{
-  width: 289px !important;
+  width: 174px !important;
 }
 .from-button-region{
-  margin-left: 218px !important;
-  margin-block: -3px !important;
+  margin-top: 6px !important;
+  margin-left: 398px !important;
+  margin-bottom: -5px !important;
 }
 ::v-deep .el-dialog{
-  width: 31%;
+  width: 44%;
 }
 ::v-deep .el-dialog__body{
   margin-top: 6px;
