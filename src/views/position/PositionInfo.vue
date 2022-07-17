@@ -16,21 +16,24 @@
     </div>
     <div class="form-data">
     <el-dialog title="坑位信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form">
-        <el-form-item label="坑位名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+      <el-form :model="form" ref="form" :rules="rules">
+        <el-form-item label="坑位名称" :label-width="formLabelWidth" prop="name">
+          <el-input v-model="form.name" autocomplete="off" placeholder="请输入坑位名称"/>
         </el-form-item>
-        <el-form-item label="坑位编码" :label-width="formLabelWidth">
-          <el-input v-model="form.number" autocomplete="off"></el-input>
+        <el-form-item label="坑位编码" :label-width="formLabelWidth" prop="number">
+          <el-input v-model="form.number" autocomplete="off" placeholder="请输入坑位编码"/>
         </el-form-item>
-        <el-form-item label="隶属公厕" :label-width="formLabelWidth">
-          <el-input v-model="form.type" autocomplete="off"></el-input>
+        <el-form-item label="隶属公厕" :label-width="formLabelWidth" prop="toilet">
+          <el-input v-model="form.toilet" autocomplete="off" placeholder="请选隶属公厕"/>
         </el-form-item>
-        <el-form-item label="坑位状态" :label-width="formLabelWidth">
-          <el-input v-model="form.status" autocomplete="off"></el-input>
+        <el-form-item label="坑位状态" :label-width="formLabelWidth" prop="status">
+           <el-radio-group v-model="radio">
+              <el-radio :label="0">启用</el-radio>
+              <el-radio :label="2">禁用</el-radio>
+            </el-radio-group>
         </el-form-item>
-        <el-form-item label="绑定设备" :label-width="formLabelWidth">
-          <el-input v-model="form.location" autocomplete="off"></el-input>
+        <el-form-item label="绑定设备" :label-width="formLabelWidth" prop="device">
+          <el-input v-model="form.device" autocomplete="off" placeholder="请选择绑定设备"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -44,16 +47,15 @@
     <div class="table-data"> 
     <el-table :data="positionList" style="width: 100%" ref="multipleTable" v-loading="loading" @selection-change="handlePositionIds" :header-cell-style="rowClass">
       <el-table-column type="selection" width="55"/>
-      <el-table-column label="坑位名称" width="180" prop="name" key="name">
+      <el-table-column align="center" label="坑位名称" width="180" prop="name" key="name">
          <template slot-scope="scope">
            <div class="table-column-region" @click="handlePositionInfo(scope.row.id);dialogFormVisible = true">{{scope.row.name}}</div>
          </template>
       </el-table-column>  
-      <el-table-column label="坑位编码" width="180" prop="number" key="number"/>
-      <el-table-column label="隶属公厕" width="180"/>
-      <el-table-column label="地区位置" width="180"/>
-      <el-table-column label="是否绑定设备" width="180"/>
-      <el-table-column label="状态" width="60" prop="status" key="status"/>
+      <el-table-column align="center" label="坑位编码" width="180" prop="number" key="number"/>
+      <el-table-column align="center" label="隶属公厕" width="180" prop="toilet"/>
+      <el-table-column align="center" label="地区位置" width="180"/>
+      <el-table-column align="center" label="使用状态" width="180" prop="status" key="status"/>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditPosition(scope.row);dialogFormVisible=true">编辑</el-button>
@@ -77,6 +79,7 @@
 </template>
 
 <script>
+import {getDictDataByType} from '@/api/system/dict'
 import {positionList,positionInfo,addPosition,updatePosition,removePosition} from '@/api/business/position'
 export default {
     name:'WcManagerUiPositionInfo',
@@ -88,6 +91,9 @@ export default {
         form:{},
         //总数
         total:null,
+        //启用禁用
+        radio:undefined,
+        statusList:[],
         //分页参数
         data:{
            pageNum: 1,
@@ -106,6 +112,26 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
+        //校验规则
+        rules: {
+            name: [
+                { required: true, message: '请输入坑位名称', trigger: 'blur' },
+                { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+              ],
+            number: [
+                { required: true, message: '请输入公厕编码', trigger: 'blur' },
+                { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+              ],
+            toilet: [
+                { required: false, message: '请选择隶属公厕', trigger: 'blur' },
+            ],
+            status: [
+                { required: true, message: '请选择状态', trigger: 'blur' },
+            ],  
+            device: [
+                { required: false, message: '请选择设备', trigger: 'blur' },
+            ],
+      }
       }
     },
     methods:{
@@ -118,6 +144,7 @@ export default {
             this.positionList = undefined
           }else{
              this.positionList = response.data[0]
+             this.viewDictList()
              this.total = response.count
           }
             this.loading = false
@@ -133,6 +160,7 @@ export default {
         }
         positionList(resetData).then(response => {
             this.positionList = response.data[0]
+            this.viewDictList()
             this.total = response.count
             this.loading = false
         })
@@ -143,12 +171,14 @@ export default {
         this.showFormButton = false
         positionInfo(id).then(response=>{
           this.form = response.data
+          this.radio = this.form.status 
         })
       },
       //新增坑位按钮
       handleAddPosition(){
         //重置表单
         this.reset()
+        this.radio = undefined
         this.showFormButton = true
       },
       //编辑坑位按钮
@@ -161,6 +191,8 @@ export default {
       //提交表单
       submitForm(){
         this.$refs["form"].validate(valid => {
+        //状态赋值给from
+        this.form.status = this.radio
         if (valid) {
           //更新坑位
           if (this.form.id != undefined) {
@@ -267,22 +299,52 @@ export default {
       //设置表头颜色
      rowClass({ row, rowIndex}) {
         return 'background:#FAFAFA'
-      }
+      },
+     //获取下拉框数据
+     getSelectData(){
+            //状态
+            getDictDataByType('status').then(res=>{
+              this.statusList = res.data
+            })
+      },
+      //回显列表字典值
+      viewDictList(){
+          var statuList = this.statusList;
+          //列表回显为字典值    
+        this.positionList.forEach(obj=>{
+            //状态
+            for (let j = 0; j < statuList.length; j++) {
+                  const element = statuList[j];
+                  if(element.dictValue == obj.status){
+                    obj.status = element.dictName}
+              }
+        });},
     },
     created(){
-      this.getPositionList(); 
+      this.getSelectData()
+      this.getPositionList()
     }
 }
 </script>
 
 <style scoped>
+.form-data .el-input{
+  width: 320px !important;
+}
+.from-button-region{
+  margin-left: 180px !important;
+  margin-bottom: -5px !important;
+}
 ::v-deep .el-dialog{
-  width: 37%;
+  width: 34%;
 }
 ::v-deep .el-dialog__body{
-  padding: 8px 25px
+  padding: 8px 25px;
+  margin-top: 0px !important;
+  margin-left: -30px !important;
 }
 ::v-deep .el-dialog__footer{
+  margin-top: -10px !important;
   padding: 3px 87px 16px;
 }
 </style>
