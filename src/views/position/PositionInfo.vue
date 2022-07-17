@@ -318,7 +318,7 @@ export default {
                   if(element.dictValue == obj.status){
                     obj.status = element.dictName}
               }
-        });},
+        })}
     },
     created(){
       this.getSelectData()
