@@ -16,21 +16,28 @@
     </div>
     <div class="form-data">
     <el-dialog title="公厕信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form">
-        <el-form-item label="公厕名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+      <el-form :model="form" ref="form" :rules="rules">
+        <el-form-item label="公厕名称" :label-width="formLabelWidth" prop="name">
+          <el-input v-model="form.name" autocomplete="off" placeholder="请输入公厕名称"/>
         </el-form-item>
-        <el-form-item label="公厕编码" :label-width="formLabelWidth">
-          <el-input v-model="form.code" autocomplete="off"></el-input>
+        <el-form-item label="公厕编码" :label-width="formLabelWidth" prop="code">
+          <el-input v-model="form.code" autocomplete="off" placeholder="请输入公厕编码"/>
         </el-form-item>
-        <el-form-item label="公厕类型" :label-width="formLabelWidth">
-          <el-input v-model="form.type" autocomplete="off"></el-input>
+        <el-form-item label="公厕类型" :label-width="formLabelWidth" prop="type">
+          <el-input v-model="form.type" autocomplete="off" placeholder="请选择公厕类型"/>
         </el-form-item>
-        <el-form-item label="公厕状态" :label-width="formLabelWidth">
-          <el-input v-model="form.status" autocomplete="off"></el-input>
+        <el-form-item label="公厕状态" :label-width="formLabelWidth" prop="status">
+           <el-select v-model="status" placeholder="请选择">
+            <el-option
+              v-for="item in statusList"
+              :key="item.dictValue"
+              :label="item.dictName"
+              :value="item.dictValue">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="公厕位置" :label-width="formLabelWidth">
-          <el-input v-model="form.location" autocomplete="off"></el-input>
+        <el-form-item label="公厕位置" :label-width="formLabelWidth" prop="location">
+          <el-input v-model="form.location" autocomplete="off" placeholder="请输入公厕位置"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -76,6 +83,7 @@
 </template>
 
 <script>
+import {getDictDataByType} from '@/api/system/dict'
 import {toiletList,toiletInfo,addToilet,updateToilet,removeToilet} from '@/api/business/toilet'
 export default {
     name:'WcManagerUiToiletInfo',
@@ -96,6 +104,9 @@ export default {
         },
         //公厕ID列表
         ids:[],
+        //状态
+        status:'',
+        statusList:[],
         formLabelWidth: '120px',
         //是否加载中
         loading: true,
@@ -106,6 +117,20 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
+        //校验规则
+        rules: {
+            name: [
+                { required: true, message: '请输入公厕名称', trigger: 'blur' },
+                { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+              ],
+            code: [
+                { required: true, message: '请输入公厕编码', trigger: 'blur' },
+                { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+              ],
+            status: [
+                { required: true, message: '请选择状态', trigger: 'blur' },
+            ],
+      }
       }
     },
     methods:{
@@ -118,6 +143,8 @@ export default {
             this.toiletList = undefined  
           }else{
              this.toiletList = response.data[0]  
+             //字典值列表回显
+             this.viewDictList()
              this.total = response.count  
           }
             this.loading = false  
@@ -133,8 +160,10 @@ export default {
            pageNum: 1,
            pageSize: 10,
         }
-        toiletList(resetData).then(response => {
+      toiletList(resetData).then(response => {
             this.toiletList = response.data[0]  
+            //字典值列表回显
+            this.viewDictList()
             this.total = response.count  
             this.loading = false  
         })  
@@ -145,12 +174,14 @@ export default {
         this.showFormButton = false
         toiletInfo(id).then(response=>{
           this.form = response.data  
+          this.viewDictData()
         })
       },
       //新增公厕按钮
       handleAddToilet(){
         //重置表单
         this.reset()  
+        this.clearSelectData()
         this.showFormButton = true  
       },
       //编辑公厕按钮
@@ -163,8 +194,12 @@ export default {
       },
       //提交表单
       submitForm(){
+        //绑定下拉框数据到表单
+        this.bindFrom()
         this.$refs["form"].validate(valid => {
         if (valid) {
+          //替换字典值
+          this.replaceDictData()
           //更新用户
           if (this.form.id != undefined) {
             updateToilet(this.form).then(response =>{
@@ -270,9 +305,54 @@ export default {
       //设置表头颜色
       rowClass({ row, rowIndex}) {
         return 'background:#FAFAFA'
-      }
+      },
+       //清除下拉框值
+      clearSelectData(){
+        this.status = undefined
+      },
+      //列表回显字典
+      viewDictList(){
+         var statuList = this.statusList;
+         //列表回显为字典值    
+        this.toiletList.forEach(obj=>{
+            //状态
+            for (let j = 0; j < statuList.length; j++) {
+                 const element = statuList[j];
+                 if(element.dictValue == obj.status){
+                    obj.status = element.dictName}
+             }
+        });
+      },
+      //下拉框数据绑定到表单
+      bindFrom(){
+          this.form.status = this.status
+      },
+      //表单字典标签替换为字典值
+      replaceDictData(){
+          this.statusList.forEach(value=>{
+            if(this.status == value.dictName){
+               this.form.status = value.dictValue
+            }
+          })
+      },
+      //回显字典数据及生日数据
+      viewDictData(){
+          this.statusList.forEach(value=>{
+            if(this.form.status == value.dictValue){
+               this.status = value.dictName
+            }
+          })
+      },
+      //获取下拉框数据
+      getSelectData(){
+          //状态
+          getDictDataByType('status').then(res=>{
+            this.statusList = res.data
+          }) 
+      },
     },
     created(){
+      this.getSelectData()
       this.getToiletList()   
     },
     mounted(){
@@ -282,13 +362,18 @@ export default {
 
 
 <style scoped>
+::v-deep .form-data .el-input{
+   width: 172px !important;
+}
 ::v-deep .el-dialog{
-  width: 37%  
+  width: 42%  
 }
 ::v-deep .el-dialog__body{
+  margin-top: 5px !important;
+  margin-left: -25px !important;
   padding: 8px 25px
 }
 ::v-deep .el-dialog__footer{
-  padding: 3px 87px 16px  
+  padding: 3px 165px 9px  
 }
 </style>
