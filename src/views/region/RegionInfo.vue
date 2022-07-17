@@ -16,18 +16,18 @@
     </div>
     <div class="form-data">
     <el-dialog title="地区信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form">
-        <el-form-item label="省份名称" :label-width="formLabelWidth">
-          <el-input v-model="form.provinceName" autocomplete="off"></el-input>
+      <el-form :model="form" ref="form" :rules="rules">
+        <el-form-item label="省份名称" :label-width="formLabelWidth" prop="provinceName">
+          <el-input v-model="form.provinceName" autocomplete="off" placeholder="请输入省份名称"></el-input>
         </el-form-item>
-        <el-form-item label="城市名称" :label-width="formLabelWidth">
-          <el-input v-model="form.cityName" autocomplete="off"></el-input>
+        <el-form-item label="城市名称" :label-width="formLabelWidth" prop="cityName">
+          <el-input v-model="form.cityName" autocomplete="off" placeholder="请输入城市名称"></el-input>
         </el-form-item>
-        <el-form-item label="区域名称" :label-width="formLabelWidth">
-          <el-input v-model="form.regionName" autocomplete="off"></el-input>
+        <el-form-item label="区域名称" :label-width="formLabelWidth" prop="regionName">
+          <el-input v-model="form.regionName" autocomplete="off" placeholder="请输入区域名称"></el-input>
         </el-form-item>
-        <el-form-item label="地理位置" :label-width="formLabelWidth">
-          <el-input v-model="form.location" autocomplete="off"></el-input>
+        <el-form-item label="地理位置" :label-width="formLabelWidth" prop="location">
+          <el-input v-model="form.location" autocomplete="off" placeholder="请输入地理位置"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -99,6 +99,24 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
+        //校验规则
+        rules: {
+         provinceName: [
+            { required: true, message: '请输入省份名称', trigger: 'blur' },
+            { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          ],
+         cityName: [
+            { required: true, message: '请输入城市名称', trigger: 'blur' },
+            { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          ],
+         regionName: [
+            { required: true, message: '请输入区域名称', trigger: 'blur' },
+            { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          ],
+         location: [
+            { required: true, message: '请输入位置', trigger: 'blur' },
+         ]
+    }
     }
     },
     methods: {
@@ -270,13 +288,23 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .el-dialog{
-  width: 37%;
+::v-deep .form-data .el-dialog__body{
+   margin-top: 3px !important;
+   padding: 8px 39px !important; 
 }
-::v-deep .el-dialog__body{
-  padding: 8px 25px
+
+.form-data .el-input{
+  width: 271px !important;
+}
+
+::v-deep .from-button-region{
+    margin-bottom: -3px !important;
+    margin-left: 23px;
+}
+::v-deep .el-dialog{
+  width: 30%;
 }
 ::v-deep .el-dialog__footer{
-  padding: 3px 87px 16px;
+  padding: 10px 199px 13px;
 }
 </style>
