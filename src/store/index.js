@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import permission from './modules/permission'
+import getters from './getters'
 
 //1.安装插件
 Vue.use(Vuex);
@@ -9,7 +10,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     modules: {
         permission
-    }
+    },
+    getters
 });
 
 //3.导出使用

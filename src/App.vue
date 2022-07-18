@@ -3,8 +3,14 @@
 </template>
 
 <script>
+import {getRouters} from '@/api/system/permission.js'
 export default {
-  name: 'App'
+  name: 'App',
+  created(){
+    //解决vuex动态菜单权限数据刷新后消失问题
+    let token = sessionStorage.getItem('token');
+    getRouters(token);
+  }
 }
 </script>
 

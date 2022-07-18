@@ -1,0 +1,95 @@
+[{
+        "id": "1547705944102797312",
+        "label": "系统管理",
+        "level": 0,
+        "code": "system::manager",
+        "type": 0,
+        "children": [{
+                "id": "1548334732557811712",
+                "label": "用户管理",
+                "level": 3,
+                "code": "system:user:manager",
+                "type": 1,
+                "children": [{
+                    "id": "1548337830504300544",
+                    "label": "用户新增",
+                    "level": 3,
+                    "code": "system:user:add",
+                    "type": 2,
+                    "children": []
+                }]
+            },
+            {
+                "id": "1548342877149593600",
+                "label": "菜单管理",
+                "level": 3,
+                "code": "system:menu:manager",
+                "type": 0,
+                "children": [{
+                        "id": "1548342979884875776",
+                        "label": "菜单查询",
+                        "level": 3,
+                        "code": "system:menu:query",
+                        "type": 1,
+                        "children": []
+                    },
+                    {
+                        "id": "1548343212098322432",
+                        "label": "菜单新增",
+                        "level": 3,
+                        "code": "system:menu:add",
+                        "type": 2,
+                        "children": []
+                    },
+                    {
+                        "id": "1548343571273351168",
+                        "label": "菜单编辑",
+                        "level": 3,
+                        "code": "system:menu:edit",
+                        "type": 2,
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": "1548347725588856832",
+                "label": "地区管理",
+                "level": 3,
+                "code": "system:region:manager",
+                "type": 0,
+                "children": [{
+                        "id": "1548347930350583808",
+                        "label": "地区查询",
+                        "level": 3,
+                        "code": "system:region:query",
+                        "type": 2,
+                        "children": []
+                    },
+                    {
+                        "id": "1548348105353723904",
+                        "label": "地区新增",
+                        "level": 3,
+                        "code": "system:region:add",
+                        "type": 2,
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "1547707689218473984",
+        "label": "系统监控",
+        "level": 0,
+        "code": "system:monitor",
+        "type": 0,
+        "children": [{
+            "id": "1547707998762303488",
+            "label": "系统操作日志",
+            "level": 3,
+            "code": "system:operator:log",
+            "type": 1,
+            "children": []
+        }]
+    }
+]

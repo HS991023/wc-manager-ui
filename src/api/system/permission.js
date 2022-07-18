@@ -1,4 +1,3 @@
-import request from '@/utils/request'
 import { getMeunTree } from '@/api/common/tree'
 import store from '@/store/index'
 
