@@ -404,7 +404,8 @@ export default {
      },
      //获取菜单权限树
      getMeunTreeData(){
-        getMeunTree().then(res=>{
+        var token = sessionStorage.getItem("token")
+        getMeunTree(token).then(res=>{
               var result = [{
                 id: "0",
                 label: "主类目",

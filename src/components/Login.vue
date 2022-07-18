@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import {getMeunTree} from '@/api/common/tree'
 export default {
     name:'Login',
     data(){
@@ -33,6 +34,7 @@ export default {
         var router = this.$router;
         var alert  =  this.$alert;
         var store = this.$store;
+
         if(form.userName != "" && form.passWord != ""){
             this.axios({
             method:'post',
@@ -50,6 +52,8 @@ export default {
                 store.dispatch('doLogin');
                 //跳转到欢迎页
                 router.push({path:'/show'});
+                //请求路由数据
+                getMeunTree(token);
                 }else{
                    alert('用户名或密码错误,请重新输入!', '提示', {
                     confirmButtonText: '确定'
@@ -61,7 +65,8 @@ export default {
           confirmButtonText: '确定'
         })
       }
-    }}
+    },  
+ }
 }
 </script>
 
