@@ -274,11 +274,13 @@ export default {
         return 'background:#FAFAFA'
       }
     },
-    mounted() {
+    created(){
        //接收字典类型页面发送过来的数据
        this.$bus.$on('reviceDictTypeData',val=>{
           setDictType(val.dictCode)
-       }),
+       })
+    },
+    mounted() {
        this.getDictDataList()
     },
 };

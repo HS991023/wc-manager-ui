@@ -43,7 +43,7 @@ export default {
                 }
             }).then(function(res){
                 if(res.data.code == 200){
-                let token = res.data.data;
+                let token = res.data.data.token;
                 //登录成功存储token
                 sessionStorage.setItem("token",token)
                 //更改登录状态为true
