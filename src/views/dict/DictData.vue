@@ -20,15 +20,18 @@
     </div>
     <div class="form-data">
     <el-dialog title="字典信息" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form">
-        <el-form-item label="字典标签" :label-width="formLabelWidth">
-          <el-input v-model="form.dictName" autocomplete="off"></el-input>
+      <el-form :model="form" ref="form" :rules="rules">
+        <el-form-item label="字典标签" :label-width="formLabelWidth" prop="dictName">
+          <el-input v-model="form.dictName" autocomplete="off" placeholder="请输入字典标签"/>
         </el-form-item>
-        <el-form-item label="字典键值" :label-width="formLabelWidth">
-          <el-input v-model="form.dictValue" autocomplete="off"></el-input>
+        <el-form-item label="字典键值" :label-width="formLabelWidth" prop="dictValue">
+          <el-input v-model="form.dictValue" autocomplete="off" placeholder="请输入字典键值"/>
         </el-form-item>
-        <el-form-item label="状态" :label-width="formLabelWidth">
-          <el-input v-model="form.status" autocomplete="off"></el-input>
+        <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
+          <el-radio-group v-model="radio">
+              <el-radio :label="0">启用</el-radio>
+              <el-radio :label="2">禁用</el-radio>
+            </el-radio-group>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -93,6 +96,9 @@ export default {
         },
         //字典数据信息ID列表
         ids:[],
+        //启用禁用
+        radio:undefined,
+        statusList:[],
         formLabelWidth: '120px',
         //是否加载中
         loading: true,
@@ -103,7 +109,21 @@ export default {
         showOverflowTooltip:true,
         //是否表单展示取消确定按钮
         showFormButton: true,
-        };
+        //校验规则
+        rules: {
+         dictName: [
+            { required: true, message: '请输入字典标签', trigger: 'blur' },
+            { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          ],
+         dictValue: [
+            { required: true, message: '请输入字典键值', trigger: 'blur' },
+            { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+          ],
+         status: [
+            { required: true, message: '请选择字典状态', trigger: 'blur' },
+          ],
+      }
+      };
     },
     methods: {
       getDictDataList(){
@@ -122,7 +142,7 @@ export default {
            pageNum: 1,
            pageSize: 10,
         }
-        getDictDataByList(resetData).then(response => {
+      getDictDataByList(resetData).then(response => {
             this.dictDataInfoList = response.data[0]
             this.total = response.count
             this.loading = false
@@ -133,11 +153,13 @@ export default {
         this.showFormButton = false
         getDictDataInfo(id).then(response=>{
           this.form = response.data
+          this.radio = this.form.status 
         })
       },
       handleAddDictData(){
         //重置表单
         this.reset()
+        this.radio = undefined
         this.showFormButton = true
       },
       handleEidtDictData(row) {
@@ -148,10 +170,12 @@ export default {
       },
       //提交表单
       submitForm(){
+        //状态赋值给from
+        this.form.status = this.radio
         this.$refs["form"].validate(valid => {
         if (valid) {
           //更新字典数据
-          if (this.form.id != undefined) {           
+          if (this.form.id != undefined) {        
             updateDictDataInfo(this.form).then(response =>{
             if(response.code==200){
              this.$msgbox('更新字典数据成功', '系统提示', {
@@ -230,7 +254,7 @@ export default {
       //重置表单
       reset() {
         this.form={
-            dictName: undefined,
+            dictLabel: undefined,
             dictValue: undefined,
             status: undefined,
         }
@@ -261,13 +285,23 @@ export default {
 </script>
 
 <style scoped>
+.from-button-region{
+  margin-left: 210px !important;
+  margin-bottom: -4px !important;
+}
+.form-data .el-input{
+  width: 281px !important;
+}
 ::v-deep .el-dialog{
-  width: 37%;
+  width: 36%;
 }
 ::v-deep .el-dialog__body{
-  padding: 8px 25px
+  margin-top: 6px !important;
+  margin-left: -23px !important;
+  padding: 8px 35px
 }
 ::v-deep .el-dialog__footer{
+  margin-top: -29px !important;
   padding: 3px 87px 16px;
 }
 </style>

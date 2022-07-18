@@ -132,6 +132,7 @@ export function addDictDataInfo(data) {
     var data = {
         dictLabel: data.dictName,
         dictValue: data.dictValue,
+        status: data.status,
         dictType: getDictType()
     }
     return request({
@@ -148,6 +149,7 @@ export function updateDictDataInfo(data) {
         id: data.id,
         dictLabel: data.dictName,
         dictValue: data.dictValue,
+        status: data.status,
         dictType: getDictType()
     }
     return request({
