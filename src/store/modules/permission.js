@@ -1,10 +1,7 @@
 const permission = {
     state: {
-        routes: [],
-        addRoutes: [],
-        defaultRoutes: [],
-        topbarRouters: [],
-        sidebarRouters: []
+        //用户权限路由列表
+        routes: []
     },
     mutations: {
         //保存路由信息
@@ -16,6 +13,5 @@ const permission = {
 
     }
 }
-
 
 export default permission
