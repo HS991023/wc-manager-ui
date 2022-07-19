@@ -96,21 +96,31 @@ export default {
 </script>
 
 <style scoped>
-
 .banner{
   width: 120px;
   height: 30px;
   margin-left: -100px;
 }
+
 .container-home{
     width: 100%;
     height: 100vh;
 }
+
 .el-menu {
   height: 100%;
 }
+
 ::v-deep .el-submenu__title{
    color: #fcfcfc;
+}
+
+::v-deep .el-submenu .el-menu-item:focus{
+   background-color: transparent !important;
+}
+
+::v-deep .el-submenu .el-menu-item{
+   padding-left: 61px !important;
 }
 
 .el-header {
@@ -119,21 +129,26 @@ export default {
     line-height: 60px;
     right: 0px;
 }
+
 .title-message{
   float: left;
   font-size: 26px;
 }
+
 .el-card__body, .el-main {
     padding: 10px;
 }
+
 .el-menu-item a{
   text-decoration: none;
   color: black;
 }
+
 .userInfo-down{
   float: right;
   margin-left: 20px;
 }
+
 .user-info{
   font-size: 15px;
 }
