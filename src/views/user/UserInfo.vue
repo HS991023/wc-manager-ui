@@ -86,15 +86,14 @@
           <el-input type="password" v-model="form.passWord" autocomplete="off" placeholder="请输入密码" show-password/>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth">
-           <el-input v-model="form.roleName" autocomplete="off" placeholder="请输入角色"/>
-            <!-- <el-select v-model="value" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.dictValue"
-              :label="item.dictName"
-              :value="item.dictValue">
-            </el-option>
-          </el-select> -->
+              <el-select v-model="role" placeholder="请选择">
+              <el-option
+                v-for="item in roleSelect"
+                :key="item.id"
+                :label="item.roleName"
+                :value="item.id">
+              </el-option>
+            </el-select>
         </el-form-item>
         <el-form-item label="状态" :label-width="formLabelWidth" prop="status">
           <el-select v-model="status" placeholder="请选择">
@@ -152,7 +151,6 @@
       <el-table-column align="center" prop="cellPhone" key="cellPhone" label="手机号码" width="120" :show-overflow-tooltip="showOverflowTooltip"/>
       <el-table-column align="center" prop="mail" key="mail" label="邮件" width="120" :show-overflow-tooltip="showOverflowTooltip"/>
       <el-table-column align="center" prop="accountType" key="accountType" label="账户类型" width="100"/>
-      <!-- <el-table-column align="center" prop="address" key="address" label="地址" width="100"/> -->
       <el-table-column align="center" prop="status" key="status" label="状态" width="80"/>
       <el-table-column align="center" prop="createTime" key="createTime" label="注册日期" width="190"/>
       <el-table-column label="操作">
@@ -179,9 +177,11 @@
 </template>
 
 <script>
-import {userList,userInfo,addUser,updateUser,removeUser} from "@/api/system/user"   
-import {uploadFile,queryFileById}  from '@/api/common/upload'
+import {roleSelect} from '@/api/system/role'
 import {getDictDataByType} from '@/api/system/dict'
+import {uploadFile,queryFileById}  from '@/api/common/upload'
+import {userList,userInfo,addUser,updateUser,removeUser} from "@/api/system/user"   
+
 export default {
     name:'WcManagerUiUserInfo',
     data() {
@@ -218,6 +218,9 @@ export default {
         //性别
         sex:'',
         sexList:[],
+        //角色
+        role:'',
+        roleSelect:[],
         formLabelWidth: '120px',
         //是否加载中
         loading: true,
@@ -363,25 +366,22 @@ export default {
                this.$msgbox(response.msg, '系统提示', {
                 confirmButtonText: '确定',
                 type: 'warning'})    
-            }
-            })    
-          //新增用户  
-          }else{
-          addUser(this.form).then(response =>{
-          if(response.code==200){
-             this.$msgbox('保存用户信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })    
-            this.dialogFormVisible = false    
-            this.getUserList()         
-            }else{
-               var msg = response.msg;
-               this.$msgbox(response.msg, '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'})    
-            }
-          })            
+            }})    
+         }else{
+            addUser(this.form).then(response =>{
+            if(response.code==200){
+              this.$msgbox('保存用户信息成功', '系统提示', {
+                  confirmButtonText: '确定',
+                  type: 'warning'
+              })    
+              this.dialogFormVisible = false    
+              this.getUserList()         
+              }else{
+                var msg = response.msg;
+                this.$msgbox(response.msg, '系统提示', {
+                  confirmButtonText: '确定',
+                  type: 'warning'})    
+              }})            
           }
         }})    
       },
@@ -445,7 +445,7 @@ export default {
           userName:undefined,
           sex:undefined,
           passWord:undefined,
-          roleName:undefined,
+          roleId:undefined,
           status:undefined,
           cellPhone:undefined,
           mail:undefined,
@@ -471,6 +471,7 @@ export default {
         this.status = undefined
         this.sex = undefined
         this.accountType = undefined
+        this.role = undefined
       },
       //列表回显字典
       viewDictList(){
@@ -504,10 +505,11 @@ export default {
           this.form.sex = this.sex
           this.form.status = this.status
           this.form.accountType = this.accountType
+          this.form.roleId = this.role
       },
       //表单字典标签替换为字典值
       replaceDictData(){
-        this.sexList.forEach(value=>{
+         this.sexList.forEach(value=>{
             if(this.sex == value.dictName){
                this.form.sex = value.dictValue
             }
@@ -517,9 +519,14 @@ export default {
                this.form.status = value.dictValue
             }
           })
-          this.accountTypeList.forEach(value=>{
+         this.accountTypeList.forEach(value=>{
             if(this.accountType == value.dictName){
                this.form.accountType = value.dictValue
+            }
+          })
+        this.roleSelect.forEach(value=>{
+            if(this.role == value.roleName){
+               this.form.roleId = value.id
             }
           })
       },
@@ -541,6 +548,11 @@ export default {
                this.accountType = value.dictName
             }
           })
+         this.roleSelect.forEach(value=>{
+            if(this.form.roleId == value.id){
+               this.role = value.roleName
+            }
+          })
       },
       //获取下拉框数据
       getSelectData(){
@@ -555,6 +567,10 @@ export default {
            //账号类型
           getDictDataByType('accout_type').then(res=>{
             this.accountTypeList = res.data
+          })
+          //角色
+          roleSelect().then(res=>{
+             this.roleSelect = res.data
           })
           
       },

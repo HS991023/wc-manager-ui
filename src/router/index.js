@@ -119,7 +119,6 @@ router.beforeEach((to, from, next) => {
                 //当前用户拥有的权限数组
                 res = flatTree(routers);
                 res.push('show');
-                console.log(res);
                 //判断当前用户拥有的权限是否包含即将跳转的菜单权限
                 if (ArrayContains(res, to.meta.hasPermission)) {
                     next();

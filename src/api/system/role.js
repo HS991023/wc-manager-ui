@@ -1,6 +1,17 @@
 import request from '@/utils/request'
 
 
+//查询角色下拉框数据
+export function roleSelect(data) {
+    return request({
+        url: '/api/system/role/select',
+        method: 'post',
+        data: data
+    })
+}
+
+
+
 //查询角色列表
 export function roleList(data) {
     return request({
