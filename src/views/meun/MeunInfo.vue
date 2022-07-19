@@ -58,7 +58,7 @@
         <el-form-item label="序号" :label-width="formLabelWidth" prop="orderNumber">
           <el-input v-model="form.orderNumber" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="资源路径" :label-width="formLabelWidth" prop="resUrl">
+        <el-form-item label="资源URI" :label-width="formLabelWidth" prop="resUrl">
           <el-input v-model="form.resUrl" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="权限代码" :label-width="formLabelWidth" prop="permission">
@@ -68,7 +68,7 @@
             <el-radio-group v-model="resType">
               <el-radio :label="0">目录</el-radio>
               <el-radio :label="1">菜单</el-radio>
-              <el-radio :label="2">按钮</el-radio>
+              <el-radio :label="2">按钮/内嵌页面</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item label="菜单图标" :label-width="formLabelWidth">
@@ -94,8 +94,8 @@
     lazy :load="load" :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
     <el-table-column fixed="left" label="菜单名称" width="200" prop="name" key="name"/>
     <el-table-column align="center" label="序号" width="100" prop="orderNumber" key="orderNumber"/>
-    <el-table-column align="center" label="菜单图标" width="100" prop="icon" key="icon"/>
-    <el-table-column align="center" label="资源路径" width="180" prop="resUrl" key="resUrl"/>
+    <el-table-column align="center" label="菜单图标" width="180" prop="icon" key="icon"/>
+    <el-table-column align="center" label="资源URI" width="180" prop="resUrl" key="resUrl"/>
     <el-table-column align="center" label="权限代码" width="180" prop="permission" key="permission"/>
     <el-table-column align="center" label="菜单类型" width="130" prop="resType" key="resType"/>
     <el-table-column align="center" label="状态"    width="100" prop="status" key="status"/>

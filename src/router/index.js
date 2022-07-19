@@ -48,17 +48,17 @@ const routes = [{
             {
                 path: '/toiletInfo',
                 component: (resolve) => require(['@/views/toilet/ToiletInfo'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:toilet:info' }
+                meta: { requireAuth: true, hasPermission: 'system:toilet:manager' }
             },
             {
                 path: '/positionInfo',
                 component: (resolve) => require(['@/views/position/PositionInfo'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:position:info' }
+                meta: { requireAuth: true, hasPermission: 'system:position:manager' }
             },
             {
                 path: '/deviceInfo',
                 component: (resolve) => require(['@/views/device/DeviceInfo'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:device:info' }
+                meta: { requireAuth: true, hasPermission: 'system:device:manager' }
             },
             {
                 path: '/loginLog',
@@ -118,8 +118,9 @@ router.beforeEach((to, from, next) => {
                 let routers = res.data;
                 //当前用户拥有的权限数组
                 res = flatTree(routers);
-                res.push('show')
-                    //判断当前用户拥有的权限是否包含即将跳转的菜单权限
+                res.push('show');
+                console.log(res);
+                //判断当前用户拥有的权限是否包含即将跳转的菜单权限
                 if (ArrayContains(res, to.meta.hasPermission)) {
                     next();
                 } else {
