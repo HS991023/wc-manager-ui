@@ -1,5 +1,8 @@
 import store from '@/store/index'
 import { getMeunTree } from '@/api/common/tree'
+
+
+
 //获取当前登录用户的路由数据
 export function getRouters(token) {
     var promise = getMeunTree(token);

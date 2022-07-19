@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getRouters} from '@/permission'
+import {getRouters} from '@/directives/permission'
 export default {
     name:'Login',
     data(){

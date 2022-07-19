@@ -47,7 +47,7 @@
 <script>
 import {MessageBox} from 'element-ui';
 import {logoutUser} from '@/api/system/user'
-import {getRouters} from '@/permission.js'
+import {getRouters} from '@/directives/permission.js'
 import TreeMenu from "@/components/common/TreeMenu.vue"; //动态菜单组件
 export default {
     name:'Home',

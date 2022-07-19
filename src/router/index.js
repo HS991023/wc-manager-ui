@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { getToken } from '@/utils/auth'
-import { getRouters } from '@/permission'
-import { flatTree, ArrayContains } from '@/utils/array'
+import { getRouters } from '@/directives/permission'
+import { getMenuPermissionList, ArrayContains } from '@/utils/array'
 
 //安装路由
 Vue.use(VueRouter);
@@ -116,9 +116,8 @@ router.beforeEach((to, from, next) => {
             getRouters(getToken()).then(res => {
                 //拿到当前路由数据
                 let routers = res.data;
-                //当前用户拥有的权限数组
-                res = flatTree(routers);
-                res.push('show');
+                //当前用户拥有的菜单权限数组
+                res = getMenuPermissionList(routers);
                 //判断当前用户拥有的权限是否包含即将跳转的菜单权限
                 if (ArrayContains(res, to.meta.hasPermission)) {
                     next();

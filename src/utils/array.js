@@ -1,14 +1,34 @@
-// 把树结构转换为数组
-export function flatTree(treeData) {
+// 获取菜单权限数组
+export function getMenuPermissionList(treeData) {
     let result = []
     treeData.forEach((item) => {
         // 先克隆一份数据作为第一层级的填充
         let res = JSON.parse(JSON.stringify(item))
         delete res.children
-        result.push(res.code)
+        if (res.type != 2) {
+            result.push(res.code)
+        }
         if (item.children && item.children.length > 0) {
-            // 如果当前children为数组并且长度大于0，才可进入flatTree()方法
-            result = result.concat(flatTree(item.children))
+            // 如果当前children为数组并且长度大于0，才可进入getMenuPermissionList()方法
+            result = result.concat(getMenuPermissionList(item.children))
+        }
+    })
+    return result
+}
+
+// 获取按钮权限数组
+export function getButtonPermissionList(treeData) {
+    let result = []
+    treeData.forEach((item) => {
+        // 先克隆一份数据作为第一层级的填充
+        let res = JSON.parse(JSON.stringify(item))
+        delete res.children
+        if (res.type === 2) {
+            result.push(res.code)
+        }
+        if (item.children && item.children.length > 0) {
+            // 如果当前children为数组并且长度大于0，才可进入getButtonPermissionList()方法
+            result = result.concat(getButtonPermissionList(item.children))
         }
     })
     return result
