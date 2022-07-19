@@ -45,8 +45,9 @@
 </template>
 
 <script>
-import {logoutUser} from '@/api/system/user'
 import {MessageBox} from 'element-ui';
+import {logoutUser} from '@/api/system/user'
+import {getRouters} from '@/permission.js'
 import TreeMenu from "@/components/common/TreeMenu.vue"; //动态菜单组件
 export default {
     name:'Home',
@@ -80,12 +81,17 @@ export default {
         })
       }
     },
-    computed:{
+   computed:{
 		   treeData:function() {  
           //通过方法访问
          return this.$store.getters.permission_routes; 
       }
-	 }
+	 },
+   created(){
+    //解决vuex动态菜单权限数据刷新后消失问题
+    let token = sessionStorage.getItem('token');
+    getRouters(token);
+  }
 }
 </script>
 

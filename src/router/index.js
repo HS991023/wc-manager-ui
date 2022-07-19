@@ -1,6 +1,9 @@
 // 该文件专门用于创建整个应用的路由器
-import Vue from 'vue';
+import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { getToken } from '@/utils/auth'
+import { flatTree, ArrayContains } from '@/utils/array'
+import { getRouters } from '@/permission'
 
 //安装路由
 Vue.use(VueRouter);
@@ -13,74 +16,74 @@ const routes = [{
         children: [{
                 path: '/show',
                 component: (resolve) => require(['@/components/Show'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'show' }
             },
             {
                 path: '/userInfo',
                 component: (resolve) => require(['@/views/user/UserInfo'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:user:info' }
 
             }, {
                 path: '/onlineUser',
                 component: (resolve) => require(['@/views/user/OnlineUser'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:online:user' }
             }, {
                 path: '/roleInfo',
                 component: (resolve) => require(['@/views/role/RoleInfo'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:role:info' }
             }, {
                 path: '/deptInfo',
                 component: (resolve) => require(['@/views/dept/DeptInfo'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:dept:info' }
             },
             {
                 path: '/meunInfo',
                 component: (resolve) => require(['@/views/meun/MeunInfo'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:menu:info' }
             },
             {
                 path: '/regionInfo',
                 component: (resolve) => require(['@/views/region/RegionInfo'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:region:info' }
             },
             {
                 path: '/toiletInfo',
                 component: (resolve) => require(['@/views/toilet/ToiletInfo'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:toilet:info' }
             },
             {
                 path: '/positionInfo',
                 component: (resolve) => require(['@/views/position/PositionInfo'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:position:info' }
             },
             {
                 path: '/deviceInfo',
                 component: (resolve) => require(['@/views/device/DeviceInfo'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:device:info' }
             },
             {
                 path: '/loginLog',
                 component: (resolve) => require(['@/views/common/LoginLog'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:login:info' }
             }, {
                 path: '/operatorLog',
                 component: (resolve) => require(['@/views/common/OperatorLog'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:operator:log' }
             },
             {
                 path: '/interfaceCall',
                 component: (resolve) => require(['@/views/common/ApiNumber'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:interface:call' }
             },
             {
                 path: '/dictType',
                 component: (resolve) => require(['@/views/dict/DictType'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:dict:type' }
             },
             {
                 path: '/dictData',
                 component: (resolve) => require(['@/views/dict/DictData'], resolve),
-                meta: { requireAuth: true }
+                meta: { requireAuth: true, hasPermission: 'system:dict:data' }
             }
         ]
     },
@@ -88,6 +91,12 @@ const routes = [{
         path: '/login',
         component: (resolve) => require(['@/components/Login'], resolve),
         meta: { requireAuth: false }
+    },
+    {
+        path: '/noauth',
+        component: (resolve) => require(['@/components/common/NoAuth'], resolve),
+        meta: { requireAuth: true, hasPermission: 'noauth' }
+
     }
 ];
 
@@ -104,13 +113,22 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
         // 查询sessionStorge中的登录状态
         if (sessionStorage.getItem('token')) {
-            next();
+            //获取当前登录用户的可路由菜单权限,防止浏览器输入框跳转
+            getRouters(getToken()).then(res => {
+                //拿到当前路由数据
+                let routers = res.data;
+                //当前用户拥有的权限数组
+                res = flatTree(routers);
+                res.push('show')
+                if (ArrayContains(res, to.meta.hasPermission)) {
+                    next();
+                }
+            })
         } else {
-            next({
-                path: '/login',
-            });
+            next({ path: '/login' });
         }
-    } else {
+    } //不需要登录的直接放行   
+    else {
         next();
     }
 });

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {getRouters} from '@/api/system/permission'
+import {getRouters} from '@/permission'
 export default {
     name:'Login',
     data(){
