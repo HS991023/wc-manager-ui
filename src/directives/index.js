@@ -1,4 +1,4 @@
-import hasPermi from './hasPermi'
+import hasPermi from './modules/hasPermi'
 
 const install = function(Vue) {
     Vue.directive('hasPermi', hasPermi)

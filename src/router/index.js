@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { getToken } from '@/utils/auth'
-import { getRouters } from '@/directives/permission'
+import { getRouters } from '@/directives/modules/permission'
 import { getMenuPermissionList, ArrayContains } from '@/utils/array'
 
 //安装路由

@@ -5,9 +5,9 @@ export function getMenuPermissionList(treeData) {
         // 先克隆一份数据作为第一层级的填充
         let res = JSON.parse(JSON.stringify(item))
         delete res.children
-        if (res.type != 2) {
-            result.push(res.code)
-        }
+            // if (res.type != 2) {
+        result.push(res.code)
+            // }
         if (item.children && item.children.length > 0) {
             // 如果当前children为数组并且长度大于0，才可进入getMenuPermissionList()方法
             result = result.concat(getMenuPermissionList(item.children))

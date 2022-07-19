@@ -31,15 +31,15 @@
     <!-- 搜索按钮区域 -->
     <div class="serach-button-region"> 
       <el-row>
-      <el-button class="serach-button" type="success" icon="el-icon-search"  plain @click="getUserList()">搜索</el-button>
-      <el-button class="serach-button" type="warning" icon="el-icon-refresh" plain @click="getUserListReset()">重置</el-button>
+      <el-button class="serach-button" type="success" icon="el-icon-search"  plain @click="getUserList()" v-hasPermi="'system:user:query'">搜索</el-button>
+      <el-button class="serach-button" type="warning" icon="el-icon-refresh" plain @click="getUserListReset()" v-hasPermi="'system:user:query'">重置</el-button>
       </el-row>
     </div>
     </div>
    <!-- 操作数据按钮区域 -->
     <div class="operator-button-region">
-      <el-button class="operator-button" type="primary" icon="el-icon-circle-plus" plain @click="handleAddUser();dialogFormVisible=true">新增</el-button>
-      <el-button class="operator-button" type="danger"  icon="el-icon-error" plain @click="handleDeleteUser()">批量删除</el-button>
+      <el-button class="operator-button" type="primary" icon="el-icon-circle-plus" plain @click="handleAddUser();dialogFormVisible=true" v-hasPermi="'system:user:add'">新增</el-button>
+      <el-button class="operator-button" type="danger"  icon="el-icon-error" plain @click="handleDeleteUser()" v-hasPermi="'system:user:delete'">批量删除</el-button>
     </div>
     <div class="form-data">
     <!-- 表单新增或编辑对话框   -->
@@ -155,8 +155,8 @@
       <el-table-column align="center" prop="createTime" key="createTime" label="注册日期" width="190"/>
       <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button type="text" size="mini" icon="el-icon-edit"  @click="handleEidtUser(scope.row);dialogFormVisible = true">编辑</el-button>
-        <el-button class="delete-button" type="text" size="mini"  icon="el-icon-delete" @click="handleDeleteUser();handleUserIds(scope.row)">删除</el-button>
+        <el-button type="text" size="mini" icon="el-icon-edit"  @click="handleEidtUser(scope.row);dialogFormVisible = true" v-hasPermi="'system:user:edit'">编辑</el-button>
+        <el-button class="delete-button" type="text" size="mini"  icon="el-icon-delete" @click="handleDeleteUser();handleUserIds(scope.row)" v-hasPermi="'system:user:delete'">删除</el-button>
       </template>
       </el-table-column>
     </el-table>

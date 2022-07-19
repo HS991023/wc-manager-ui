@@ -47,7 +47,7 @@
 <script>
 import {MessageBox} from 'element-ui';
 import {logoutUser} from '@/api/system/user'
-import {getRouters} from '@/directives/permission.js'
+import {getRouters} from '@/directives/modules/permission.js'
 import TreeMenu from "@/components/common/TreeMenu.vue"; //动态菜单组件
 export default {
     name:'Home',
@@ -109,6 +109,10 @@ export default {
 .el-menu {
   height: 100%;
 }
+::v-deep .el-submenu__title{
+   color: #fcfcfc;
+}
+
 .el-header {
     position:absolute; 
     color: #333;

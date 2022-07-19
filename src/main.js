@@ -5,19 +5,17 @@ import store from './store'
 import VueAxios from 'vue-axios'
 import * as echarts from 'echarts'
 import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import directive from './directives'
 import locale from 'element-ui/lib/locale/lang/zh-CN'
-import { Button, Input, Row, MessageBox, Container } from 'element-ui'
 import router from './router/index.js'
+
+//安装
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
-Vue.prototype.$alert = MessageBox.alert
+Vue.use(directive)
 Vue.use(VueAxios, axios)
 Vue.use(ElementUI, { locale })
-Vue.component(Row.name, Row)
-Vue.component(Input.name, Input)
-Vue.component(Button.name, Button)
-Vue.component(MessageBox.name, MessageBox)
-Vue.component(Container.name, Container)
 Vue.config.productionTip = false
 
 //挂载路由,vuex等
