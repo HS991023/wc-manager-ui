@@ -1,9 +1,8 @@
-// 该文件专门用于创建整个应用的路由器
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { getToken } from '@/utils/auth'
-import { flatTree, ArrayContains } from '@/utils/array'
 import { getRouters } from '@/permission'
+import { flatTree, ArrayContains } from '@/utils/array'
 
 //安装路由
 Vue.use(VueRouter);
@@ -21,7 +20,7 @@ const routes = [{
             {
                 path: '/userInfo',
                 component: (resolve) => require(['@/views/user/UserInfo'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:user:info' }
+                meta: { requireAuth: true, hasPermission: 'system:user:manager' }
 
             }, {
                 path: '/onlineUser',
@@ -30,7 +29,7 @@ const routes = [{
             }, {
                 path: '/roleInfo',
                 component: (resolve) => require(['@/views/role/RoleInfo'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:role:info' }
+                meta: { requireAuth: true, hasPermission: 'system:role:manager' }
             }, {
                 path: '/deptInfo',
                 component: (resolve) => require(['@/views/dept/DeptInfo'], resolve),
@@ -39,12 +38,12 @@ const routes = [{
             {
                 path: '/meunInfo',
                 component: (resolve) => require(['@/views/meun/MeunInfo'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:menu:info' }
+                meta: { requireAuth: true, hasPermission: 'system:menu:manager' }
             },
             {
                 path: '/regionInfo',
                 component: (resolve) => require(['@/views/region/RegionInfo'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:region:info' }
+                meta: { requireAuth: true, hasPermission: 'system:region:manager' }
             },
             {
                 path: '/toiletInfo',
@@ -64,7 +63,7 @@ const routes = [{
             {
                 path: '/loginLog',
                 component: (resolve) => require(['@/views/common/LoginLog'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:login:info' }
+                meta: { requireAuth: true, hasPermission: 'system:login:log' }
             }, {
                 path: '/operatorLog',
                 component: (resolve) => require(['@/views/common/OperatorLog'], resolve),
@@ -95,7 +94,7 @@ const routes = [{
     {
         path: '/noauth',
         component: (resolve) => require(['@/components/common/NoAuth'], resolve),
-        meta: { requireAuth: true, hasPermission: 'noauth' }
+        meta: { requireAuth: false, hasPermission: 'noauth' }
 
     }
 ];
@@ -120,8 +119,11 @@ router.beforeEach((to, from, next) => {
                 //当前用户拥有的权限数组
                 res = flatTree(routers);
                 res.push('show')
+                    //判断当前用户拥有的权限是否包含即将跳转的菜单权限
                 if (ArrayContains(res, to.meta.hasPermission)) {
                     next();
+                } else {
+                    next({ path: '/noauth' });
                 }
             })
         } else {
