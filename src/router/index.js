@@ -118,6 +118,7 @@ router.beforeEach((to, from, next) => {
                 let routers = res.data;
                 //当前用户拥有的菜单权限数组
                 res = getMenuPermissionList(routers);
+                res.push('show');
                 //判断当前用户拥有的权限是否包含即将跳转的菜单权限
                 if (ArrayContains(res, to.meta.hasPermission)) {
                     next();
