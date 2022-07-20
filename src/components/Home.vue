@@ -2,7 +2,7 @@
 <div class="container-home " style="overflow:hidden;">
   <!--侧边拉展开收缩区域 -->
    <div class="side-switch-region" ref="sideswitchregion">
-        <div class="el-icon-s-fold"></div>
+        <div class="el-icon-s-fold" @click="changeSideMenuStatus()"></div>
         <!-- <i class="el-icon-caret-right"></i> -->
    </div>
    <!-- 面包屑区域 -->
@@ -109,6 +109,17 @@ export default {
             });
         })
       },
+      //展开或收起侧边栏菜单
+      changeSideMenuStatus(){
+         let status = this.isCollapse;
+        //  if(status === false){
+        //     this.isCollapse = true;
+        //  }  
+        //  if(status === true){
+        //     this.isCollapse = false;
+        //  } 
+      }
+      ,
       isHome(route) { 
         return route.path === "show";
       },
