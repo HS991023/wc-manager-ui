@@ -64,7 +64,8 @@ const routes = [{
                 path: '/loginLog',
                 component: (resolve) => require(['@/views/common/LoginLog'], resolve),
                 meta: { requireAuth: true, hasPermission: 'system:login:log' }
-            }, {
+            },
+            {
                 path: '/operatorLog',
                 component: (resolve) => require(['@/views/common/OperatorLog'], resolve),
                 meta: { requireAuth: true, hasPermission: 'system:operator:log' }
@@ -95,7 +96,11 @@ const routes = [{
         path: '/noauth',
         component: (resolve) => require(['@/components/common/NoAuth'], resolve),
         meta: { requireAuth: false, hasPermission: 'noauth' }
-
+    },
+    {
+        path: '*',
+        component: (resolve) => require(['@/components/common/404'], resolve),
+        meta: { requireAuth: false, hasPermission: '404' }
     }
 ];
 

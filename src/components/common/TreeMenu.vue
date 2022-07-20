@@ -12,7 +12,7 @@
 <template>
   <div>
     <template v-for="item in treeData">
-      <el-submenu :index="item.id" :key="item.id" v-if="item.children && item.children.length > 0 && item.type === 0">
+      <el-submenu :index="item.id" :key="item.id" v-if="item.children && item.children.length >= 0 && item.type === 0">
         <template slot="title">
           <i :class="item.icon"></i>
           <span>{{item.label}}</span>
