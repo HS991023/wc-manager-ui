@@ -8,13 +8,13 @@
       <label class="serach-propties">设备状态:</label>    
       <el-input placeholder="请输入设备状态" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getDeviceList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getDeviceListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getDeviceList()" v-hasPermi="'system:device:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getDeviceListReset()" v-hasPermi="'system:device:query'">重置</el-button>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddDevice();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteDevice()">批量删除</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddDevice();dialogFormVisible=true" v-hasPermi="'system:device:add'">新增</el-button>
+      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteDevice()" v-hasPermi="'system:device:delete'">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="设备信息" :visible.sync="dialogFormVisible">
@@ -56,13 +56,13 @@
     <el-table-column label="设备状态" width="180" prop="status"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditDevice(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeviceIds(scope.row);handleDeleteDevice()">删除</el-button>
+        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditDevice(scope.row);dialogFormVisible=true" v-hasPermi="'system:device:edit'">编辑</el-button>
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeviceIds(scope.row);handleDeleteDevice()" v-hasPermi="'system:device:delete'">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
     </div>
-    <div class="pageHelper" v-if="total !=0 && total>0">
+    <div class="pageHelper" v-if="total !=0 && total>0" v-hasPermi="'system:device:query'">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"

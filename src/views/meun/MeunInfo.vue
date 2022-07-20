@@ -69,6 +69,7 @@
               <el-radio :label="0">目录</el-radio>
               <el-radio :label="1">菜单</el-radio>
               <el-radio :label="2">按钮</el-radio>
+              <el-radio :label="3">内嵌页面</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item label="菜单图标" :label-width="formLabelWidth">
@@ -497,17 +498,17 @@ export default {
 
 <style scoped>
 ::v-deep .el-dialog{
-  width: 33%;
+  width: 35%;
 }
 ::v-deep .el-dialog__body{
   padding: 8px 50px
 }
 ::v-deep .el-dialog__footer{
-  padding: 3px 112px 16px;
+  padding: 3px 138px 16px;
 }
 
 ::v-deep .form-data .el-input__inner{
-  width: 265px !important;
+  width: 308px !important;
 }
 
 ::v-deep .form-data .el-form-item{
@@ -521,6 +522,11 @@ export default {
   height: 28px !important;
 }
 
+::v-deep .form-data .el-input__icon {
+    line-height: 27px !important;
+    margin-left: 52px;
+}
+
 ::v-deep .el-input__suffix{
   left: 224px !important;
 }
@@ -530,7 +536,7 @@ export default {
 }
 
 ::v-deep .el-tree-node__content{
-  width: 200px !important;
+  width: 251px !important;
   /* padding-left: 5px !important; */
 }
 

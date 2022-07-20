@@ -6,13 +6,13 @@
       <label class="serach-propties">地区类型:</label>    
       <el-input placeholder="请输入地区类型" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getRegionList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getRegionListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getRegionList()" v-hasPermi="'system:region:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getRegionListReset()" v-hasPermi="'system:region:query'">重置</el-button>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRegion();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteRegion()">批量删除</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRegion();dialogFormVisible=true" v-hasPermi="'system:region:add'">新增</el-button>
+      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteRegion()" v-hasPermi="'system:region:delete'">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="地区信息" :visible.sync="dialogFormVisible">
@@ -50,13 +50,13 @@
     <el-table-column label="区域名称" width="180" prop="regionName" key="regionName"/>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditRegion(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRegion();handleRegionIds(scope.row)">删除</el-button>
+        <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditRegion(scope.row);dialogFormVisible=true" v-hasPermi="'system:region:edit'">编辑</el-button>
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRegion();handleRegionIds(scope.row)" v-hasPermi="'system:region:delete'">删除</el-button>
       </template>
     </el-table-column>
     </el-table>
     </div>
-    <div class="pageHelper" v-if="total !=0 && total>0">
+    <div class="pageHelper" v-if="total !=0 && total>0" v-hasPermi="'system:region:query'">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"

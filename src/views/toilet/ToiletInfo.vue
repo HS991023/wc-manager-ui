@@ -6,13 +6,13 @@
       <label class="serach-propties">公厕编码:</label>    
       <el-input placeholder="请输入公厕编码" suffix-icon="el-icon-text" v-model="data.toiletCode"/>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getToiletList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getToiletListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getToiletList()" v-hasPermi="'system:toilet:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getToiletListReset()" v-hasPermi="'system:toilet:query'">重置</el-button>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddToilet();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteToilet()">批量删除</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddToilet();dialogFormVisible=true" v-hasPermi="'system:toilet:add'">新增</el-button>
+      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeleteToilet()" v-hasPermi="'system:toilet:delete'">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="公厕信息" :visible.sync="dialogFormVisible">
@@ -62,13 +62,13 @@
       <el-table-column label="创建时间" width="180" prop="createTime" key="createTime"/>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditToilet(scope.row);dialogFormVisible=true">编辑</el-button>
-          <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete"  @click="handleToiletIds(scope.row);handleDeleteToilet()">删除</el-button> 
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditToilet(scope.row);dialogFormVisible=true" v-hasPermi="'system:toilet:edit'">编辑</el-button>
+          <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete"  @click="handleToiletIds(scope.row);handleDeleteToilet()" v-hasPermi="'system:toilet:delete'">删除</el-button> 
         </template>
       </el-table-column>
     </el-table>
     </div>
-    <div class="pageHelper" v-if="total !=0 && total>0">
+    <div class="pageHelper" v-if="total !=0 && total>0" v-hasPermi="'system:toilet:query'">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"

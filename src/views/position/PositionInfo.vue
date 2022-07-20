@@ -6,13 +6,13 @@
       <label class="serach-propties">坑位序号:</label>    
       <el-input placeholder="请输入坑位序号" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getPositionList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getPositionListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getPositionList()" v-hasPermi="'system:position:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getPositionListReset()" v-hasPermi="'system:position:query'">重置</el-button>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddPosition();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeletePosition()">批量删除</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddPosition();dialogFormVisible=true" v-hasPermi="'system:position:add'">新增</el-button>
+      <el-button type="danger"  plain class="operator-button" icon="el-icon-error" @click="handleDeletePosition()" v-hasPermi="'system:position:delete'">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="坑位信息" :visible.sync="dialogFormVisible">
@@ -58,13 +58,13 @@
       <el-table-column align="center" label="使用状态" width="180" prop="status" key="status"/>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditPosition(scope.row);dialogFormVisible=true">编辑</el-button>
-          <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeletePosition(),handlePositionIds(scope.row)">删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEditPosition(scope.row);dialogFormVisible=true" v-hasPermi="'system:position:edit'">编辑</el-button>
+          <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeletePosition(),handlePositionIds(scope.row)" v-hasPermi="'system:position:delete'">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     </div>
-    <div class="pageHelper" v-if="total !=0 && total>0">
+    <div class="pageHelper" v-if="total !=0 && total>0" v-hasPermi="'system:position:query'">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
