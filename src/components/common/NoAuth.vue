@@ -1,6 +1,6 @@
 <template>
-    <div>
-        暂无权限
+<div class="root">
+        <h1>当前登录用户无权限访问</h1>
     </div>
 </template>
 
@@ -24,6 +24,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="css" scoped>
+.root{
+    width: 100%;
+    height: 100%;
+}
+.root h1{
+    text-align: center;
+    margin-top: 10%;
+}
 </style>

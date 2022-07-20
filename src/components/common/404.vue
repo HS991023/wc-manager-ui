@@ -1,6 +1,6 @@
 <template>
-    <div>
-        404
+    <div class="root">
+        <h1>404 网页找不到了 请联系管理员或检查输入的地址是否正确</h1>
     </div>
 </template>
 
@@ -24,6 +24,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="css" scoped>
+.root{
+    width: 100%;
+    height: 100%;
+}
+.root h1{
+    text-align: center;
+    margin-top: 10%;
+}
 </style>
