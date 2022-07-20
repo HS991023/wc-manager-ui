@@ -39,28 +39,10 @@
 .tabs-region {
     position: absolute;
     width: 100%;
-    left: 198px;
+    left: 193px;
     top: 50px;
-    border-top: 1px solid transparent;
+    border-top: 1px solid #cfd7db;
     border-bottom: 1px solid #cfd7db;
-}
-
-.tabs-region .el-tag--dark {
-    background-color: transparent !important;
-    border-color: transparent;
-    color: black !important;
-}
-
-.tabs-region .el-tag--dark .el-tag__close {
-    color: black !important;
-}
-
-.tabs-region .el-tag {
-    margin-left: 6px;
-}
-
-.tabs-region span:hover {
-    background-color: #a3bbd3 !important;
 }
 
 
@@ -71,7 +53,7 @@
     width: 25px;
     height: 25px;
     left: 195px;
-    top: 3px;
+    top: 15px;
 }
 
 .side-switch-region .el-button--primary {
@@ -85,15 +67,15 @@
 .crumbs-region {
     position: absolute;
     width: 100%;
-    left: 245px;
-    top: 18px;
+    left: 225px;
+    top: 19px;
 }
 
 
 /* 全局搜索栏盒子样式 */
 
 .serach-input {
-    margin-top: 80px;
+    margin-top: 87px;
     float: left;
     width: 100%;
     height: 50px;

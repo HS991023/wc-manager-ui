@@ -2,7 +2,8 @@
 <div class="container-home " style="overflow:hidden;">
   <!--侧边拉展开收缩区域 -->
    <div class="side-switch-region" ref="sideswitchregion">
-
+        <div class="el-icon-s-fold"></div>
+        <!-- <i class="el-icon-caret-right"></i> -->
    </div>
    <!-- 面包屑区域 -->
    <div class="crumbs-region" ref="crumbsregion">
@@ -30,7 +31,7 @@
   <el-container style="height: 100%; border: 1px solid #eee">
   <el-aside id="side" style="height: 100% background-color: rgb(238, 241, 246)">
         <!-- 动态渲染菜单栏 -->
-        <el-menu router style="height: 100%">
+        <el-menu router style="height: 100%" :collapse="isCollapse">
           <TreeMenu :tree-data="treeData"/>
         </el-menu>
   </el-aside>
@@ -64,8 +65,8 @@
     </el-header>
     <!-- 插入路由展示 -->
     <el-main ref="main" id="main">
-      <!-- <keep-alive :include="keepAliveUrl(menuTabs)"
-                  :exclude="noKeepAlive"> -->
+      <keep-alive :include="keepAliveUrl(menuTabs)"
+                  :exclude="noKeepAlive"/>
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -86,15 +87,10 @@ export default {
         isCollapse: false,
         //只保持一个菜单打开
         opened: true,
-        openIndex:[],
         // 处理始终不需要缓存的页
         noKeepAlive: 'show', 
         // 路由集合
         breadList:[], 
-        dynamicTags: [{
-            routerName:'展示页面',
-            routerPath: '/show'
-        }],
       }
     },
     components:{TreeMenu},
@@ -114,13 +110,12 @@ export default {
         })
       },
       isHome(route) { 
-        return route.name === "show";
+        return route.path === "show";
       },
       //面包屑
       getBreadcrumb() {
         //拿到显示的路由路径
         let matched = this.$route.matched; 
-        console.log(matched[1]);
         //当前路由等于首页
         if(!this.isHome(matched[0])){
           matched = [{ path: "/show", name:'首页' ,meta: { title: "首页" } }].concat(matched);
@@ -132,8 +127,6 @@ export default {
         // 如果当前激活的菜单和删除的一致，路由跳转到上一个打开的路由
         if (targetName == this.menuTabsValue) {
           this.menuTabs.forEach((item, index) => {
-            console.log(item,index);
-            console.log(item.path === targetName);
             if(item.path === targetName) {
               this.$router.push(this.menuTabs[(index-1)].path)
               this.$store.commit('UPADTEMENUTABS', this.menuTabs[(index - 1)].path)
@@ -190,31 +183,14 @@ export default {
 </script>
 
 <style scoped>
-.banner{
-  width: 120px;
-  height: 30px;
-  margin-left: -100px;
-}
-
-.container-home{
-    width: 100%;
-    height: 100vh;
-}
-
 .el-menu {
   height: 100%;
 }
 
-::v-deep .el-submenu__title{
-   color: #fcfcfc;
-}
-
-::v-deep .el-submenu .el-menu-item:focus{
-   background-color: transparent !important;
-}
-
-::v-deep .el-submenu .el-menu-item{
-   padding-left: 61px !important;
+.banner{
+  width: 120px;
+  height: 30px;
+  margin-left: -100px;
 }
 
 .el-header {
@@ -238,13 +214,46 @@ export default {
   color: black;
 }
 
+.user-info{
+  font-size: 15px;
+}
+
 .userInfo-down{
   float: right;
   margin-left: 20px;
 }
 
-.user-info{
-  font-size: 15px;
+.container-home{
+    width: 100%;
+    height: 100vh;
+}
+
+::v-deep .el-breadcrumb{
+  font-size: 14px !important;
+  line-height: 16px !important;
+}
+
+::v-deep .el-tabs__item {
+    height: 32px !important;
+    font-size:11px !important;
+    font-weight:400 !important;
+    line-height:35px !important;
+}
+
+::v-deep .el-tabs__header{
+    margin: 0;
+}
+
+::v-deep .el-submenu__title{
+   color: #fcfcfc;
+}
+
+::v-deep .el-submenu .el-menu-item:focus{
+   background-color: transparent !important;
+}
+
+::v-deep .el-submenu .el-menu-item{
+   padding-left: 61px !important;
 }
 </style>
 

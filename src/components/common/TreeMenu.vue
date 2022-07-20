@@ -23,7 +23,7 @@
           v-else-if="item.type === 1"
           :index="item.path"
           :key="item.id"
-          @open="addMenuBreadcrumb(item)"
+          @click="addMenuBreadcrumb(item)"
       >
         {{item.label}}
       </el-menu-item>
