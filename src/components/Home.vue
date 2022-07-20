@@ -1,5 +1,32 @@
 <template>
 <div class="container-home " style="overflow:hidden;">
+  <!--侧边拉展开收缩区域 -->
+   <div class="side-switch-region" ref="sideswitchregion">
+
+   </div>
+   <!-- 面包屑区域 -->
+   <div class="crumbs-region" ref="crumbsregion">
+      <el-breadcrumb separator="/">
+      <el-breadcrumb-item
+        v-for="(item,index) in breadList"
+        :key="index"
+        :to="{ path: item.path }"
+      >{{item.name}}</el-breadcrumb-item>
+    </el-breadcrumb>
+   </div>
+  <!-- 标签栏 -->
+  <div class="tabs-region" ref="tabsregion">
+    <!-- 只有一个打开的标签页时，不允许关闭，隐藏关闭标签 -->
+    <el-tabs v-model="menuTabsValue" type="card"
+             :closable="this.menuTabs.length > 1"
+             @tab-remove="removeTab">
+      <el-tab-pane v-for="item in menuTabs"
+                   :key="item.id"
+                   :label="item.label"
+                   :name="item.path">
+      </el-tab-pane>
+    </el-tabs>
+  </div>
   <el-container style="height: 100%; border: 1px solid #eee">
   <el-aside id="side" style="height: 100% background-color: rgb(238, 241, 246)">
         <!-- 动态渲染菜单栏 -->
@@ -37,6 +64,8 @@
     </el-header>
     <!-- 插入路由展示 -->
     <el-main ref="main" id="main">
+      <!-- <keep-alive :include="keepAliveUrl(menuTabs)"
+                  :exclude="noKeepAlive"> -->
       <router-view></router-view>
     </el-main>
   </el-container>
@@ -58,6 +87,10 @@ export default {
         //只保持一个菜单打开
         opened: true,
         openIndex:[],
+        // 处理始终不需要缓存的页
+        noKeepAlive: 'show', 
+        // 路由集合
+        breadList:[], 
         dynamicTags: [{
             routerName:'展示页面',
             routerPath: '/show'
@@ -79,15 +112,76 @@ export default {
               
             });
         })
+      },
+      isHome(route) { 
+        return route.name === "show";
+      },
+      //面包屑
+      getBreadcrumb() {
+        //拿到显示的路由路径
+        let matched = this.$route.matched; 
+        console.log(matched[1]);
+        //当前路由等于首页
+        if(!this.isHome(matched[0])){
+          matched = [{ path: "/show", name:'首页' ,meta: { title: "首页" } }].concat(matched);
+        }
+        this.breadList = matched; 
+      },
+      //删除标签栏导航
+      removeTab (targetName) {
+        // 如果当前激活的菜单和删除的一致，路由跳转到上一个打开的路由
+        if (targetName == this.menuTabsValue) {
+          this.menuTabs.forEach((item, index) => {
+            console.log(item,index);
+            console.log(item.path === targetName);
+            if(item.path === targetName) {
+              this.$router.push(this.menuTabs[(index-1)].path)
+              this.$store.commit('UPADTEMENUTABS', this.menuTabs[(index - 1)].path)
+            }
+          });
+        }
+        //否则直接删除
+        this.$store.commit('DELETEMENUTABS', targetName)
+      },
+      //动态更新keep-alive的incloud
+      keepAliveUrl () {
+        var result = this.menuTabs.map(item => {
+          return item.menuUrl
+        })
+        return result.join(',')
       }
-    },
+   },
    computed:{
-		   treeData:function() {  
+		 treeData:function() {  
           //通过方法访问
          return this.$store.getters.permission_routes; 
+    },
+    // 点击标签栏导航时触发，vuex中menuTabsValue会在第一次登录系统时给一个默认的值
+    // 由于vuex中存的值不允许直接改变值，直接绑定v-model会报错，所以用这种get，set的形式改写
+    menuTabsValue: {
+      get () {
+        return this.$store.getters.menuTabsValue
+      },
+      set (val) {
+        // 页面刷新时val是0，不要触发跳转
+        if (val != 0) {
+          this.$store.commit('UPADTEMENUTABS', val)
+          this.$router.push(val)
+        }
       }
-	 },
-   created(){
+    },
+    menuTabs () {
+      return this.$store.getters.menuTabs
+    },
+  },
+  //路由改变的时候监听
+  watch:{ 
+        $route() {
+            this.getBreadcrumb();
+        }
+  },
+  created(){
+    this.getBreadcrumb();
     //解决vuex动态菜单权限数据刷新后消失问题
     let token = sessionStorage.getItem('token');
     getRouters(token);

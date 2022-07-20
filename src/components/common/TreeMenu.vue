@@ -23,6 +23,7 @@
           v-else-if="item.type === 1"
           :index="item.path"
           :key="item.id"
+          @open="addMenuBreadcrumb(item)"
       >
         {{item.label}}
       </el-menu-item>
@@ -39,6 +40,12 @@ export default {
       default:function(){
         return []
       }
+    }
+  },
+  methods: {
+    // 每次点击左侧菜单，调用添加标签方法
+    addMenuBreadcrumb (item) {
+      this.$store.commit('ADDMENUTABS', item)
     }
   }
 }

@@ -40,9 +40,9 @@
     position: absolute;
     width: 100%;
     left: 198px;
-    top: 43px;
+    top: 50px;
     border-top: 1px solid transparent;
-    border-bottom: 1px solid skyblue;
+    border-bottom: 1px solid #cfd7db;
 }
 
 .tabs-region .el-tag--dark {
@@ -86,7 +86,7 @@
     position: absolute;
     width: 100%;
     left: 245px;
-    top: 10px;
+    top: 18px;
 }
 
 
