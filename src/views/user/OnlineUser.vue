@@ -6,8 +6,8 @@
       <label class="serach-propties">登录IP:</label>    
       <el-input placeholder="请选择登录IP" suffix-icon="el-icon-text" v-model="data.ip"/>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getOnlineUserList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="geOnlineUseListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getOnlineUserList()" v-hasPermi="'system:online:user:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="geOnlineUseListReset()" v-hasPermi="'system:online:user:query'">重置</el-button>
     </div>
     </div>
     <div class="table-data"> 
@@ -22,12 +22,12 @@
         <el-table-column align="center" label="登录时间" width="180" prop="loginTime" key="loginTime"/>
         <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" style="color:#f12626cf" @click="handleKickOut(scope.row)">强制踢出</el-button>
+          <el-button size="mini" type="text" style="color:#f12626cf" @click="handleKickOut(scope.row)" v-hasPermi="'system:online:user:kickout'">强制踢出</el-button>
         </template>
         </el-table-column>
     </el-table>
     </div>
-    <div class="pageHelper" v-if="total !=0 && total>0">
+    <div class="pageHelper" v-if="total !=0 && total>0" v-hasPermi="'system:online:user:query'">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"

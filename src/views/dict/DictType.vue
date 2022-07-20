@@ -9,14 +9,14 @@
       <el-input  placeholder="请输入状态" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
         <el-row>
-        <el-button class="serach-button" type="success" icon="el-icon-search"  plain @click="getDictTypeList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" icon="el-icon-refresh" plain @click="getDictTypeListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" icon="el-icon-search"  plain @click="getDictTypeList()" v-hasPermi="'system:dict:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" icon="el-icon-refresh" plain @click="getDictTypeListReset()" v-hasPermi="'system:dict:query'">重置</el-button>
         </el-row>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button type="primary" class="operator-button" plain icon="el-icon-circle-plus" @click="handleAddDictType();dialogFormVisible=true">新增</el-button>
-      <el-button type="danger"  class="operator-button" plain icon="el-icon-error" @click="handleDeleteDictType()">批量删除</el-button>
+      <el-button type="primary" class="operator-button" plain icon="el-icon-circle-plus" @click="handleAddDictType();dialogFormVisible=true" v-hasPermi="'system:dict:add'">新增</el-button>
+      <el-button type="danger"  class="operator-button" plain icon="el-icon-error" @click="handleDeleteDictType()" v-hasPermi="'system:dict:delete'">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="字典信息" :visible.sync="dialogFormVisible">
@@ -63,8 +63,8 @@
       <el-table-column align="center" label="创建时间" prop="createTime" key="createTime"  width="180" :show-overflow-tooltip="showOverflowTooltip"/>
       <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEidtDictType(scope.row);dialogFormVisible = true">编辑</el-button>
-        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteDictType();handleDictTypeIds(scope.row)">删除</el-button>
+        <el-button size="mini" type="text" icon="el-icon-edit"  @click="handleEidtDictType(scope.row);dialogFormVisible = true" v-hasPermi="'system:dict:edit'">编辑</el-button>
+        <el-button size="mini" type="text" icon="el-icon-delete" class="delete-button" @click="handleDeleteDictType();handleDictTypeIds(scope.row)" v-hasPermi="'system:dict:delete'">删除</el-button>
       </template>
       </el-table-column>
     </el-table>

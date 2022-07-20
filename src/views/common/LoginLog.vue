@@ -8,8 +8,8 @@
       <label class="serach-propties">登录用户:</label>    
       <el-input placeholder="请选择登录用户" suffix-icon="el-icon-text"/>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getLoginLogList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getLoginLogListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getLoginLogList()" v-hasPermi="'system:login:log:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getLoginLogListReset()" v-hasPermi="'system:login:log:query'">重置</el-button>
     </div>
     </div>
     <div class="table-data"> 
@@ -23,7 +23,7 @@
       <el-table-column align="center" label="登录时间" width="180" prop="createTime" key="createTime"/>
     </el-table>
     </div>
-    <div class="pageHelper" v-if="total !=0 && total>0">
+    <div class="pageHelper" v-if="total !=0 && total>0" v-hasPermi="'system:login:log:query'">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"

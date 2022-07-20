@@ -6,13 +6,13 @@
       <label class="serach-propties">角色代码:</label>    
       <el-input placeholder="请输入角色代码" suffix-icon="el-icon-text" v-model="data.roleCode"/>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getRoleList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getRoleListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getRoleList()" v-hasPermi="'system:role:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getRoleListReset()" v-hasPermi="'system:role:query'">重置</el-button>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button class="operator-button" type="primary" plain icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true">新增</el-button>
-      <el-button class="operator-button" type="danger"  plain icon="el-icon-error" @click="handleDeleteRole()">批量删除</el-button>
+      <el-button class="operator-button" type="primary" plain icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true" v-hasPermi="'system:role:add'">新增</el-button>
+      <el-button class="operator-button" type="danger"  plain icon="el-icon-error" @click="handleDeleteRole()" v-hasPermi="'system:role:delete'">批量删除</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="角色信息" :visible.sync="dialogFormVisible">
@@ -71,8 +71,8 @@
       <el-table-column label="状态" prop="status" width="180"/>
       <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible = true">编辑</el-button>
-        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRole();handleRoleIds(scope.row)">删除</el-button>  
+        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible = true" v-hasPermi="'system:role:edit'">编辑</el-button>
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRole();handleRoleIds(scope.row)" v-hasPermi="'system:role:delete'">删除</el-button>  
       </template>
       </el-table-column>
     </el-table>

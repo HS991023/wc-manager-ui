@@ -1,9 +1,9 @@
 <template>
 <div class="container-home " style="overflow:hidden;">
   <el-container style="height: 100%; border: 1px solid #eee">
-  <el-aside id="side"  style="height: 100% background-color: rgb(238, 241, 246)">
+  <el-aside id="side" style="height: 100% background-color: rgb(238, 241, 246)">
         <!-- 动态渲染菜单栏 -->
-        <el-menu router>
+        <el-menu router style="height: 100%">
           <TreeMenu :tree-data="treeData"/>
         </el-menu>
   </el-aside>

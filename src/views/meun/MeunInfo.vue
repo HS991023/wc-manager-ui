@@ -28,12 +28,12 @@
           </el-select>
       </div>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getResList()">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResListReset()">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getResList()" v-hasPermi="'system:menu:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResListReset()" v-hasPermi="'system:menu:query'">重置</el-button>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true">新增</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true" v-hasPermi="'system:menu:add'">新增</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="菜单信息" :visible.sync="dialogFormVisible">
@@ -68,7 +68,7 @@
             <el-radio-group v-model="resType">
               <el-radio :label="0">目录</el-radio>
               <el-radio :label="1">菜单</el-radio>
-              <el-radio :label="2">按钮/内嵌页面</el-radio>
+              <el-radio :label="2">按钮</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item label="菜单图标" :label-width="formLabelWidth">
@@ -101,8 +101,8 @@
     <el-table-column align="center" label="状态"    width="100" prop="status" key="status"/>
     <el-table-column align="center" label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true">编辑</el-button>
-        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRes(scope.row)">删除</el-button>  
+        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true"  v-hasPermi="'system:menu:edit'">编辑</el-button>
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRes(scope.row)" v-hasPermi="'system:menu:delete'">删除</el-button>  
       </template>
     </el-table-column>
     </el-table>    

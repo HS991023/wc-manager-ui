@@ -1,6 +1,6 @@
 <template>
      <div class="main">
-        <div class="date-select-region">
+        <div class="date-select-region" v-hasPermi="'system:interface:call:query'">
           <el-date-picker
             v-model="value"
             format="yyyy 年 MM 月 dd 日"
