@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { getToken } from '@/utils/auth'
 import { getRouters } from '@/directives/modules/permission'
 import { getMenuPermissionList, ArrayContains } from '@/utils/array'
 
@@ -48,7 +47,7 @@ const routes = [{
                 name: '菜单管理',
                 path: '/meunInfo',
                 component: (resolve) => require(['@/views/meun/MeunInfo'], resolve),
-                meta: { requireAuth: true, hasPermission: 'system:menu:manager' }
+                meta: { requireAuth: true, hasPermission: 'system:res:manager' }
             },
             {
                 name: '地区管理',
@@ -138,8 +137,8 @@ router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
         // 查询sessionStorge中的登录状态
         if (sessionStorage.getItem('token')) {
-            //获取当前登录用户的可路由菜单权限,防止浏览器输入框跳转
-            getRouters(getToken()).then(res => {
+            //实时获取当前登录用户的可路由菜单权限,防止浏览器输入框跳转
+            getRouters().then(res => {
                 //拿到当前路由数据
                 let routers = res.data;
                 //当前用户拥有的菜单权限数组

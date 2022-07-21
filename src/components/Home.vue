@@ -77,7 +77,6 @@
 <script>
 import {MessageBox} from 'element-ui';
 import {logoutUser} from '@/api/system/user'
-import {getRouters} from '@/directives/modules/permission.js'
 import TreeMenu from "@/components/common/TreeMenu.vue"; //动态菜单组件
 export default {
     name:'Home',
@@ -157,11 +156,9 @@ export default {
    },
    computed:{
 		 treeData:function() {  
-          //通过方法访问
          return this.$store.getters.permission_routes; 
     },
-    // 点击标签栏导航时触发，vuex中menuTabsValue会在第一次登录系统时给一个默认的值
-    // 由于vuex中存的值不允许直接改变值，直接绑定v-model会报错，所以用这种get，set的形式改写
+    // 点击标签栏导航时触发，vuex中menuTabsValue会在第一次登录系统时给一个默认的值 由于vuex中存的值不允许直接改变值，直接绑定v-model会报错，所以用这种get，set的形式改写
     menuTabsValue: {
       get () {
         return this.$store.getters.menuTabsValue
@@ -186,7 +183,6 @@ export default {
   },
   created(){
     this.getBreadcrumb();
-    getRouters();
   }
 }
 </script>

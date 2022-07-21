@@ -28,12 +28,12 @@
           </el-select>
       </div>
     <div class="serach-button-region"> 
-        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getResList()" v-hasPermi="'system:menu:query'">搜索</el-button>
-        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResListReset()" v-hasPermi="'system:menu:query'">重置</el-button>
+        <el-button class="serach-button" type="success" plain icon="el-icon-search" @click="getResList()" v-hasPermi="'system:res:query'">搜索</el-button>
+        <el-button class="serach-button" type="warning" plain icon="el-icon-refresh" @click="getResListReset()" v-hasPermi="'system:res:query'">重置</el-button>
     </div>
     </div>
     <div class="operator-button-region">
-      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true" v-hasPermi="'system:menu:add'">新增</el-button>
+      <el-button type="primary" plain class="operator-button" icon="el-icon-circle-plus" @click="handleAddRole();dialogFormVisible=true" v-hasPermi="'system:res:add'">新增</el-button>
     </div>
     <div class="form-data">
     <el-dialog title="菜单信息" :visible.sync="dialogFormVisible">
@@ -102,8 +102,8 @@
     <el-table-column align="center" label="状态"    width="100" prop="status" key="status"/>
     <el-table-column align="center" label="操作">
       <template slot-scope="scope">
-        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true"  v-hasPermi="'system:menu:edit'">编辑</el-button>
-        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRes(scope.row)" v-hasPermi="'system:menu:delete'">删除</el-button>  
+        <el-button size="mini" type="text" icon="el-icon-edit" @click="handleEditRole(scope.row);dialogFormVisible=true"  v-hasPermi="'system:res:edit'">编辑</el-button>
+        <el-button class="delete-button" size="mini" type="text" icon="el-icon-delete" @click="handleDeleteRes(scope.row)" v-hasPermi="'system:res:delete'">删除</el-button>  
       </template>
     </el-table-column>
     </el-table>    
