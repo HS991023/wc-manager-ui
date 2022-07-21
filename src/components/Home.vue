@@ -186,9 +186,7 @@ export default {
   },
   created(){
     this.getBreadcrumb();
-    //解决vuex动态菜单权限数据刷新后消失问题
-    let token = sessionStorage.getItem('token');
-    getRouters(token);
+    getRouters();
   }
 }
 </script>

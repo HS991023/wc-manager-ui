@@ -4,7 +4,9 @@ import { getMeunTree } from '@/api/common/tree'
 
 
 //获取当前登录用户的路由数据
-export function getRouters(token) {
+export function getRouters() {
+    //解决vuex动态菜单权限数据刷新后消失问题
+    let token = sessionStorage.getItem('token');
     var promise = getMeunTree(token);
     promise.then(res => {
         //拿到当前路由数据
