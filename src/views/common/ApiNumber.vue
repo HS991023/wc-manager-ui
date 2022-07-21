@@ -236,6 +236,7 @@ export default {
 <style scoped>
 .main{
   position: relative;
+  height: 800px !important;
 }
 .date-select-region{
    position:absolute;
