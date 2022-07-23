@@ -5,7 +5,7 @@
       <div class="form-info">
         <form ref="form" :model="form">
           <label class="text-label">用户名:</label>
-          <el-input class="text-input" v-model="form.userName" placeholder="请输入内容"></el-input>
+          <el-input class="text-input" v-model="form.userName" placeholder="请输入用户名"></el-input>
           <label class="text-label">密码:</label>
           <el-input @keyup.enter.native="doLogin(form)"  class="text-input" placeholder="请输入密码" v-model="form.passWord" show-password></el-input>
        </form>
@@ -18,7 +18,9 @@
 </template>
 
 <script>
+import {setToken} from '@/utils/auth'
 import {getRouters} from '@/directives/modules/permission'
+import {setCurrnetLoginUserInfo} from '@/utils/sessionStorge'
 export default {
     name:'Login',
     data(){
@@ -44,8 +46,11 @@ export default {
             }).then(function(res){
                 if(res.data.code == 200){
                     let token = res.data.data.token;
-                    //登录成功存储token
-                    sessionStorage.setItem("token",token)
+                    let userInfo = res.data.data.userInfo;
+                    //存储token
+                    setToken(token);
+                    //存储当前登录用户信息
+                    setCurrnetLoginUserInfo(userInfo);
                     //跳转到欢迎页
                     router.push({path:'/show'});
                     //请求路由数据
@@ -57,7 +62,7 @@ export default {
                 }
             })
         }else{
-          alert('请完善表单信息', '提示', {
+          alert('请输入用户名或密码', '提示', {
           confirmButtonText: '确定'
         })
       }

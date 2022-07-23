@@ -98,9 +98,11 @@
 </template>
 
 <script>
-import {userInfo} from "@/api/system/user"
+import {userInfo,updateUser} from "@/api/system/user"
 import {roleSelect} from '@/api/system/role'  
 import {getDictDataByType} from '@/api/system/dict'
+import {uploadFile,queryFileById}  from '@/api/common/upload'
+import {getCurrnetLoginUserInfo} from '@/utils/sessionStorge'
 export default {
     name: 'WcManagerUiPersonCenter',
     data() {
@@ -164,12 +166,12 @@ export default {
     }}},
     methods: {
       //查询用户详情
-      handleUserInfo(id){
+      handleUserInfo(){
+        //获取用户ID
+        var userInfoResult= getCurrnetLoginUserInfo();
         this.reset()    
         //禁用表单
-        this.disabled = true
-        this.showFormButton = false
-        userInfo(id).then(response=>{
+        userInfo(userInfoResult.id).then(response=>{
           this.form = response.data  
           this.viewDictData()
           //获取用户头像
@@ -183,17 +185,6 @@ export default {
              this.imageUrl = undefined
           }
         })
-      },
-      //编辑用户按钮
-      handleEidtUser(row) {
-        //重置头像
-        this.imageUrl = undefined
-        //重置表单
-        this.reset()   
-        this.form = this.handleUserInfo(row.id)  
-        //启用表单
-        this.disabled = false  
-        this.showFormButton = true    
       },
       //提交表单
       submitForm(){
@@ -209,8 +200,7 @@ export default {
           if (this.form.id != undefined) {
             updateUser(this.form).then(response =>{
             if(response.code==200){
-                this.dialogFormVisible = false         
-                this.getUserList()   
+                this.dialogFormVisible = false  
                 this.$message({
                 type: 'success',
                 message: '更新成功'
@@ -346,6 +336,7 @@ export default {
     },
     created(){
         this.getSelectData();
+        this.handleUserInfo();
     },
 }
 </script>
