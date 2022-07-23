@@ -45,7 +45,7 @@
         <div class="basic--circle">
         <div class="block">
         <el-avatar shape="square">
-          <img src="../assets/avater.png" alt="">
+          <img :src="currentUserAvater">
         </el-avatar>
         </div>
       </div>
@@ -79,14 +79,19 @@
 
 <script>
 import {MessageBox} from 'element-ui';
+import {removeToken} from '@/utils/auth'
 import {logoutUser} from '@/api/system/user'
+import {queryFileById}  from '@/api/common/upload'
 import TreeMenu from "@/components/common/TreeMenu.vue"; //动态菜单组件
 import PersonCenter from '@/views/dialog/PersonCenter.vue' //个人中心
+import {getCurrnetLoginUserInfo,removeDictType,removeButtonPermission,removeCurrnetLoginUserInfo} from '@/utils/sessionStorge'
 export default {
     name:'Home',
     components:{TreeMenu,PersonCenter},
     data() {
       return {
+        //当前登录用户头像
+        currentUserAvater:'../assets/avater.png',
         //是否展示个人中心
         openDialog: false,
         //默认侧边栏展开
@@ -108,6 +113,11 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
+              removeToken();
+              removeDictType();
+              removeButtonPermission();
+              removeCurrnetLoginUserInfo();
+              localStorage.clear();
               location.href = '/login';
             }).catch(() => {
               
@@ -162,7 +172,15 @@ export default {
       //处理个人中心是否弹出
       handleDialog() {
         this.openDialog = true;
+        this.$bus.$emit("personcenter",this.openDialog);
       },
+      //查询当前登录用户头像
+      queryCurrentUserAvater(){
+        let currentUserInfo = getCurrnetLoginUserInfo();
+        queryFileById(currentUserInfo.pictureId).then(res=>{
+            this.currentUserAvater = res.data.url;
+        })
+      }
    },
    computed:{
 		 treeData:function() {  
@@ -190,6 +208,10 @@ export default {
         $route() {
             this.getBreadcrumb();
         }
+  },
+  mounted(){
+    //查询当前登录用户头像
+    this.queryCurrentUserAvater();
   },
   created(){
     this.getBreadcrumb();

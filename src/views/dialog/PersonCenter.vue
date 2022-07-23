@@ -171,7 +171,7 @@ export default {
         var userInfoResult= getCurrnetLoginUserInfo();
         this.reset()    
         //禁用表单
-        userInfo(userInfoResult.id).then(response=>{
+        userInfo(userInfoResult.currentUserId).then(response=>{
           this.form = response.data  
           this.viewDictData()
           //获取用户头像
@@ -263,7 +263,7 @@ export default {
                this.form.accountType = value.dictValue
             }
           })
-        this.roleSelect.forEach(value=>{
+         this.roleSelect.forEach(value=>{
             if(this.role == value.roleName){
                this.form.roleId = value.id
             }
@@ -333,6 +333,11 @@ export default {
         }
         return isLt2M;
       }
+    },
+    mounted() {
+      this.$bus.$on("personcenter", (data) => {
+        this.dialogFormVisible = data;
+    })
     },
     created(){
         this.getSelectData();

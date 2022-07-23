@@ -213,6 +213,11 @@ export default {
         this.poiPicker.searchByKeyword(this.searchKey)
       }
     }
+  },
+  mounted() {
+      this.$bus.$on("mapplugin", (data) => {
+        this.dialogVisible = data;
+    })
   }
 }
 </script>

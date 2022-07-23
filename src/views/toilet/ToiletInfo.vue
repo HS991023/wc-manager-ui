@@ -303,6 +303,7 @@ export default {
       handleDialog() {
         //弹出地图组件
         this.openDialog = true;
+        this.$bus.$emit("mapplugin",this.openDialog);
         //关闭表单
         this.dialogFormVisible = false;
       },
