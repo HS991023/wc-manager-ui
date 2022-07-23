@@ -1,5 +1,8 @@
 <template lang="html">
- <div style="width:100%;height:800px;">
+<el-dialog 
+  title="地图"
+  :visible.sync="dialogVisible">
+  <div style="width:100%;height:1000px">
     <div class="container">
       <div class="search-box">
         <input
@@ -33,6 +36,7 @@
       </el-amap>
     </div>
  </div>
+</el-dialog>
 </template>
 
 <script>
@@ -43,6 +47,8 @@ export default {
   data() {
     let self = this
     return {
+      //是否打开弹窗
+      dialogVisible: true,
       address: null,
       searchKey: '',
       amapManager,
@@ -211,17 +217,17 @@ export default {
 }
 </script>
 
-<style lang="css">
-.container {
+<style lang="css" scoped>
+::v-deep .container {
   width: 100%;
-  height: 100%;
+  height: 60%;
   position: relative;
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0);
   border: 1px solid #999;
 }
-.search-box {
+::v-deep .search-box {
   position: absolute;
   z-index: 5;
   width: 30%;
@@ -229,7 +235,7 @@ export default {
   top: 20px;
   height: 30px;
 }
-.search-box input {
+::v-deep .search-box input {
   float: left;
   width: 80%;
   height: 100%;
@@ -237,7 +243,7 @@ export default {
   padding: 0 8px;
   outline: none;
 }
-.search-box button {
+::v-deep .search-box button {
   float: left;
   width: 20%;
   height: 100%;
@@ -246,7 +252,7 @@ export default {
   color: #fff;
   outline: none;
 }
-.tip-box {
+::v-deep .tip-box {
   width: 100%;
   max-height: 260px;
   position: absolute;
@@ -254,14 +260,38 @@ export default {
   overflow-y: auto;
   background-color: #fff;
 }
+
+/* 弹窗样式 */
+::v-deep .el-dialog{
+  margin-top: 43px !important;
+  width: 80% !important;
+  height: 615px !important;
+}
+
+/* 弹窗头部样式 */
+::v-deep .el-dialog__header{
+   margin-bottom: -198px;
+}
+
+/* 弹窗body样式 */
+::v-deep .el-dialog__body{
+  padding:0;
+}
+
 /* 切换图层组件位置 */
-.amap-maptypecontrol{
+::v-deep .amap-maptypecontrol{
   top: 12px;
   right: 0px;
 }
+
 /* 鹰眼图位置 */
-.amap-overviewcontrol{
-  right: 2px;
-  bottom: 13px;
+::v-deep .amap-overviewcontrol{
+  right: -2px;
+  bottom: 1x;
+}
+
+/* 定位图标位置 */
+::v-deep .amap-geolocation-con .amap-geo{
+  margin-bottom: 1px;
 }
 </style>

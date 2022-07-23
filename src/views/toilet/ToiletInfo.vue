@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="main">
     <div class="serach-input">
       <label class="serach-propties">公厕名称:</label>    
       <el-input placeholder="请输入公厕名称" suffix-icon="el-icon-text" v-model="data.toiletName"/>
@@ -37,7 +37,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="公厕位置" :label-width="formLabelWidth" prop="location">
-          <el-input v-model="form.location" autocomplete="off" placeholder="请输入公厕位置"/>
+          <el-input v-model="form.location" autocomplete="off" placeholder="请选择公厕位置"/>
+          <el-button class="map-select-button" type="primary" icon="el-icon-edit" size="mini" @click="handleDialog"></el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -79,16 +80,24 @@
         :total="total">
       </el-pagination>
     </div>
+    <!-- 地图组件 -->
+    <div class="map-region">
+       <MapPlugin  v-if="openDialog" ref="testDialog"></MapPlugin>
     </div>
+  </div>
 </template>
 
 <script>
 import {getDictDataByType} from '@/api/system/dict'
+import MapPlugin from '@/components/common/MapPlugin.vue'
 import {toiletList,toiletInfo,addToilet,updateToilet,removeToilet} from '@/api/business/toilet'
 export default {
     name:'WcManagerUiToiletInfo',
+    components:{MapPlugin},
     data(){
       return{
+        //是否展示地图组件
+        openDialog: false,
         //表格数据
         toiletList: null,
         //表单参数
@@ -186,7 +195,6 @@ export default {
       },
       //编辑公厕按钮
       handleEditToilet(row) {
-        console.log(row)  
         //重置表单
         this.reset()  
         this.form = this.handleToiletInfo(row.id)  
@@ -292,6 +300,13 @@ export default {
           status:undefined
         }
       },
+      //处理地图组件是否弹出
+      handleDialog() {
+        //弹出地图组件
+        this.openDialog = true;
+        //关闭表单
+        this.dialogFormVisible = false;
+      },
       //更改每页大小
       handleSizeChange(val) {
         this.data.pageSize = val  
@@ -362,18 +377,35 @@ export default {
 
 
 <style scoped>
+.main{
+  position: relative;
+}
 ::v-deep .form-data .el-input{
    width: 172px !important;
 }
-::v-deep .el-dialog{
+::v-deep .form-data .el-dialog{
   width: 42%  
 }
-::v-deep .el-dialog__body{
+::v-deep .form-data .el-dialog__body{
   margin-top: 5px !important;
   margin-left: -25px !important;
   padding: 8px 25px
 }
-::v-deep .el-dialog__footer{
+::v-deep .form-data .el-dialog__footer{
   padding: 3px 165px 9px  
+}
+
+/* 地图选择按钮样式 */
+::v-deep .map-select-button{
+  position: absolute;
+  top: 6px;
+  left: 135px;
+  width: 35px;
+  height: 29px;
+}
+
+/* 地图组件位置 */
+::v-deep .map-region .el-dialog__wrapper{
+  left: 160px !important;
 }
 </style>

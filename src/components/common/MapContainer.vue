@@ -1,152 +1,267 @@
-<template>
-  <div id="GaodeMapContainer">
-    <input id="myInput" v-model="inputValue" type="text" placeholder="请输入位置,输入后自动搜索" aria-label="请输入要搜索的位置,输入完移开输入框即可自动搜索">
-  </div>
+<template lang="html">
+ <div style="width:100%;height:800px;">
+    <div class="container">
+      <div class="search-box">
+        <input
+          v-model="searchKey"
+          type="search"
+          id="search"
+          placeholder="请输入需要搜索的位置">
+        <button @click="searchByHand">搜索</button>
+        <div class="tip-box" id="searchTip"></div>
+      </div>
+      <!--
+        amap-manager： 地图管理对象
+        vid：地图容器节点的ID
+        zooms： 地图显示的缩放级别范围，在PC上，默认范围[3,18]，取值范围[3-18]；在移动设备上，默认范围[3-19]，取值范围[3-19]
+        center： 地图中心点坐标值
+        plugin：地图使用的插件
+        events： 事件
+      -->
+      <el-amap class="amap-box"
+        :amap-manager="amapManager"
+        :vid="'amap-vue'"
+        :zoom="zoom"
+        :zooms="zooms"
+        :pitch="pitch"
+        :plugin="plugin"
+        :center="center"
+        :events="events"
+      >
+        <!-- 标记 -->
+        <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index"></el-amap-marker>
+      </el-amap>
+    </div>
+ </div>
 </template>
+
 <script>
-let areaPolygons = [] // 查询的行政区域
+import { AMapManager, lazyAMapApiLoaderInstance } from 'vue-amap'
+let amapManager = new AMapManager()
 export default {
-  name:'MapContainer',  
+  name:'AMap',
   data() {
+    let self = this
     return {
-      myMap: "", // 地图实例
-      district: '',  // 行政区划搜索实例
-      inputValue: '',  // 用来搜索行政区
-      timer: null  // 防抖处理
-    };
-  },
-  watch: {
-    inputValue() {
-      if(this.timer) clearTimeout(this.timer)
-      this.timer = setTimeout(() => {
-        this.seachArea()
-      }, 1500)
-    }
-  },
-  mounted() {
-    // 初始化一个地图
-    this.initMap();
-  },
-  methods: {
-    initMap() {
-      //  实例化
-      this.myMap = new AMap.Map("GaodeMapContainer", {
-        resizeEnable: true,
-        center: [116.724762,39.904896], //中心点坐标(东经， 北纬) (jinan)
-        zoom: 3, //级别
-        zooms: [5, 23],  //设置地图级别范围
-        pitch: 0, // 地图俯仰角度，有效范围 0 度- 83 度
-        viewMode: "3D", // 地图模式
-        terrain:true,
-      });
-      // 异步加载多个插件 -- 同时引入工具条插件，比例尺插件和鹰眼插件
-      AMap.plugin(
-        [
-          "AMap.ToolBar", // 工具条，控制地图的缩放、平移等
-          "AMap.Scale", // 比例尺，显示当前地图中心的比例尺
-          // "AMap.OverView",
-          "AMap.MapType", // 图层切换，用于几个常用图层切换显示
-          "AMap.Geolocation", // 定位，提供了获取用户当前准确位置、所在城市的方法
-          "AMap.MouseTool", // 鼠标工具插件
-          "AMap.DistrictSearch", // 行政区查询服务，提供了根据名称关键字、citycode、adcode 来查询行政区信息的功能
-          "Map3D"
-        ], () => {
-          // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
-          this.myMap.addControl(new AMap.ToolBar());
- 
-          // 在图面添加比例尺控件，展示地图在当前层级和纬度下的比例尺
-          this.myMap.addControl(new AMap.Scale());
- 
-          // // 在图面添加鹰眼控件，在地图右下角显示地图的缩略图
-          // this.myMap.addControl(new AMap.OverView({isOpen: true}));
- 
-          // 在图面添加类别切换控件，实现默认图层与卫星图、实施交通图层之间切换的控制
-          // this.myMap.addControl(new AMap.MapType());
- 
-          // 在图面添加定位控件，用来获取和展示用户主机所在的经纬度位置
-          this.myMap.addControl(new AMap.Geolocation());
-          
-          // 测距、测面积使用
-          this.mouseTool = new AMap.MouseTool(this.myMap);
- 
-          /**
-           *  行政区搜索使用
-           */
-          this.district = new AMap.DistrictSearch({
-            level: 'city',// 关键字对应的行政区级别，country：国家 province：省/直辖市 city：市 district：区/县 biz_area：商圈
-            showbiz: true,  // 是否显示商圈，默认值true 可选为true/false，为了能够精准的定位到街道，特别是在快递、物流、送餐等场景下，强烈建议将此设置为false
-            extensions: 'all', //否返回行政区边界坐标点，默认值：base，不返回行政区边界坐标点，取值：all，返回完整行政区边界坐标点
-            subdistrict: 3, //  0：不返回下级行政区 1：返回下一级行政区 2：返回下两级行政区 3：返回下三级行政区(默认值 1)
-          });
+      address: null,
+      searchKey: '',
+      amapManager,
+      markers: [],
+      searchOption: {
+        city: '全国',
+        citylimit: true
+      },
+      center: [116.397469,39.908821],
+      zoom: 4.5,
+      zooms: [5, 23],  //设置地图级别范围
+      pitch: 0, // 地图俯仰角度，有效范围 0 度- 83 度
+      lng: 0,
+      lat: 0,
+      loaded: false,
+      events: {
+        init() {
+          lazyAMapApiLoaderInstance.load().then(() => {
+            self.initSearch()
+          })
+        },
+        // 点击获取地址的数据
+        click(e) {
+          // self.markers = []
+          // let { lng, lat } = e.lnglat
+          // self.lng = lng
+          // self.lat = lat
+          // self.center = [lng, lat]
+          // self.markers.push([lng, lat])
+          // // 这里通过高德 SDK 完成。
+          // let geocoder = new AMap.Geocoder({
+          //   radius: 1000,
+          //   extensions: 'all'
+          // })
+          // geocoder.getAddress([lng, lat], function(status, result) {
+          //   if (status === 'complete' && result.info === 'OK') {
+          //     if (result && result.regeocode) {
+          //       //控制台打印地址
+          //       // console.log(result.regeocode.formattedAddress) 
+          //       self.address = result.regeocode.formattedAddress
+          //       self.searchKey = result.regeocode.formattedAddress
+          //       self.$nextTick()
+          //     }
+          //   }
+          // })
         }
-      );
-    },
-    /**
-     *  可以监听input框 去调用该方法
-     *  最好是做个防抖处理
-     *  行政区域查询
-     */
-    seachArea() {
-      if(!this.inputValue) {
-        this.myMap.remove(areaPolygons)//清除上次结果
-        return
-      }
-      this.district.search(this.inputValue, (status, result) => {
-        this.myMap.remove(areaPolygons)//清除上次结果
-        areaPolygons = [];
-        var bounds = result.districtList[0].boundaries;
-        if (bounds) {
-          for (var i = 0, l = bounds.length; i < l; i++) {
-            //生成行政区划polygon
-            var polygon = new AMap.Polygon({
-              strokeWeight: 2,
-              path: bounds[i],
-              fillOpacity: 0,
-              fillColor: '#80d8ff',
-              strokeColor: 'red'
-            });
-            areaPolygons.push(polygon);
+      },
+      // 一些工具插件
+      plugin: [
+        {
+          pName: 'Geocoder',
+          events: {
+            init (o) {
+              //console.log("一些工具插件--地址"+o.getAddress())
+            }
+          }
+        },
+        {
+          // 定位
+          pName: 'Geolocation',
+          events: {
+            init(o) {
+              // o是高德地图定位插件实例
+              o.getCurrentPosition((status, result) => {
+                if (result && result.position) {
+                  // 设置经度
+                  self.lng = result.position.lng
+                  // 设置维度
+                  self.lat = result.position.lat
+                  // 设置坐标
+                  self.center = [self.lng, self.lat]
+                  self.markers.push([self.lng, self.lat])
+                  // load
+                  self.loaded = true
+                  // 页面渲染好后
+                  self.$nextTick()
+                }
+              })
+            }
+          }
+        },
+        {
+          // 工具栏
+          pName: 'ToolBar',
+          events: {
+            init(instance) {
+               //console.log("工具栏:"+instance);
+            }
+          }
+        },
+        {
+          // 鹰眼
+          pName: 'OverView',
+          events: {
+            init(instance) {
+               //console.log("鹰眼:"+instance);
+            }
+          }
+        },
+        {
+          // 地图类型
+          pName: 'MapType',
+          defaultType: 0,
+          events: {
+            init(instance) {
+               //console.log("地图类型:"+instance);
+            }
+          }
+        },
+        {
+          // 搜索
+          pName: 'PlaceSearch',
+          events: {
+            init(instance) {
+               //console.log("搜索:"+instance)
+            }
           }
         }
-        //添加高度面 - 3D
-        var object3Dlayer = new AMap.Object3DLayer({ zIndex: 1 });
-        this.myMap.add(object3Dlayer);
-        var wall = new AMap.Object3D.Wall({
-          path: bounds,
-          height: 300,
-          color: "#0088ffcc",
-        });
-        wall.transparent = true;
-        wall.backOrFront = "both";
-        object3Dlayer.add(wall);
-        //  - 3D 结束
-        this.myMap.add(areaPolygons)
-        this.myMap.setFitView(areaPolygons);//视口自适应
-      });
-    },
+      ]
+    }
   },
-};
+  methods: {
+    initSearch() {
+      let vm = this
+      let map = this.amapManager.getMap()
+      AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
+        var poiPicker = new PoiPicker({
+          input: 'search',
+          placeSearchOptions: {
+            map: map,
+            pageSize: 10
+          },
+          suggestContainer: 'searchTip',
+          searchResultsContainer: 'searchTip'
+        })
+        vm.poiPicker = poiPicker
+        // 监听poi选中信息
+        poiPicker.on('poiPicked', function(poiResult) {
+          // console.log(poiResult)
+           let source = poiResult.source
+           let poi = poiResult.item
+           if (source !== 'search') {
+             poiPicker.searchByKeyword(poi.name)
+           } else {
+             poiPicker.clearSearchResults()
+             vm.markers = []
+             let lng = poi.location.lng
+             let lat = poi.location.lat
+             let address = poi.cityname + poi.adname + poi.name
+             vm.center = [lng, lat]
+             vm.markers.push([lng, lat])
+             vm.lng = lng
+             vm.lat = lat
+             vm.address = address
+             vm.searchKey = address
+           }
+        })
+      })
+    },
+    searchByHand() {
+      if (this.searchKey !== '') {
+        this.poiPicker.searchByKeyword(this.searchKey)
+      }
+    }
+  }
+}
 </script>
-<style scoped>
-#GaodeMapContainer {
+
+<style lang="css">
+.container {
   width: 100%;
   height: 100%;
   position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  border: 1px solid #999;
 }
-#myInput {
+.search-box {
   position: absolute;
-  left: 5%;
-  top: 2.5%;
-  width: 160px;
-  height: 28px;
-  z-index: 999;
-  font-size: 13px;
-  line-height: 22px;
-  border: 1.5px solid skyblue;
+  z-index: 5;
+  width: 30%;
+  left: 6%;
+  top: 20px;
+  height: 30px;
 }
-::v-deep .amap-geolocation-con .amap-geo{
-  margin-bottom: 28px;
-  margin-left: 5px;
+.search-box input {
+  float: left;
+  width: 80%;
+  height: 100%;
+  border: 1px solid #30ccc1;
+  padding: 0 8px;
+  outline: none;
+}
+.search-box button {
+  float: left;
+  width: 20%;
+  height: 100%;
+  background: #30ccc1;
+  border: 1px solid #30ccc1;
+  color: #fff;
+  outline: none;
+}
+.tip-box {
+  width: 100%;
+  max-height: 260px;
+  position: absolute;
+  top: 30px;
+  overflow-y: auto;
+  background-color: #fff;
+}
+/* 切换图层组件位置 */
+.amap-maptypecontrol{
+  top: 12px;
+  right: 0px;
+}
+/* 鹰眼图位置 */
+.amap-overviewcontrol{
+  right: 2px;
+  bottom: 13px;
 }
 </style>
-

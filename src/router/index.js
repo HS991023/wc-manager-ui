@@ -112,7 +112,7 @@ const routes = [{
     },
     {
         name: '地图组件',
-        path: '/map',
+        path: '/map/plugin',
         component: (resolve) => require(['@/components/common/MapPlugin'], resolve),
         meta: { requireAuth: false, hasPermission: '' }
     },
