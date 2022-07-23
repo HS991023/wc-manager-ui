@@ -192,6 +192,10 @@ export default {
             if(response.code==200){
               this.dialogFormVisible = false;    
               this.getDictTypeList()
+              this.$message({
+                type: 'success',
+                message: '更新成功'
+               })   
             }
           })
           //新增字典类型数据  
@@ -200,6 +204,10 @@ export default {
             if(response.code==200){
               this.dialogFormVisible = false
               this.getDictTypeList()
+              this.$message({
+                type: 'success',
+                message: '新增成功'
+               })   
             }
           })
           }

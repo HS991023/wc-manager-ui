@@ -237,12 +237,20 @@ export default {
           if (this.form.id != undefined) {
             updateRole(this.form).then(response =>{
                 this.dialogFormVisible = false       
-                this.getRoleList()      
+                this.getRoleList()  
+                this.$message({
+                type: 'success',
+                message: '更新成功'
+               })       
             })  
           }else{
             addRole(this.form).then(response =>{
                 this.dialogFormVisible = false  
-                this.getRoleList()   
+                this.getRoleList()  
+                this.$message({
+                type: 'success',
+                message: '新增成功'
+               })    
           })          
           }
         }})  

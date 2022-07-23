@@ -180,6 +180,10 @@ export default {
             if(response.code==200){
               this.dialogFormVisible = false;    
               this.getDictDataList()
+              this.$message({
+                type: 'success',
+                message: '更新成功'
+               })   
             }
             })
           //新增字典数据  
@@ -188,7 +192,11 @@ export default {
               if(response.code==200){
                 this.dialogFormVisible = false
                 this.getDictDataList() 
-                }
+                this.$message({
+                type: 'success',
+                message: '新增成功'
+               })   
+            }
             })
           }
         }})

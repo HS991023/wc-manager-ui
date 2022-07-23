@@ -213,7 +213,11 @@ export default {
             updateToilet(this.form).then(response =>{
             if(response.code==200){
                 this.dialogFormVisible = false       
-                this.getToiletList()      
+                this.getToiletList()   
+                this.$message({
+                type: 'success',
+                message: '更新成功'
+               })      
             }
             })  
           //新增用户  
@@ -221,9 +225,12 @@ export default {
           addToilet(this.form).then(response =>{
           if(response.code==200){
               this.dialogFormVisible = false  
-              this.getToiletList()       
-          }
-          })          
+              this.getToiletList()     
+              this.$message({
+                type: 'success',
+                message: '新增成功'
+               })     
+          }})          
           }
         }})  
       },

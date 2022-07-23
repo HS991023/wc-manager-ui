@@ -267,6 +267,10 @@ export default {
                 this.getResList()
                 //刷新列表树子节点
                 this.refreshChildData(this.form.pid)
+                this.$message({
+                type: 'success',
+                message: '更新成功'
+               })   
             }
             })
           //新增菜单
@@ -277,6 +281,10 @@ export default {
                 this.getResList()
                 //刷新列表树子节点
                 this.refreshChildData(this.form.pid)
+                this.$message({
+                type: 'success',
+                message: '新增成功'
+               })   
            }
           })
           }

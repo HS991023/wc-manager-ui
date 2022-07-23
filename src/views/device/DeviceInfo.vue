@@ -199,6 +199,10 @@ export default {
             if(response.code==200){
               this.dialogFormVisible = false;     
               this.getDeviceList()
+              this.$message({
+                type: 'success',
+                message: '更新成功'
+               })   
             }
           });
           //新增设备
@@ -207,6 +211,10 @@ export default {
           if(response.code==200){
             this.dialogFormVisible = false
             this.getDeviceList()
+            this.$message({
+                type: 'success',
+                message: '新增成功'
+               })   
           }
           });        
           }

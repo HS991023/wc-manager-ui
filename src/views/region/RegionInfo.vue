@@ -177,7 +177,11 @@ export default {
             updateRegion(this.form).then(response =>{
             if(response.code==200){
                 this.dialogFormVisible = false;     
-                this.getRegionList();    
+                this.getRegionList();  
+                this.$message({
+                type: 'success',
+                message: '更新成功'
+               })     
             }
             });
           //新增用户  
@@ -186,6 +190,10 @@ export default {
               if(response.code==200){
                   this.dialogFormVisible = false;
                   this.getRegionList(); 
+                  this.$message({
+                type: 'success',
+                message: '新增成功'
+               })   
               }
           });        
           }

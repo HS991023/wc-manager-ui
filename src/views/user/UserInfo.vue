@@ -356,7 +356,11 @@ export default {
             updateUser(this.form).then(response =>{
             if(response.code==200){
                 this.dialogFormVisible = false         
-                this.getUserList()        
+                this.getUserList()   
+                this.$message({
+                type: 'success',
+                message: '更新成功'
+               })       
             }else{
                var msg = response.msg;
                this.$msgbox(response.msg, '系统提示', {
@@ -367,7 +371,11 @@ export default {
             addUser(this.form).then(response =>{
             if(response.code==200){
                 this.dialogFormVisible = false    
-                this.getUserList()         
+                this.getUserList()
+                this.$message({
+                type: 'success',
+                message: '新增成功'
+              })          
               }else{
                 var msg = response.msg;
                 this.$msgbox(response.msg, '系统提示', {
