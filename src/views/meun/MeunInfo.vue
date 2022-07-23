@@ -263,29 +263,21 @@ export default {
             this.replaceDictData();
             updateRes(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新菜单信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            });
-            this.dialogFormVisible = false
-            this.getResList()
-            //刷新列表树子节点
-            this.refreshChildData(this.form.pid)
+                this.dialogFormVisible = false
+                this.getResList()
+                //刷新列表树子节点
+                this.refreshChildData(this.form.pid)
             }
             })
           //新增菜单
           }else{
             addRes(this.form).then(response =>{
-            if(response.code==200){
-              this.$msgbox('保存菜单信息成功', '系统提示', {
-                  confirmButtonText: '确定',
-                  type: 'warning'
-            });
-            this.dialogFormVisible = false
-            this.getResList()
-             //刷新列表树子节点
-            this.refreshChildData(this.form.pid)
-            }
+             if(response.code==200){
+                this.dialogFormVisible = false
+                this.getResList()
+                //刷新列表树子节点
+                this.refreshChildData(this.form.pid)
+           }
           })
           }
         }})

@@ -212,25 +212,17 @@ export default {
           if (this.form.id != undefined) {
             updateToilet(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新公厕信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })  
-            this.dialogFormVisible = false       
-            this.getToiletList()      
+                this.dialogFormVisible = false       
+                this.getToiletList()      
             }
             })  
           //新增用户  
           }else{
           addToilet(this.form).then(response =>{
           if(response.code==200){
-             this.$msgbox('保存公厕信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })  
-            this.dialogFormVisible = false  
-            this.getToiletList()       
-            }
+              this.dialogFormVisible = false  
+              this.getToiletList()       
+          }
           })          
           }
         }})  

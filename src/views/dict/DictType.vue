@@ -190,23 +190,16 @@ export default {
           if (this.form.id != undefined) {           
             updateDictTypeInfo(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新字典类型成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })
-            this.dialogFormVisible = false;    
-            this.getDictTypeList()}
-            })
+              this.dialogFormVisible = false;    
+              this.getDictTypeList()
+            }
+          })
           //新增字典类型数据  
           }else{
-          addDictTypeInfo(this.form).then(response =>{
-          if(response.code==200){
-             this.$msgbox('保存字典类型成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            });
-            this.dialogFormVisible = false
-            this.getDictTypeList()
+            addDictTypeInfo(this.form).then(response =>{
+            if(response.code==200){
+              this.dialogFormVisible = false
+              this.getDictTypeList()
             }
           })
           }

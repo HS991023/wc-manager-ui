@@ -178,24 +178,19 @@ export default {
           if (this.form.id != undefined) {        
             updateDictDataInfo(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新字典数据成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })
-            this.dialogFormVisible = false;    
-            this.getDictDataList()}
+              this.dialogFormVisible = false;    
+              this.getDictDataList()
+            }
             })
           //新增字典数据  
           }else{
-          addDictDataInfo(this.form).then(response =>{
-          if(response.code==200){
-             this.$msgbox('保存字典类型成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            });
-            this.dialogFormVisible = false
-            this.getDictDataList() }
-          })}
+            addDictDataInfo(this.form).then(response =>{
+              if(response.code==200){
+                this.dialogFormVisible = false
+                this.getDictDataList() 
+                }
+            })
+          }
         }})
       },
       //获取ID多选

@@ -198,25 +198,17 @@ export default {
           if (this.form.id != undefined) {
             updatePosition(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新坑位信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            });
-            this.dialogFormVisible = false     
-            this.getPositionList()
+              this.dialogFormVisible = false     
+              this.getPositionList()
             }
             })
           //新增坑位
           }else{
           addPosition(this.form).then(response =>{
           if(response.code==200){
-             this.$msgbox('保存坑位信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })
             this.dialogFormVisible = false
             this.getPositionList()
-            }
+          }
           })       
           }
         }})

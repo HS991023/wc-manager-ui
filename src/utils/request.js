@@ -58,9 +58,8 @@ service.interceptors.response.use(res => {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                store.dispatch('doLogOut').then(() => {
-                    location.href = '/login';
-                })
+                //跳转到Login页面
+                location.href = '/login';
             }).catch(() => {});
         } else if (code === 500) {
             Message({
@@ -87,9 +86,8 @@ service.interceptors.response.use(res => {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                store.dispatch('doLogOut').then(() => {
-                    location.href = '/login';
-                })
+                //跳转到Login页面
+                location.href = '/login';
             }).catch(() => {});
         }
         if (message == "Network Error") {

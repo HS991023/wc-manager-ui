@@ -197,25 +197,17 @@ export default {
           if (this.form.id != undefined) {
             updateDevice(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新设备信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            });
-            this.dialogFormVisible = false;     
-            this.getDeviceList()
+              this.dialogFormVisible = false;     
+              this.getDeviceList()
             }
-            });
+          });
           //新增设备
-          }else{
+         }else{
           addDevice(this.form).then(response =>{
           if(response.code==200){
-             this.$msgbox('保存设备信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            });
             this.dialogFormVisible = false
             this.getDeviceList()
-            }
+          }
           });        
           }
         }});

@@ -355,27 +355,19 @@ export default {
           if (this.form.id != undefined) {
             updateUser(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新用户信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })    
-            this.dialogFormVisible = false         
-            this.getUserList()        
+                this.dialogFormVisible = false         
+                this.getUserList()        
             }else{
                var msg = response.msg;
                this.$msgbox(response.msg, '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'})    
+                 confirmButtonText: '确定',
+                 type: 'warning'})    
             }})    
          }else{
             addUser(this.form).then(response =>{
             if(response.code==200){
-              this.$msgbox('保存用户信息成功', '系统提示', {
-                  confirmButtonText: '确定',
-                  type: 'warning'
-              })    
-              this.dialogFormVisible = false    
-              this.getUserList()         
+                this.dialogFormVisible = false    
+                this.getUserList()         
               }else{
                 var msg = response.msg;
                 this.$msgbox(response.msg, '系统提示', {

@@ -236,21 +236,13 @@ export default {
         if (valid) {
           if (this.form.id != undefined) {
             updateRole(this.form).then(response =>{
-                this.$msgbox('更新角色信息成功', '系统提示', {
-                  confirmButtonText: '确定',
-                  type: 'warning'
-              })  
-              this.dialogFormVisible = false       
-              this.getRoleList()      
+                this.dialogFormVisible = false       
+                this.getRoleList()      
             })  
           }else{
-          addRole(this.form).then(response =>{
-            this.$msgbox('保存角色信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })  
-            this.dialogFormVisible = false  
-            this.getRoleList()   
+            addRole(this.form).then(response =>{
+                this.dialogFormVisible = false  
+                this.getRoleList()   
           })          
           }
         }})  

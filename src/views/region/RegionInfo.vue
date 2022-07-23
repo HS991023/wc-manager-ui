@@ -176,25 +176,17 @@ export default {
           if (this.form.id != undefined) {
             updateRegion(this.form).then(response =>{
             if(response.code==200){
-             this.$msgbox('更新地区信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            });
-            this.dialogFormVisible = false;     
-            this.getRegionList();    
+                this.dialogFormVisible = false;     
+                this.getRegionList();    
             }
             });
           //新增用户  
           }else{
-          addRegion(this.form).then(response =>{
-          if(response.code==200){
-             this.$msgbox('保存地区信息成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            });
-            this.dialogFormVisible = false;
-            this.getRegionList();     
-            }
+           addRegion(this.form).then(response =>{
+              if(response.code==200){
+                  this.dialogFormVisible = false;
+                  this.getRegionList(); 
+              }
           });        
           }
         }});
