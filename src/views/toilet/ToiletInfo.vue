@@ -378,7 +378,7 @@ export default {
 
 <style scoped>
 .main{
-  position: relative;
+  /* position: relative; */
 }
 ::v-deep .form-data .el-input{
    width: 172px !important;
