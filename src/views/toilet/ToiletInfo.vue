@@ -89,7 +89,7 @@
 
 <script>
 import {getDictDataByType} from '@/api/system/dict'
-import MapPlugin from '@/components/common/MapPlugin.vue'
+import MapPlugin from '@/views/map/MapPlugin.vue'
 import {toiletList,toiletInfo,addToilet,updateToilet,removeToilet} from '@/api/business/toilet'
 export default {
     name:'WcManagerUiToiletInfo',
