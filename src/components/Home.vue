@@ -55,7 +55,7 @@
       margin-right: -20px;
       text-align: center;
       ">
-        <el-dropdown-item>个人中心</el-dropdown-item>
+        <el-dropdown-item @click.native="handleDialog()">个人中心</el-dropdown-item>
         <el-dropdown-item>修改密码</el-dropdown-item>
         <el-dropdown-item @click.native="logout()">退出登录</el-dropdown-item>
       </el-dropdown-menu>
@@ -70,6 +70,9 @@
       <router-view></router-view>
     </el-main>
   </el-container>
+  <div class="person-center-region">
+      <PersonCenter v-if="openDialog"></PersonCenter>
+  </div>
 </el-container>
 </div>
 </template>
@@ -78,10 +81,14 @@
 import {MessageBox} from 'element-ui';
 import {logoutUser} from '@/api/system/user'
 import TreeMenu from "@/components/common/TreeMenu.vue"; //动态菜单组件
+import PersonCenter from '@/views/dialog/PersonCenter.vue' //个人中心
 export default {
     name:'Home',
+    components:{TreeMenu,PersonCenter},
     data() {
       return {
+        //是否展示个人中心
+        openDialog: false,
         //默认侧边栏展开
         isCollapse: false,
         //只保持一个菜单打开
@@ -92,7 +99,6 @@ export default {
         breadList:[], 
       }
     },
-    components:{TreeMenu},
     methods:{
       //退出登录
       logout(){
@@ -152,7 +158,11 @@ export default {
           return item.menuUrl
         })
         return result.join(',')
-      }
+      },
+      //处理个人中心是否弹出
+      handleDialog() {
+        this.openDialog = true;
+      },
    },
    computed:{
 		 treeData:function() {  

@@ -111,12 +111,6 @@ const routes = [{
         meta: { requireAuth: false }
     },
     {
-        name: '地图组件',
-        path: '/map/plugin',
-        component: (resolve) => require(['@/views/map/MapPlugin'], resolve),
-        meta: { requireAuth: false, hasPermission: '' }
-    },
-    {
         name: '未授权',
         path: '/noauth',
         component: (resolve) => require(['@/views/noauth//NoAuth'], resolve),
