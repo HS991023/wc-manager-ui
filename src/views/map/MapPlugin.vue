@@ -32,7 +32,7 @@
         :events="events"
       >
         <!-- 标记 -->
-        <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index"></el-amap-marker>
+        <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index" :events="markered.events"></el-amap-marker>
       </el-amap>
     </div>
  </div>
@@ -59,41 +59,63 @@ export default {
       },
       center: [116.397469,39.908821],
       zoom: 4.5,
-      zooms: [5, 23],  //设置地图级别范围
-      pitch: 0, // 地图俯仰角度，有效范围 0 度- 83 度
+      //设置地图级别范围
+      zooms: [5, 23],  
+      // 地图俯仰角度，有效范围 0 度- 83 度
+      pitch: 0, 
       lng: 0,
       lat: 0,
       loaded: false,
+      markered: {
+        //   position: [118.054927, 36.813487], //坐标
+        position: [0, 0], //坐标
+        events: {
+          click: (e) => {
+            console.log("点击maker", e);
+            this.marker = null;
+          },
+         //点标记拖拽移动结束触发事件
+          dragend: (e) => {
+            console.log("---event---: dragend", e);
+            this.marker.position = [e.lnglat.lng, e.lnglat.lat];
+          },
+        },
+        //点标记是否可见，默认为true。
+        visible: true,    
+        //设置点标记是否可拖拽移动，默认为false。
+        draggable: false,
+        template: "<span>1</span>",
+      },
       events: {
         init() {
           lazyAMapApiLoaderInstance.load().then(() => {
             self.initSearch()
           })
         },
-        // 点击获取地址的数据
+        //点击获取地址的数据
         click(e) {
-          // self.markers = []
-          // let { lng, lat } = e.lnglat
-          // self.lng = lng
-          // self.lat = lat
-          // self.center = [lng, lat]
-          // self.markers.push([lng, lat])
-          // // 这里通过高德 SDK 完成。
-          // let geocoder = new AMap.Geocoder({
-          //   radius: 1000,
-          //   extensions: 'all'
-          // })
-          // geocoder.getAddress([lng, lat], function(status, result) {
-          //   if (status === 'complete' && result.info === 'OK') {
-          //     if (result && result.regeocode) {
-          //       //控制台打印地址
-          //       // console.log(result.regeocode.formattedAddress) 
-          //       self.address = result.regeocode.formattedAddress
-          //       self.searchKey = result.regeocode.formattedAddress
-          //       self.$nextTick()
-          //     }
-          //   }
-          // })
+          self.markers = []
+          let { lng, lat } = e.lnglat
+          self.lng = lng
+          self.lat = lat
+          self.center = [lng, lat]
+          self.markers.push([lng, lat])
+          // 这里通过高德 SDK 完成。
+          let geocoder = new AMap.Geocoder({
+            radius: 1000,
+            extensions: 'all'
+          })
+          geocoder.getAddress([lng, lat], function(status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+              if (result && result.regeocode) {
+                //控制台打印地址
+                // console.log(result.regeocode.formattedAddress) 
+                self.address = result.regeocode.formattedAddress
+                self.searchKey = result.regeocode.formattedAddress
+                self.$nextTick()
+              }
+            }
+          })
         }
       },
       // 一些工具插件
