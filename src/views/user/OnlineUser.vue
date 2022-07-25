@@ -97,10 +97,10 @@ export default {
       handleKickOut(val){
         kickOutUser(val.jti).then(response=>{
           this.getOnlineUserList()   
-          this.$msgbox('踢出成功', '系统提示', {
-                confirmButtonText: '确定',
-                type: 'warning'
-            })   
+          this.$message({
+                type: 'success',
+                message: '踢出成功'
+               })   
         }).catch(()=>{
 
         })
