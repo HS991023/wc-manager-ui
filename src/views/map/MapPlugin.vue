@@ -66,13 +66,15 @@ export default {
       lng: 0,
       lat: 0,
       loaded: false,
+      markeredCount:0,
+      //已标点
       markered: {
         //   position: [118.054927, 36.813487], //坐标
         position: [0, 0], //坐标
         events: {
           click: (e) => {
-            console.log("点击maker", e);
             this.marker = null;
+            self.markerCilckCount();
           },
          //点标记拖拽移动结束触发事件
           dragend: (e) => {
@@ -86,6 +88,7 @@ export default {
         draggable: false,
         template: "<span>1</span>",
       },
+      //地图事件
       events: {
         init() {
           lazyAMapApiLoaderInstance.load().then(() => {
@@ -233,6 +236,15 @@ export default {
     searchByHand() {
       if (this.searchKey !== '') {
         this.poiPicker.searchByKeyword(this.searchKey)
+      }
+    },
+    //收藏点双击事件
+    markerCilckCount(){
+      this.markeredCount++;
+      if(this.markeredCount === 2){
+          console.log(this.markeredCount);
+          //清零
+          this.markeredCount = 0;
       }
     }
   },
