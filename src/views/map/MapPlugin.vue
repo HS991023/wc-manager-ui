@@ -33,12 +33,7 @@
       <!-- 标记 -->
       <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index" :events="markered.events"></el-amap-marker>
       <!-- 窗体信息 -->
-      <el-amap-info-window
-                        v-if="window.visible"
-                        :position="window.position"
-                        :visible="window.visible"
-                        :content="window.content"
-                        ></el-amap-info-window>
+      <el-amap-info-window v-if="window.visible" :position="window.position" :visible="window.visible" :content="window.content"></el-amap-info-window>
       </el-amap>
     </div>
  </div>
@@ -72,29 +67,12 @@ export default {
         city: '全国',
         citylimit: true
       },
-      markered: {  //标记事件
-        position: [0, 0], //坐标
-        events: {
-          click: (e) => {
-            this.marker = null;
-            self.markerCilckCount(e);
-          },
-          dragend: (e) => { //点标记拖拽移动结束触发事件
-            console.log("---event---: dragend", e);
-            this.marker.position = [e.lnglat.lng, e.lnglat.lat];
-          },
-        },
-        visible: true,  //点标记是否可见，默认为true。  
-        draggable: false, //设置点标记是否可拖拽移动，默认为false。
-        template: "<span>1</span>",
-      },
-      events: { //地图事件
+      events: {
         init() {
           lazyAMapApiLoaderInstance.load().then(() => {
             self.initSearch()
           })
         },
-        //点击获取地址的数据
         click(e) {
           self.markers = []
           let { lng, lat } = e.lnglat
@@ -110,7 +88,6 @@ export default {
           geocoder.getAddress([lng, lat], function(status, result) {
             if (status === 'complete' && result.info === 'OK') {
               if (result && result.regeocode) {
-                //控制台打印地址
                 // console.log(result.regeocode.formattedAddress) 
                 self.address = result.regeocode.formattedAddress
                 self.searchKey = result.regeocode.formattedAddress
@@ -119,6 +96,24 @@ export default {
             }
           })
         }
+      },
+      //标记事件
+      markered: { 
+        position: [0, 0], 
+        events: {
+          click: (e) => {
+            this.marker = null;
+            self.markerCilckCount(e);
+          },
+          dragend: (e) => { 
+            //点标记拖拽移动结束触发事件
+            console.log("---event---: dragend", e);
+            this.marker.position = [e.lnglat.lng, e.lnglat.lat];
+          },
+        },
+        visible: true,  
+        draggable: false,
+        template:'',
       },
       // 一些工具插件
       plugin: [
