@@ -1,6 +1,6 @@
 <template lang="html">
 <el-dialog 
-  title="地图"
+  title="地图 操作说明:单击进行标点 双击查看详情 三击保存点位"
   :visible.sync="dialogVisible">
   <div style="width:100%;height:1000px">
     <div class="container">
@@ -238,16 +238,21 @@ export default {
 
       var window = {
         position: [lng,lat],
-        content: '内容内容',
+        content: this.address,
         events: {},
         visible: false
       }
-      if(this.markeredCount === 2){  //双击查看详情 三击保存点位
+
+      //双击查看详情 三击保存点位
+      if(this.markeredCount == 2){  
           window.visible = true;
           //点击点坐标，出现信息窗体
           this.window = window;
       }
-      if(this.markeredCount === 3){
+      if(this.markeredCount == 3){
+          //发送地图坐标点
+          this.$bus.$emit("SendPostitionData",{lng,lat});
+          this.dialogVisible = false;
           //清零
           this.markeredCount = 0;
       }

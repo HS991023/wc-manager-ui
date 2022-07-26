@@ -304,8 +304,6 @@ export default {
         //弹出地图组件
         this.openDialog = true;
         this.$bus.$emit("mapplugin",this.openDialog);
-        //关闭表单
-        this.dialogFormVisible = false;
       },
       //更改每页大小
       handleSizeChange(val) {
@@ -365,6 +363,19 @@ export default {
             this.statusList = res.data
           }) 
       },
+    },
+     watch: {
+        dialogFormVisible: {
+            handler:function () {
+               //地图组件监听经纬度
+              this.$bus.$on("SendPostitionData", (data) => {
+                   if(null !=data && undefined != data){
+                     let location = data.lng +','+data.lat;
+                     this.form.location = location;
+                   } 
+              })
+           },
+        }
     },
     created(){
       this.getSelectData()
