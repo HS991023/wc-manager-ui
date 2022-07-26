@@ -29,10 +29,16 @@
         :pitch="pitch"
         :plugin="plugin"
         :center="center"
-        :events="events"
-      >
-        <!-- 标记 -->
-        <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index" :events="markered.events"></el-amap-marker>
+        :events="events">
+      <!-- 标记 -->
+      <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index" :events="markered.events"></el-amap-marker>
+      <!-- 窗体信息 -->
+      <el-amap-info-window
+                        v-if="window.visible"
+                        :position="window.position"
+                        :visible="window.visible"
+                        :content="window.content"
+                        ></el-amap-info-window>
       </el-amap>
     </div>
  </div>
@@ -47,49 +53,42 @@ export default {
   data() {
     let self = this
     return {
-      //是否打开弹窗
-      dialogVisible: true,
+      dialogVisible: true,  //是否打开弹窗
       address: null,
       searchKey: '',
       amapManager,
+      //信息窗体
+      window:{},
       markers: [],
-      searchOption: {
+      center: [116.397469,39.908821],  //中心点(默认北京)
+      zoom: 4.5,
+      zooms: [5, 23],    //设置地图级别范围
+      lng: 0,
+      lat: 0,
+      pitch: 0,  // 地图俯仰角度，有效范围 0 度- 83 度
+      loaded: false,
+      markeredCount:0,  //点击次数
+      searchOption: {   //搜索选项
         city: '全国',
         citylimit: true
       },
-      center: [116.397469,39.908821],
-      zoom: 4.5,
-      //设置地图级别范围
-      zooms: [5, 23],  
-      // 地图俯仰角度，有效范围 0 度- 83 度
-      pitch: 0, 
-      lng: 0,
-      lat: 0,
-      loaded: false,
-      markeredCount:0,
-      //已标点
-      markered: {
-        //   position: [118.054927, 36.813487], //坐标
+      markered: {  //标记事件
         position: [0, 0], //坐标
         events: {
           click: (e) => {
             this.marker = null;
-            self.markerCilckCount();
+            self.markerCilckCount(e);
           },
-         //点标记拖拽移动结束触发事件
-          dragend: (e) => {
+          dragend: (e) => { //点标记拖拽移动结束触发事件
             console.log("---event---: dragend", e);
             this.marker.position = [e.lnglat.lng, e.lnglat.lat];
           },
         },
-        //点标记是否可见，默认为true。
-        visible: true,    
-        //设置点标记是否可拖拽移动，默认为false。
-        draggable: false,
+        visible: true,  //点标记是否可见，默认为true。  
+        draggable: false, //设置点标记是否可拖拽移动，默认为false。
         template: "<span>1</span>",
       },
-      //地图事件
-      events: {
+      events: { //地图事件
         init() {
           lazyAMapApiLoaderInstance.load().then(() => {
             self.initSearch()
@@ -238,11 +237,22 @@ export default {
         this.poiPicker.searchByKeyword(this.searchKey)
       }
     },
-    //收藏点双击事件
-    markerCilckCount(){
+    markerCilckCount(e){ //收藏点双击事件
       this.markeredCount++;
-      if(this.markeredCount === 2){
-          console.log(this.markeredCount);
+      let { lng, lat } = e.lnglat
+
+      var window = {
+        position: [lng,lat],
+        content: '内容内容',
+        events: {},
+        visible: false
+      }
+      if(this.markeredCount === 2){  //双击查看详情 三击保存点位
+          window.visible = true;
+          //点击点坐标，出现信息窗体
+          this.window = window;
+      }
+      if(this.markeredCount === 3){
           //清零
           this.markeredCount = 0;
       }
