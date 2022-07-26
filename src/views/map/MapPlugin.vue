@@ -75,16 +75,22 @@ export default {
         },
         click(e) {
           self.markers = []
+
+          //组装数据
           let { lng, lat } = e.lnglat
           self.lng = lng
           self.lat = lat
           self.center = [lng, lat]
           self.markers.push([lng, lat])
+
+
           // 这里通过高德 SDK 完成。
           let geocoder = new AMap.Geocoder({
             radius: 1000,
             extensions: 'all'
           })
+
+          //根据经纬度反查地址
           geocoder.getAddress([lng, lat], function(status, result) {
             if (status === 'complete' && result.info === 'OK') {
               if (result && result.regeocode) {
@@ -97,9 +103,11 @@ export default {
           })
         }
       },
-      //标记事件
+
+      //标记点
       markered: { 
         position: [0, 0], 
+        //标记点事件
         events: {
           click: (e) => {
             this.marker = null;
@@ -242,7 +250,6 @@ export default {
         events: {},
         visible: false
       }
-
       //双击查看详情 三击保存点位
       if(this.markeredCount == 2){  
           window.visible = true;
