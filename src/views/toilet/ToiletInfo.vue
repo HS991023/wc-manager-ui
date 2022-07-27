@@ -304,6 +304,8 @@ export default {
         //弹出地图组件
         this.openDialog = true;
         this.$bus.$emit("mapplugin",this.openDialog);
+        //发送经纬度到map组件
+        this.$bus.$emit('SendFromPostition',this.form.location);
       },
       //更改每页大小
       handleSizeChange(val) {
@@ -364,7 +366,7 @@ export default {
           }) 
       },
     },
-     watch: {
+    watch: {
         dialogFormVisible: {
             handler:function () {
                //地图组件监听经纬度

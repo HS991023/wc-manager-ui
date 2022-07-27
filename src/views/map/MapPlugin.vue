@@ -48,7 +48,7 @@ export default {
   data() {
     let self = this
     return {
-      dialogVisible: true,  //是否打开弹窗
+      dialogVisible: undefined,  //是否打开弹窗
       address: null,
       searchKey: '',
       amapManager,
@@ -250,12 +250,12 @@ export default {
         events: {},
         visible: false
       }
-      //双击查看详情 三击保存点位
-      if(this.markeredCount == 2){  
-          window.visible = true;
-          //点击点坐标，出现信息窗体
-          this.window = window;
-      }
+      // //双击查看详情 三击保存点位
+      // if(this.markeredCount == 2){  
+      //     window.visible = true;
+      //     //点击点坐标，出现信息窗体
+      //     this.window = window;
+      // }
       if(this.markeredCount == 3){
           //发送地图坐标点
           this.$bus.$emit("SendPostitionData",{lng,lat});
@@ -266,9 +266,16 @@ export default {
     }
   },
   mounted() {
+      //判断是否打开地图插件弹窗
       this.$bus.$on("mapplugin", (data) => {
         this.dialogVisible = data;
-    })
+      })
+       //地图组件监听经纬度
+      this.$bus.$on("SendFromPostition", (data) => {
+        //经度 //纬度 
+        [data.split(',')[0],data.split(',')[1]] 
+        this.markers.push([data.split(',')[0],data.split(',')[1]])
+      })
   }
 }
 </script>
