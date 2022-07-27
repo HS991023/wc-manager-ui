@@ -82,7 +82,9 @@ export default {
           self.lat = lat
           self.center = [lng, lat]
           self.markers.push([lng, lat])
-
+          
+          //标点时关闭信息窗体
+          self.window.visible = false
 
           // 这里通过高德 SDK 完成。
           let geocoder = new AMap.Geocoder({
@@ -251,11 +253,11 @@ export default {
         visible: false
       }
       // //双击查看详情 三击保存点位
-      // if(this.markeredCount == 2){  
-      //     window.visible = true;
-      //     //点击点坐标，出现信息窗体
-      //     this.window = window;
-      // }
+      if(this.markeredCount == 2){  
+          window.visible = true;
+          //点击点坐标，出现信息窗体
+          this.window = window;
+      }
       if(this.markeredCount == 3){
           //发送地图坐标点
           this.$bus.$emit("SendPostitionData",{lng,lat});
