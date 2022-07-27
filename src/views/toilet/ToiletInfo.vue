@@ -36,9 +36,9 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="公厕位置" :label-width="formLabelWidth" prop="location">
-          <el-input v-model="form.location" autocomplete="off" placeholder="请选择公厕位置"/>
-          <el-button class="map-select-button" type="primary" icon="el-icon-edit" size="mini" @click="handleDialog"></el-button>
+        <el-form-item label="公厕位置" :label-width="formLabelWidth" prop="location"  >
+          <el-input class="input-location" v-model="form.location" autocomplete="off" placeholder="请选择公厕位置"/>
+          <el-button class="map-select-button" type="primary" icon="el-icon-position" size="mini" @click="handleDialog"></el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -390,20 +390,25 @@ export default {
 
 
 <style scoped>
-.main{
-  /* position: relative; */
-}
 ::v-deep .form-data .el-input{
    width: 172px !important;
 }
+
+::v-deep .form-data .input-location{
+  width: 200px !important;
+}
+
+
 ::v-deep .form-data .el-dialog{
   width: 42%  
 }
+
 ::v-deep .form-data .el-dialog__body{
   margin-top: 5px !important;
   margin-left: -25px !important;
   padding: 8px 25px
 }
+
 ::v-deep .form-data .el-dialog__footer{
   padding: 3px 165px 9px  
 }
@@ -411,11 +416,12 @@ export default {
 /* 地图选择按钮样式 */
 ::v-deep .map-select-button{
   position: absolute;
-  top: 6px;
-  left: 135px;
-  width: 35px;
-  height: 29px;
+  top: 5px;
+  left: 156px;
+  width: 43px;
+  height: 31px;
 }
+
 
 /* 地图组件位置 */
 ::v-deep .map-region .el-dialog__wrapper{
