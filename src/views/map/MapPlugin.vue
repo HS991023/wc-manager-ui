@@ -272,8 +272,8 @@ export default {
       })
        //地图组件监听经纬度
       this.$bus.$on("SendFromPostition", (data) => {
+        this.markers = [];
         //经度 //纬度 
-        [data.split(',')[0],data.split(',')[1]] 
         this.markers.push([data.split(',')[0],data.split(',')[1]])
       })
   }
