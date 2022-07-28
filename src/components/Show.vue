@@ -93,13 +93,14 @@ export default {
 <style>
 /* 主样式 */
 .main{
-    margin-top: 80px;
-    position: relative;
-    height: 90px;
+    margin-top: 120px;
+    margin-left: -13px;
+    height: 90px !important;
 }
 
 /* 项目title */
 .project-title{
+    margin-top: -26px;
     width: 100%;
     height: 20px;
     border-left: 2px solid #fcfcfc;
@@ -131,9 +132,8 @@ export default {
 
 /* 功能描述盒子样式 */
 .function-desc{
-    position: absolute;
-    top: 420px;
-    left: 613px;
+    margin-top: -350px;
+    float: right;
     width: 598px;
     height: 100%;
 }

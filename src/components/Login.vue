@@ -1,7 +1,7 @@
 <template> 
    <div class="parent" style="overflow:hidden;">
         <div class="login-element" id="login">
-        <h1>XXX管理平台</h1>
+        <h1>公厕后台管理平台</h1>
       <div class="form-info">
         <form ref="form" :model="form">
           <label class="text-label">用户名:</label>
