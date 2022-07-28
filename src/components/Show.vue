@@ -51,6 +51,16 @@
             </div>
         </el-card>
     </div>
+    <div class="update-log">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span>更新日志</span>
+            </div>
+            <div>
+               1. 2022.07.28 系统基本功能完善(eg:剩余多租户及公厕实时使用情况及动态上图延期处理)V1.0.0
+            </div>
+        </el-card>
+    </div>
     <!-- 功能描述 -->
     <div class="function-desc">
          <el-card class="box-card">
@@ -93,7 +103,7 @@ export default {
 <style>
 /* 主样式 */
 .main{
-    margin-top: 120px;
+    margin-top: 90px;
     margin-left: -13px;
     height: 90px !important;
 }
@@ -124,15 +134,23 @@ export default {
     color:#2c1a74 !important;
 }
 
+/* 更新日志字体颜色 */
+.update-log span,
+.update-log .el-card__body{
+    color:#bf1f16 !important;
+}
+
+
 /* 技术栈盒子样式 */
 .technology-stack,
+.update-log,
 .technology-stack .box-card{
    width: 600px;
 }
 
 /* 功能描述盒子样式 */
 .function-desc{
-    margin-top: -350px;
+    margin-top: -455px;
     float: right;
     width: 598px;
     height: 100%;
@@ -143,8 +161,6 @@ export default {
 .function-desc .el-card__body{
     color:#eb9e0e !important;
 }
-
-
 
 /* 卡片样式 */
 .text {
