@@ -150,7 +150,7 @@ export default {
           ],
           roleCode:[
             { required: true, message: '请输入角色代码', trigger: 'blur' },
-            { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+            { min: 5, max: 20, message: '长度在 5 到 20 个字符', trigger: 'blur' }
           ],
           status:[
             { required: true, message: '请选择状态', trigger: 'blur' },
