@@ -1,5 +1,5 @@
 <template>
-<div class="main">
+<div>
     <div class="serach-input">
       <label class="serach-propties">公厕名称:</label>    
       <el-input placeholder="请输入公厕名称" suffix-icon="el-icon-text" v-model="data.toiletName"/>
