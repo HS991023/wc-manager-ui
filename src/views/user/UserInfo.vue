@@ -145,7 +145,7 @@
     <el-table :data="userList" style="width: 100%" max-height="100%" ref="multipleTable" v-loading="loading" @selection-change="handleUserIds" :header-cell-style="rowClass">
       <!-- 多选框 -->
       <el-table-column type="selection" width="55"/>
-      <el-table-column align="center" prop="nickName" key="nickName" label="用户名" width="100">
+      <el-table-column align="center" prop="nickName" key="nickName" label="用户名" width="160">
         <!-- 添加列事件 -->
         <template slot-scope="scope">
             <div class="table-column-region" @click="handleUserInfo(scope.row.id);dialogFormVisible = true">{{scope.row.nickName}}</div>

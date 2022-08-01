@@ -13,7 +13,7 @@
     </div>
     </div>
     <div class="table-data"> 
-    <el-table :data="operatorList" style="width: 100%" max-height="550px" ref="multipleTable" v-loading="loading" :header-cell-style="rowClass">
+    <el-table :data="operatorList" style="width: 100%" max-height="610px" ref="multipleTable" v-loading="loading" :header-cell-style="rowClass">
     <el-table-column align="center" label="操作模块" width="160" prop="operatorModule" key="operatorModule"/>
     <el-table-column align="center" label="操作功能" width="180" prop="operatorFunction" key="operatorFunction"/>
     <el-table-column align="center" label="执行动作" width="180" prop="operatorAction" key="operatorAction"/>
