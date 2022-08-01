@@ -87,11 +87,8 @@
         </el-form-item>
         <!-- 系统多租户代码 -->
         <el-form-item label="多租户代码" v-if="accountType == 1 || showTenantCode == true" :label-width="formLabelWidth" prop="tenantCode"
-        :rules="[
-                  { required: true, message: '管理员类型账号必须输入多租户代码'},
-                ]"
-        >
-             <el-input v-model="form.tenantCode" autocomplete="off" placeholder="请输入多租户代码"/>
+        :rules="[{ required: true, message: '管理员类型账号必须输入多租户代码'},]">
+             <el-input v-model="form.tenantCode" autocomplete="off" placeholder="请输入多租户代码" :disabled="disabledTenantCode"/>
         </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth">
               <el-select v-model="role" placeholder="请选择">
@@ -232,6 +229,8 @@ export default {
         formLabelWidth: '120px',
         //是否显示系统多租户输入框
         showTenantCode:false,
+        //是否禁用系统多租户输入框
+        disabledTenantCode: true,
         //是否加载中
         loading: true,
         dialogTableVisible: false,
@@ -343,12 +342,13 @@ export default {
         this.disabled = false
         //默认关闭系统多租户
         this.showTenantCode = false
+        this.disabledTenantCode = false;
         this.clearSelectData()
         //重置头像
         this.imageUrl = undefined
         //重置生日
         this.birthday = undefined
-        this.showFormButton = true    
+        this.showFormButton = true 
       },
       //编辑用户按钮
       handleEidtUser(row) {
@@ -356,6 +356,7 @@ export default {
         this.imageUrl = undefined
         //重置表单
         this.reset()   
+        this.disabledTenantCode = true;
         this.form = this.handleUserInfo(row.id)  
         //启用表单
         this.disabled = false  
@@ -619,6 +620,13 @@ export default {
           return isLt2M;
         }
         return isLt2M;
+      }
+    },
+    watch:{
+      accountType(newValue,oldValue){
+          if(newValue == 1){
+            this.$message.error('多租户代码只能设置一次,且不可修改,请谨慎设置!');
+          }   
       }
     },
     created(){
