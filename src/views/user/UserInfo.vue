@@ -85,6 +85,14 @@
         <el-form-item label="密码" :label-width="formLabelWidth" prop="passWord">
           <el-input type="password" v-model="form.passWord" autocomplete="off" placeholder="请输入密码" show-password/>
         </el-form-item>
+        <!-- 系统多租户代码 -->
+        <el-form-item label="多租户代码" v-if="accountType == 1 || showTenantCode == true" :label-width="formLabelWidth" prop="tenantCode"
+        :rules="[
+                  { required: true, message: '管理员类型账号必须输入多租户代码'},
+                ]"
+        >
+             <el-input v-model="form.tenantCode" autocomplete="off" placeholder="请输入多租户代码"/>
+        </el-form-item>
         <el-form-item label="角色" :label-width="formLabelWidth">
               <el-select v-model="role" placeholder="请选择">
               <el-option
@@ -222,6 +230,8 @@ export default {
         role:'',
         roleSelect:[],
         formLabelWidth: '120px',
+        //是否显示系统多租户输入框
+        showTenantCode:false,
         //是否加载中
         loading: true,
         dialogTableVisible: false,
@@ -304,12 +314,20 @@ export default {
         this.showFormButton = false
         userInfo(id).then(response=>{
           this.form = response.data  
+          let accountType = this.form.accountType;
+          //账号类型为管理员时,显示多租户框
+          if(accountType == 1){
+             this.showTenantCode = true;
+          }
+          //判断是否需要显示多租户框
           this.viewDictData()
           //获取用户头像
           if(response.data.pictureId != null || response.data.pictureId != undefined){
               queryFileById(response.data.pictureId).then(res=>{
                  if(res.code==200){
+                     if(res.data.url != null && res.data.url != undefined){
                   this.imageUrl = res.data.url
+                     }
                  }
           })
           }else{
@@ -453,7 +471,8 @@ export default {
           address:undefined,
           sign:undefined,
           pictureId: undefined,
-          accountType: undefined
+          accountType: undefined,
+          tenantCode:undefined
         }
       },
       //更改每页大小
