@@ -341,6 +341,8 @@ export default {
         this.reset()
         //启用表单
         this.disabled = false
+        //默认关闭系统多租户
+        this.showTenantCode = false
         this.clearSelectData()
         //重置头像
         this.imageUrl = undefined
