@@ -102,7 +102,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /* 主样式 */
 .main{
     margin-top: 90px;
@@ -151,8 +151,8 @@ export default {
 }
 
 /* 功能描述盒子样式 */
-.function-desc{
-    margin-top: -455px;
+::v-deep .function-desc{
+    margin-top: -564px;
     float: right;
     width: 598px;
     height: 100%;
